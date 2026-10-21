@@ -1,0 +1,6 @@
+@Prothia.API_HostAddress = http://localhost:5178
+
+GET {{Prothia.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
