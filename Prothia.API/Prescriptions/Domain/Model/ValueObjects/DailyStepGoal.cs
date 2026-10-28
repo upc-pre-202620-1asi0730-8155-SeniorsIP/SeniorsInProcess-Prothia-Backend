@@ -1,10 +1,10 @@
 ﻿using Humanizer;
 
 namespace Prothia.API.Prescriptions.Domain.Model.ValueObjects;
+/*
+ * Represents the patient's daily walking step target prescribed in their rehabilitation routine.
+ */
 
-/// <summary>
-/// Represents the patient's daily walking step target prescribed in their rehabilitation routine.
-/// </summary>
 public sealed record DailyStepGoal
 {
     public const int MinSteps = 500;

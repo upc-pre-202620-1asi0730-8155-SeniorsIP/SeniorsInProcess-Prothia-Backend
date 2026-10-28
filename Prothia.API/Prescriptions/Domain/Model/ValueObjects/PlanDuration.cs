@@ -1,8 +1,8 @@
 ﻿namespace Prothia.API.Prescriptions.Domain.Model.ValueObjects;
+/*
+ * Represents the duration of therapeutic plan measured in weeks
+ */
 
-/// <summary>
-/// Represents the duration of therapeutic plan measured in weeks
-/// </summary>
 public sealed record PlanDuration
 {
     public const int MinWeeks = 1;

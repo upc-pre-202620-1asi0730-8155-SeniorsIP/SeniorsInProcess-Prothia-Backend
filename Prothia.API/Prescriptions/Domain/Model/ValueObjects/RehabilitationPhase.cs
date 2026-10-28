@@ -1,8 +1,8 @@
 ﻿namespace Prothia.API.Prescriptions.Domain.Model.ValueObjects;
+/*
+ * Represents a rehabilitation phase in a therapeutic plan
+ */
 
-/// <summary>
-/// Represents a rehabilitation phase in a therapeutic plan
-/// </summary>
 public sealed record RehabilitationPhase
 {
     private const int MinPhaseNumber = 1;

@@ -1,7 +1,8 @@
 ﻿namespace Prothia.API.Prescriptions.Domain.Model.ValueObjects;
-/// <summary>
-/// Represents the therapeutic dosage of a prescribed exercise (Sets, Repetitions, and Rest in seconds).
-/// </summary>
+/*
+ * Represents the therapeutic dosage of a prescribed exercise (Sets, Repetitions, and Rest in seconds).
+ */
+
 public sealed record ExerciseDosage
 {
     public const int MaxSets = 20;

@@ -1,8 +1,8 @@
 ﻿namespace Prothia.API.Prescriptions.Domain.Model.ValueObjects;
+/*
+ * Represents a therapeutic focus area or rehabilitation objective
+ */
 
-/// <summary>
-/// Represents a therapeutic focus area or rehabilitation objective
-/// </summary>
 public sealed record TherapeuticFocus
 {
     private const int MaxLength = 100;

@@ -1,8 +1,8 @@
 ﻿namespace Prothia.API.Prescriptions.Domain.Model.ValueObjects;
+/*
+ * Represents the completion progress percentage of prescribed therapeutic activities for a given day (0% to 100%).
+ */
 
-/// <summary>
-/// Represents the completion progress percentage of prescribed therapeutic activities for a given day (0% to 100%).
-/// </summary>
 public sealed record ActivityProgress
 {
     public const int MinValue = 0;

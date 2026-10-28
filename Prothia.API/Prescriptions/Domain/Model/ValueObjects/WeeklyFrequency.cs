@@ -1,10 +1,9 @@
 ﻿using ZstdSharp.Unsafe;
 
 namespace Prothia.API.Prescriptions.Domain.Model.ValueObjects;
-
-/// <summary>
-/// Represents the training frequency per week of a prescription plan (1 to 7 sessions per week).
-/// </summary>
+/*
+ * Represents the training frequency per week of a prescription plan (1 to 7 sessions per week).
+ */
 public sealed record WeeklyFrequency
 {
     public const int MinDays = 1;
