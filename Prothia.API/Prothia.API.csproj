@@ -28,4 +28,8 @@
         
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Analytics\Domain\Model\Aggregates\" />
+    </ItemGroup>
+
 </Project>
