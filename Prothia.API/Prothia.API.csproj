@@ -28,4 +28,9 @@
         
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Analytics\Domain\Model\Queries\" />
+      <Folder Include="Analytics\Domain\Model\Repositories\" />
+    </ItemGroup>
+
 </Project>
