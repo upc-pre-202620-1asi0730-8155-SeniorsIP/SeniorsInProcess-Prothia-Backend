@@ -4,9 +4,7 @@ using Prothia.API.Analytics.Domain.Model.ValueObjects;
 
 namespace Prothia.API.Analytics.Domain.Model.Aggregates;
 
-/// <summary>
-///     Clinical biomechanical report aggregate root issued for a patient.
-/// </summary>
+
 public partial class ClinicalReport
 {
     public const int IssueDateMaxLength = 30;
