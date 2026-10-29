@@ -1,11 +1,11 @@
 ﻿namespace Prothia.API.Analytics.Domain.Model.ValueObjects;
 
 /// <summary>
-/// Represents the professional licensing registration code of a certifying physiotherapist (e.g. 'CTMP 14820').
+///     Represents the professional licensing registration code of a certifying physiotherapist (e.g. 'CTMP 14820').
 /// </summary>
 public sealed record TherapistRegistry
 {
-    private const int MaxLength = 50;
+    public const int MaxLength = 50;
 
     public string Value { get; }
 
@@ -17,7 +17,8 @@ public sealed record TherapistRegistry
         var trimmed = value.Trim().ToUpperInvariant();
 
         if (trimmed.Length > MaxLength)
-            throw new ArgumentException($"Therapist registry code cannot exceed {MaxLength} characters.", nameof(value));
+            throw new ArgumentException($"Therapist registry code cannot exceed {MaxLength} characters.",
+                nameof(value));
 
         Value = trimmed;
     }

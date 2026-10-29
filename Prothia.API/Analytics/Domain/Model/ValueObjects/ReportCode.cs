@@ -1,11 +1,11 @@
 ﻿namespace Prothia.API.Analytics.Domain.Model.ValueObjects;
 
 /// <summary>
-/// Represents the unique official code of a clinical report (e.g. 'EXP-CLIN-2026-084').
+///     Represents the unique official code of a clinical report (e.g. 'EXP-CLIN-2026-084').
 /// </summary>
 public sealed record ReportCode
 {
-    private const int MaxLength = 50;
+    public const int MaxLength = 50;
 
     public string Value { get; }
 
