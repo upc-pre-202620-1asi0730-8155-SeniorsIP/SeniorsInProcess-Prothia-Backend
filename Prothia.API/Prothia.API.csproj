@@ -29,6 +29,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Billing\Domain\Model\Queries\" />
       <Folder Include="Billing\Domain\Repositories\" />
     </ItemGroup>
 
