@@ -5,7 +5,7 @@ namespace Prothia.API.Billing.Domain.Model.Commands;
 public record CreateClinicSubscriptionCommand(
     string PlanName,
     string Status,
-    string PLanType,
+    string PlanType,
     decimal AnnualFee,
     decimal MonthlyEquivalent,
     string StartDate,
