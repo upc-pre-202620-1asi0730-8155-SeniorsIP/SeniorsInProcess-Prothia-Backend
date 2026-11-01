@@ -31,7 +31,6 @@
     <ItemGroup>
       <Folder Include="Analytics\Application\Errors\" />
       <Folder Include="Analytics\Application\Services\" />
-      <Folder Include="Analytics\Interfaces\Rest\Transform\" />
     </ItemGroup>
 
 </Project>
