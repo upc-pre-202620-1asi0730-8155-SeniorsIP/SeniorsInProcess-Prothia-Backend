@@ -31,6 +31,7 @@
     <ItemGroup>
       <Folder Include="Analytics\Application\Errors\" />
       <Folder Include="Analytics\Application\Services\" />
+      <Folder Include="Analytics\Infrastructure\Persistence\EntityFrameworkCore\Repositories\" />
     </ItemGroup>
 
 </Project>
