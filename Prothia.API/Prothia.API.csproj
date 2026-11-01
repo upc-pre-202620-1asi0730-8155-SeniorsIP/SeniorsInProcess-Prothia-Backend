@@ -28,4 +28,12 @@
         
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Analytics\Application\Errors\" />
+      <Folder Include="Analytics\Application\Internal\CommandServices\" />
+      <Folder Include="Analytics\Application\Internal\OutboundServices\ACL\" />
+      <Folder Include="Analytics\Application\Internal\QueryServices\" />
+      <Folder Include="Analytics\Application\Services\" />
+    </ItemGroup>
+
 </Project>
