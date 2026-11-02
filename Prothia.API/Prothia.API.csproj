@@ -29,6 +29,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Billing\Application\Internal\CommandServices\" />
+      <Folder Include="Billing\Application\Internal\QueryServices\" />
+      <Folder Include="Billing\Application\Services\" />
       <Folder Include="Billing\Interfaces\Rest\Transform\" />
     </ItemGroup>
 
