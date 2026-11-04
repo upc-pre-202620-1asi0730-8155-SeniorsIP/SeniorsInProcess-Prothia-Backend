@@ -31,7 +31,6 @@
 
     <ItemGroup>
       <Folder Include="Shared\Application\Internal\EventeHandlers\" />
-      <Folder Include="Shared\Domain\Model\Aggregates\Internal\" />
       <Folder Include="Shared\Resources\" />
     </ItemGroup>
 

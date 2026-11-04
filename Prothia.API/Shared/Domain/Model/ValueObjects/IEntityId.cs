@@ -1,6 +1,13 @@
 namespace Prothia.API.Shared.Domain.Model.ValueObjects;
 
-public interface IEntityId
+/// <summary>
+///     Represents a strongly-typed entity identifier contract.
+/// </summary>
+/// <typeparam name="T">The underlying primitive identifier type.</typeparam>
+public interface IEntityId<out T> where T : struct
 {
-    
+    /// <summary>
+    ///     Gets the underlying primitive value of the identifier.
+    /// </summary>
+    T Value { get; }
 }
