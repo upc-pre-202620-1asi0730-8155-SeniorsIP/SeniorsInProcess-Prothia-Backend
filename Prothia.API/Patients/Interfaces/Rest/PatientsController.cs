@@ -9,13 +9,13 @@ using Prothia.API.Patients.Interfaces.Rest.Transform;
 namespace Prothia.API.Patients.Interfaces.Rest;
 
 public class PatientsController(
-    IPatientCommandService patientCommandService,
+   IPatientCommandService patientCommandService,
     IPatientQueryService patientQueryService,
-    IStringLocalizer<SharedResource> localizer,
+    IStringLocalizer<ErrorMessages> localizer,
     ILogger<PatientsController> logger)
     : ControllerBase
 {
-   
+    
     [HttpPost]
     [ProducesResponseType(typeof(PatientResource), StatusCodes.Status201Created)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
@@ -50,7 +50,7 @@ public class PatientsController(
                 statusCode: 500);
         }
     }
-
+    
     [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<PatientResource>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
@@ -78,8 +78,7 @@ public class PatientsController(
             return BadRequest(localizer["InvalidPatientQuery"].Value);
         }
     }
-
- 
+    
     [HttpGet("{id:int}")]
     [ProducesResponseType(typeof(PatientResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

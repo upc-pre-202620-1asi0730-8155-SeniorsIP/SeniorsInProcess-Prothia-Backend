@@ -11,7 +11,7 @@ public static class ActionResultFromCreatePatientResultAssembler
     public static ActionResult ToActionResultFromCreatePatientResult(
         Result<Patient, ECreatePatientError> result,
         ControllerBase controller,
-        IStringLocalizer<SharedResource> localizer,
+        IStringLocalizer<errorMessages> localizer,
         string getPatientByIdActionName) =>
         result switch
         {
