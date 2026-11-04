@@ -1,7 +1,7 @@
-﻿using Prothia.API.Shared.Infrastructure.Interfaces.Asp.Configuration.Extensions;
-using Microsoft.AspNetCore.Mvc.ApplicationModels;
+﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
+using Prothia.API.Shared.Interfaces.Asp.Configuration.Extensions;
 
-namespace Prothia.API.Shared.Infrastructure.Interfaces.Asp.Configuration;
+namespace Prothia.API.Shared.Interfaces.Asp.Configuration;
 
 public class KebabCaseRouteNamingConvention : IControllerModelConvention
 {

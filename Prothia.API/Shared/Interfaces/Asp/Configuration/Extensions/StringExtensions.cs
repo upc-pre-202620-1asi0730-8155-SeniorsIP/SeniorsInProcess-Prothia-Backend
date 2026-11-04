@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Prothia.API.Shared.Infrastructure.Interfaces.Asp.Configuration.Extensions;
+namespace Prothia.API.Shared.Interfaces.Asp.Configuration.Extensions;
 
 public static partial class StringExtensions
 {

@@ -1,4 +1,5 @@
 using Prothia.API.Shared.Infrastructure.Interfaces.Asp.Configuration;
+using Prothia.API.Shared.Interfaces.Asp.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
