@@ -1,6 +1,23 @@
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Prothia.API.Shared.Domain.Model.ValueObjects;
+
 namespace Prothia.API.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration.ValueConverters;
 
-public class StronglyTypedIdConverter
+/// <summary>
+///     Value converter for strongly-typed identifiers to and from their primitive representation.
+/// </summary>
+/// <typeparam name="TId">The strongly-typed identifier type.</typeparam>
+/// <typeparam name="TValue">The underlying primitive type.</typeparam>
+public class StronglyTypedIdConverter<TId, TValue>(
+    Func<TId, TValue> convertToProvider,
+    Func<TValue, TId> convertFromProvider)
+    : ValueConverter<TId, TValue>(
+        id => convertToProvider(id),
+        val => convertFromProvider(val))
+    where TValue : struct
 {
-    
+    public StronglyTypedIdConverter(Func<TValue, TId> factory)
+        : this(id => ((IEntityId<TValue>)id!).Value, factory)
+    {
+    }
 }
