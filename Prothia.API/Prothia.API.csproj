@@ -28,8 +28,4 @@
         
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Billing\Interfaces\Rest\Transform\" />
-    </ItemGroup>
-
 </Project>
