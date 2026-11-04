@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationModels;
-using Prothia.API.Shared.Interfaces.Asp.Configuration.Extensions;
+﻿using Prothia.API.Shared.Interfaces.Asp.Configuration.Extensions;
+using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
 namespace Prothia.API.Shared.Interfaces.Asp.Configuration;
 
