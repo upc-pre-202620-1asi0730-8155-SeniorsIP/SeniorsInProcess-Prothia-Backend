@@ -1,6 +1,6 @@
 namespace Prothia.API.Patients.Domain.Model.ValueObjects;
 
-public enum AmputationLevel
+public enum EAmputationLevel
 {
     TranstibialRight,
     TranstibialLeft,

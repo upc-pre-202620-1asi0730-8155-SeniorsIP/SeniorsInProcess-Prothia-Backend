@@ -1,6 +1,6 @@
 namespace Prothia.API.Patients.Domain.Model.ValueObjects;
 
-public enum PatientStatus
+public enum EPatientStatus
 {
     Stable,
     Alert,

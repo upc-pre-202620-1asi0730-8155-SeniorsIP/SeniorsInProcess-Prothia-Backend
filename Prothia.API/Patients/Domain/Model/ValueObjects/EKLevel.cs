@@ -1,6 +1,6 @@
 namespace Prothia.API.Patients.Domain.Model.ValueObjects;
 
-public enum KLevel
+public enum EKLevel
 {
     K1,
     K2,

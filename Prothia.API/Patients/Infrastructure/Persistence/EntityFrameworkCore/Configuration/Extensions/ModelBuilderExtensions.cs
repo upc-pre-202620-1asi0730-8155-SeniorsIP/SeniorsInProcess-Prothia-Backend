@@ -22,12 +22,12 @@ public static class ModelBuilderExtensions
             .IsRequired();
         builder.Entity<Patient>().Property(p => p.Age).IsRequired();
         builder.Entity<Patient>()
-            .Property(p => p.Amputation)
+            .Property(p => p.EAmputation)
             .HasConversion<string>()
             .HasMaxLength(30)
             .IsRequired();
         builder.Entity<Patient>()
-            .Property(p => p.KLevel)
+            .Property(p => p.EkLevel)
             .HasConversion<string>()
             .HasMaxLength(2)
             .IsRequired();

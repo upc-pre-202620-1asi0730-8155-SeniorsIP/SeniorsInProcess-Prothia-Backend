@@ -6,6 +6,6 @@ public record CreatePatientCommand(
     FullName FullName,
     Dni Dni,
     int Age,
-    AmputationLevel Amputation,
-    KLevel KLevel,
+    EAmputationLevel EAmputation,
+    EKLevel EkLevel,
     ProsthesisCode? ProsthesisCode);
