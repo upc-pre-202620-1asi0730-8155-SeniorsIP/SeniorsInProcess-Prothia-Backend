@@ -28,8 +28,4 @@
         
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Prescriptions\Domain\Model\Aggregates\" />
-    </ItemGroup>
-
 </Project>

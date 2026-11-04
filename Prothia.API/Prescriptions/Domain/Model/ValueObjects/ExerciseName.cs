@@ -5,12 +5,12 @@
 /// </summary>
 
 
-public sealed record ExcerciseName
+public sealed record ExerciseName
 {
     public const int MaxLength = 150;
     public string Value { get; }
 
-    public ExcerciseName(string value)
+    public ExerciseName(string value)
     {
         if(string.IsNullOrWhiteSpace(value))
             throw new ArgumentNullException("Excersise Name cannot be null or whitespace", nameof(value));
