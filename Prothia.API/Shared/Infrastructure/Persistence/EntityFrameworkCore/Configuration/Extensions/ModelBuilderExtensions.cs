@@ -19,16 +19,15 @@ public static class ModelBuilderExtensions
         {
             var tableName = entity.GetTableName();
             if (!string.IsNullOrEmpty(tableName)) entity.SetTableName(tableName.ToPlural().ToSnakeCase());
-            // Replace column names            
+
             foreach (var property in entity.GetProperties())
                 property.SetColumnName(property.GetColumnName().ToSnakeCase());
-            // Replace key names
+
             foreach (var key in entity.GetKeys())
             {
                 var keyName = key.GetName();
                 if (!string.IsNullOrEmpty(keyName)) key.SetName(keyName.ToSnakeCase());
             }
-
 
             foreach (var foreignKey in entity.GetForeignKeys())
             {
@@ -36,7 +35,6 @@ public static class ModelBuilderExtensions
                 if (!string.IsNullOrEmpty(foreignKeyName)) foreignKey.SetConstraintName(foreignKeyName.ToSnakeCase());
             }
 
-            
             foreach (var index in entity.GetIndexes())
             {
                 var indexDatabaseName = index.GetDatabaseName();
