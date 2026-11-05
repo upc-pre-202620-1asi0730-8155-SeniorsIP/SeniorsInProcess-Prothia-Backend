@@ -10,7 +10,7 @@ public enum EErrorType
     Forbidden = 5,
     Unexpected = 6
 }
-    
+
 /// <summary>
 ///     Represents a domain error.
 /// </summary>
