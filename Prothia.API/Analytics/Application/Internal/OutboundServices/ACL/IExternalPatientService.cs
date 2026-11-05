@@ -7,5 +7,4 @@ public interface IExternalPatientService
     Task<bool> ExistsPatientByIdAsync(PatientId patientId, CancellationToken cancellationToken = default);
 
     Task<string?> FetchPatientFullNameByIdAsync(PatientId patientId, CancellationToken cancellationToken = default);
-    
 }
