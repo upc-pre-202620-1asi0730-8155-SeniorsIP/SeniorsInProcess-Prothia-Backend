@@ -13,4 +13,23 @@ public class PatientRepository(AppDbContext context) : BaseRepository<Patient>(c
     {
         return await Context.Set<Patient>().FirstOrDefaultAsync(p => p.Dni == dni, cancellationToken);
     }
+
+    public async Task<Patient?> FindByDniAsNoTrackingAsync(Dni dni, CancellationToken cancellationToken = default)
+    {
+        return await Context.Set<Patient>()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Dni == dni, cancellationToken);
+    }
+
+    public async Task<Patient?> FindByIdAsNoTrackingAsync(PatientId id, CancellationToken cancellationToken = default)
+    {
+        return await Context.Set<Patient>()
+            .AsNoTracking()
+            .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
+    }
+
+    public async Task<bool> ExistsByDniAsync(Dni dni, CancellationToken cancellationToken = default)
+    {
+        return await Context.Set<Patient>().AnyAsync(p => p.Dni == dni, cancellationToken);
+    }
 }
