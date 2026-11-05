@@ -7,8 +7,8 @@ using Prothia.API.Analytics.Domain.Model.Queries;
 using Prothia.API.Analytics.Domain.Model.ValueObjects;
 using Prothia.API.Analytics.Interfaces.Rest.Resources;
 using Prothia.API.Analytics.Interfaces.Rest.Transform;
-using Prothia.API.Resources.Errors;
 using Prothia.API.Shared.Interfaces.Rest.ProblemDetails;
+using Prothia.API.Shared.Resources.Errors;
 
 namespace Prothia.API.Analytics.Interfaces.Rest;
 
