@@ -1,6 +1,6 @@
 ﻿using Prothia.API.Analytics.Domain.Model.Aggregates;
 using Prothia.API.Analytics.Interfaces.Rest.Resources;
-using Prothia.API.Shared.Infrastructure.Interfaces.Asp.Configuration.Extensions;
+using Prothia.API.Shared.Infrastructure.Interfaces.AspNetCore.Configuration.Extensions;
 
 namespace Prothia.API.Analytics.Interfaces.Rest.Transform;
 
@@ -8,7 +8,7 @@ public static class ClinicalReportResourceFromEntityAssembler
 {
     public static ClinicalReportResource ToResourceFromEntity(ClinicalReport entity) =>
         new(
-            entity.Id,
+            entity.Id.Value,
             entity.ReportCode.Value,
             entity.IssueDate,
             entity.ClinicName,
