@@ -5,15 +5,18 @@ namespace Prothia.API.Patients.Interfaces.Rest.Transform;
 
 public static class PatientResourceFromEntityAssembler
 {
-    public static PatientResource ToResourceFromEntity(Patient entity) =>
-        new(entity.Id,
+    public static PatientResource ToResourceFromEntity(Patient entity)
+    {
+        return new PatientResource(
+            entity.Id.Value,
             entity.FullName.Value,
             entity.Dni.Value,
             entity.Age,
-            entity.EAmputation.ToString(),
+            entity.EAmputation.ToCamelCaseString(),
             entity.EkLevel.ToString(),
             entity.ProsthesisCode?.Value,
             entity.Adherence,
             entity.Symmetry,
             entity.Status.ToString().ToLowerInvariant());
+    }
 }

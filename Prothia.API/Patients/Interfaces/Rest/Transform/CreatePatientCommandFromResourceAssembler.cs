@@ -10,7 +10,7 @@ public static class CreatePatientCommandFromResourceAssembler
         new(new FullName(resource.FullName),
             new Dni(resource.Dni),
             resource.Age,
-            Enum.Parse<EAmputationLevel>(resource.Amputation, true),
-            Enum.Parse<EKLevel>(resource.KLevel, true),
+            EnumConversions.Parse<EAmputationLevel>(resource.Amputation, nameof(resource.Amputation)),
+            EnumConversions.Parse<EKLevel>(resource.KLevel, nameof(resource.KLevel)),
             string.IsNullOrWhiteSpace(resource.ProsthesisCode) ? null : new ProsthesisCode(resource.ProsthesisCode));
 }
