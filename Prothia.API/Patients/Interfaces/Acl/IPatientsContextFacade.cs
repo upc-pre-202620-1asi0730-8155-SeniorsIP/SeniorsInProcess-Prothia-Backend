@@ -1,6 +1,6 @@
 namespace Prothia.API.Patients.Interfaces.ACL;
 
-public interface IPatientContextFacade
+public interface IPatientsContextFacade
 {
     Task<bool> ExistsPatientByIdAsync(int patientId, CancellationToken cancellationToken = default);
     

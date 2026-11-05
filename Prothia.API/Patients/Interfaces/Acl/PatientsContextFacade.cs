@@ -3,7 +3,7 @@ using Prothia.API.Patients.Domain.Model.Queries;
 
 namespace Prothia.API.Patients.Interfaces.ACL;
 
-public interface PatientsContextFacade(IPatientQueryService patientQueryService) : IPatientContextFacade
+public class PatientsContextFacade(IPatientQueryService patientQueryService) : IPatientsContextFacade
 {
     public async Task<bool> ExistsPatientByIdAsync(int patientId, CancellationToken cancellationToken = default)
     {
@@ -14,7 +14,7 @@ public interface PatientsContextFacade(IPatientQueryService patientQueryService)
     public async Task<string?> FetchPatientFullNameByIdAsync(int patientId, CancellationToken cancellationToken = default)
     {
         var patient = await patientQueryService.Handle(new GetPatientByIdQuery(patientId), cancellationToken);
-        return patient?.FullName;
+        return patient?.FullName.Value;
     }
     
 }

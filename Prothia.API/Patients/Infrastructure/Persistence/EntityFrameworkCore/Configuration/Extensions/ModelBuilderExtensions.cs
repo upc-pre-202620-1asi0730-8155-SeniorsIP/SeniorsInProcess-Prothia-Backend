@@ -9,7 +9,10 @@ public static class ModelBuilderExtensions
     public static void ApplyPatientsConfiguration(this ModelBuilder builder)
     {
         builder.Entity<Patient>().HasKey(p => p.Id);
-        builder.Entity<Patient>().Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<Patient>().Property(p => p.Id)
+            .HasConversion(new StronglyTypedIdConverter<PatientId, int>(id => id.Value, value => new PatientId(value)))
+            .IsRequired()
+            .ValueGeneratedOnAdd();
         builder.Entity<Patient>()
             .Property(p => p.FullName)
             .HasConversion(valueObject => valueObject.Value, value => new FullName(value))
