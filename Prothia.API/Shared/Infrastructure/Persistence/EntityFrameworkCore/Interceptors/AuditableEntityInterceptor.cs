@@ -1,19 +1,27 @@
-﻿using Prothia.API.Shared.Domain.Model;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Prothia.API.Shared.Domain.Model.Entities;
 
 namespace Prothia.API.Shared.Infrastructure.Persistence.EntityFrameworkCore.Interceptors;
 
+/// <summary>
+///     EF Core interceptor that automatically populates audit timestamps on any entity
+///     that implements <see cref="IAuditableEntity" />.
+/// </summary>
 public sealed class AuditableEntityInterceptor : SaveChangesInterceptor
 {
+    /// <inheritdoc />
     public override InterceptionResult<int> SavingChanges(DbContextEventData eventData, InterceptionResult<int> result)
     {
         ApplyAuditTimestamps(eventData.Context);
         return base.SavingChanges(eventData, result);
     }
 
-    public override ValueTask<InterceptionResult<int>> SavingChangesAsync(DbContextEventData eventData, InterceptionResult<int> result,
-        CancellationToken cancellationToken = new CancellationToken())
+    /// <inheritdoc />
+    public override ValueTask<InterceptionResult<int>> SavingChangesAsync(
+        DbContextEventData eventData,
+        InterceptionResult<int> result,
+        CancellationToken cancellationToken = default)
     {
         ApplyAuditTimestamps(eventData.Context);
         return base.SavingChangesAsync(eventData, result, cancellationToken);
@@ -22,13 +30,13 @@ public sealed class AuditableEntityInterceptor : SaveChangesInterceptor
     private static void ApplyAuditTimestamps(DbContext? context)
     {
         if (context is null) return;
-        
-        var now = DateTime.UtcNow;
+
+        var now = DateTimeOffset.UtcNow;
 
         foreach (var entry in context.ChangeTracker.Entries<IAuditableEntity>())
         {
             if (entry.State is EntityState.Added or EntityState.Modified) entry.Entity.UpdatedAt = now;
-            if (entry.State == EntityState.Added) entry.Entity.CreatedAt = now;
+            if (entry.State == EntityState.Added) entry.Entity.CreatedAt ??= now;
         }
     }
 }
