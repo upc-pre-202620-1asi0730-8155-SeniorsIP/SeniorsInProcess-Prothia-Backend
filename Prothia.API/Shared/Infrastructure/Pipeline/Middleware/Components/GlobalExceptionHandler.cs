@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Prothia.API.Shared.Resources.Errors;
+using Prothia.API.Resources.Errors;
+using Prothia.API.Resources.Shared;
 
 namespace Prothia.API.Shared.Infrastructure.Pipeline.Middleware.Components;
 
@@ -14,10 +15,10 @@ namespace Prothia.API.Shared.Infrastructure.Pipeline.Middleware.Components;
 public class GlobalExceptionHandler(
     ILogger<GlobalExceptionHandler> logger,
     IProblemDetailsService problemDetailsService,
-    IStringLocalizer<ErrorMessages> localizer)
+    IStringLocalizer<ErrorMessages> errorLocalizer,
+    IStringLocalizer<CommonMessages> commonLocalizer)
     : IExceptionHandler
 {
-    /// <inheritdoc />
     public async ValueTask<bool> TryHandleAsync(
         HttpContext httpContext,
         Exception exception,
@@ -26,11 +27,11 @@ public class GlobalExceptionHandler(
         if (exception is OperationCanceledException opEx)
         {
             logger.LogWarning(opEx, "Request was cancelled: {Message}", opEx.Message);
-            var cancelledProblemDetails = new ProblemDetails
+            var problemDetails = new ProblemDetails
             {
                 Status = StatusCodes.Status409Conflict,
-                Title = localizer["OperationCancelledTitle"].Value,
-                Detail = localizer["OperationCancelledDetail"].Value,
+                Title = errorLocalizer["OperationCancelled"],
+                Detail = errorLocalizer["OperationCancelled"],
                 Instance = httpContext.Request.Path
             };
 
@@ -38,7 +39,7 @@ public class GlobalExceptionHandler(
             return await problemDetailsService.TryWriteAsync(new ProblemDetailsContext
             {
                 HttpContext = httpContext,
-                ProblemDetails = cancelledProblemDetails,
+                ProblemDetails = problemDetails,
                 Exception = exception
             });
         }
@@ -48,8 +49,8 @@ public class GlobalExceptionHandler(
         var genericProblemDetails = new ProblemDetails
         {
             Status = StatusCodes.Status500InternalServerError,
-            Title = localizer["UnexpectedServerError"].Value,
-            Detail = localizer["UnexpectedErrorProcessingRequest"].Value,
+            Title = commonLocalizer["InternalServerError"],
+            Detail = errorLocalizer["GenericError"],
             Instance = httpContext.Request.Path
         };
 
