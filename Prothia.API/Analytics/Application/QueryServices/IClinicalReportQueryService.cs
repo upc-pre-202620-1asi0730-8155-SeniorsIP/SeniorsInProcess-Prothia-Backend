@@ -1,7 +1,7 @@
 ﻿using Prothia.API.Analytics.Domain.Model.Aggregates;
 using Prothia.API.Analytics.Domain.Model.Queries;
 
-namespace Prothia.API.Analytics.Application.Services;
+namespace Prothia.API.Analytics.Application.QueryServices;
 
 public interface IClinicalReportQueryService
 {

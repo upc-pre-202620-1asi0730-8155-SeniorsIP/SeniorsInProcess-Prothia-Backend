@@ -2,16 +2,15 @@
 
 namespace Prothia.API.Analytics.Domain.Model.Entities;
 
-
-public class ReportIndicator
+public partial class ReportIndicator
 {
     public const int NameMaxLength = 100;
     public const int ValueMaxLength = 100;
     public const int NormalRangeMaxLength = 100;
     public const int EvaluationMaxLength = 250;
 
-    public int Id { get; private set; }
-    public int ClinicalReportId { get; private set; }
+    public ReportIndicatorId Id { get; private set; }
+    public ClinicalReportId ClinicalReportId { get; private set; }
     public string Name { get; private set; }
     public string Value { get; private set; }
     public string NormalRange { get; private set; }
