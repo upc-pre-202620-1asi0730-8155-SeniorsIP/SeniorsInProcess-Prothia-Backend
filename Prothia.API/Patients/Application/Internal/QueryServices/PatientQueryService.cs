@@ -1,4 +1,4 @@
-using Prothia.API.Patients.Application.Services;
+using Prothia.API.Patients.Application.QueryServices;
 using Prothia.API.Patients.Domain.Model.Aggregates;
 using Prothia.API.Patients.Domain.Model.Queries;
 using Prothia.API.Patients.Domain.Repositories;

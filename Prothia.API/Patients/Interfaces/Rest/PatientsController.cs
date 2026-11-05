@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Prothia.API.Patients.Application.Services;
+using Prothia.API.Patients.Application.CommandServices;
+using Prothia.API.Patients.Application.QueryServices;
 using Prothia.API.Patients.Domain.Model.Queries;
 using Prothia.API.Patients.Domain.Model.ValueObjects;
 using Prothia.API.Patients.Interfaces.Rest.Resources;
@@ -9,53 +10,44 @@ using Prothia.API.Patients.Interfaces.Rest.Transform;
 namespace Prothia.API.Patients.Interfaces.Rest;
 
 public class PatientsController(
-   IPatientCommandService patientCommandService,
+    IPatientCommandService patientCommandService,
     IPatientQueryService patientQueryService,
-    IStringLocalizer<ErrorMessages> localizer,
-    ILogger<PatientsController> logger)
+    IStringLocalizer<ErrorMessages> errorLocalizer,
+    ProblemDetailsFactory problemDetailsFactory)
     : ControllerBase
 {
-    
+    private readonly IStringLocalizer<ErrorMessages> _errorLocalizer = errorLocalizer;
+    private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
+ 
     [HttpPost]
+    [EndpointSummary("Create Patient")]
+    [EndpointDescription("Register a new amputee patient in the PROTHIA clinical platform.")]
     [ProducesResponseType(typeof(PatientResource), StatusCodes.Status201Created)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status409Conflict)]
-    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> CreatePatient([FromBody] CreatePatientResource resource,
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    public async Task<IActionResult> CreatePatient([FromBody] CreatePatientResource resource,
         CancellationToken cancellationToken)
     {
-        try
-        {
-            var createPatientCommand = CreatePatientCommandFromResourceAssembler.ToCommandFromResource(resource);
-            var result = await patientCommandService.Handle(createPatientCommand, cancellationToken);
-            return ActionResultFromCreatePatientResultAssembler.ToActionResultFromCreatePatientResult(
-                result,
-                this,
-                localizer,
-                nameof(GetPatientById));
-        }
-        catch (ArgumentException ex)
-        {
-            logger.LogWarning(ex, "Validation failed while creating patient for Dni {Dni}",
-                Dni.MaskedForLogging(resource.Dni));
-            return BadRequest(localizer["InvalidPatientRequest"].Value);
-        }
-        catch (Exception ex)
-        {
-            logger.LogError(ex, "Unexpected error while creating patient for Dni {Dni}",
-                Dni.MaskedForLogging(resource.Dni));
-            return Problem(
-                title: localizer["UnexpectedServerError"].Value,
-                detail: localizer["UnexpectedErrorCreatingPatient"].Value,
-                statusCode: 500);
-        }
+        var command = CreatePatientCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var result = await patientCommandService.Handle(command, cancellationToken);
+ 
+        return PatientsActionResultAssembler.ToActionResultFromCreatePatientResult(
+            this,
+            result,
+            _errorLocalizer,
+            _problemDetailsFactory,
+            createdPatient => CreatedAtAction(nameof(GetPatientById), new { id = createdPatient.Id.Value },
+                PatientResourceFromEntityAssembler.ToResourceFromEntity(createdPatient))
+        );
     }
-    
+ 
     [HttpGet]
+    [EndpointSummary("Get Patients")]
+    [EndpointDescription("Get all patients or filter by DNI.")]
     [ProducesResponseType(typeof(IEnumerable<PatientResource>), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> GetPatients([FromQuery] string? dni = null,
+    public async Task<IActionResult> GetPatients([FromQuery] string? dni = null,
         CancellationToken cancellationToken = default)
     {
         if (!Request.Query.ContainsKey(nameof(dni)))
@@ -63,29 +55,33 @@ public class PatientsController(
             var patients = await patientQueryService.Handle(new GetAllPatientsQuery(), cancellationToken);
             return Ok(patients.Select(PatientResourceFromEntityAssembler.ToResourceFromEntity));
         }
-
-        try
-        {
-            var patient = await patientQueryService.Handle(new GetPatientByDniQuery(new Dni(dni ?? string.Empty)),
-                cancellationToken);
-            if (patient is null) return NotFound();
-            return Ok(PatientResourceFromEntityAssembler.ToResourceFromEntity(patient));
-        }
-        catch (ArgumentException ex)
-        {
-            logger.LogWarning(ex, "Validation failed while querying patient for Dni {Dni}",
-                Dni.MaskedForLogging(dni));
-            return BadRequest(localizer["InvalidPatientQuery"].Value);
-        }
+ 
+        var patient = await patientQueryService.Handle(new GetPatientByDniQuery(new Dni(dni ?? string.Empty)),
+            cancellationToken);
+        return PatientsActionResultAssembler.ToActionResultFromGetPatientByIdResult(
+            this,
+            patient,
+            _errorLocalizer,
+            _problemDetailsFactory,
+            foundPatient => Ok(PatientResourceFromEntityAssembler.ToResourceFromEntity(foundPatient))
+        );
     }
-    
+ 
     [HttpGet("{id:int}")]
+    [EndpointSummary("Get Patient by Id")]
+    [EndpointDescription("Get a patient by its unique identifier.")]
     [ProducesResponseType(typeof(PatientResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult> GetPatientById(int id, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> GetPatientById(int id, CancellationToken cancellationToken = default)
     {
-        var result = await patientQueryService.Handle(new GetPatientByIdQuery(id), cancellationToken);
-        if (result is null) return NotFound();
-        return Ok(PatientResourceFromEntityAssembler.ToResourceFromEntity(result));
+        var patient = await patientQueryService.Handle(new GetPatientByIdQuery(id), cancellationToken);
+ 
+        return PatientsActionResultAssembler.ToActionResultFromGetPatientByIdResult(
+            this,
+            patient,
+            _errorLocalizer,
+            _problemDetailsFactory,
+            foundPatient => Ok(PatientResourceFromEntityAssembler.ToResourceFromEntity(foundPatient))
+        );
     }
 }
