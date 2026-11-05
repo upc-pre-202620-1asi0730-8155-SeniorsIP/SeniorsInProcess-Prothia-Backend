@@ -1,10 +1,9 @@
 ﻿using Prothia.API.Analytics.Domain.Model.Commands;
 using Prothia.API.Analytics.Domain.Model.ValueObjects;
 using Prothia.API.Analytics.Interfaces.Rest.Resources;
-using Prothia.API.Shared.Infrastructure.Interfaces.Asp.Configuration.Extensions;
+using Prothia.API.Shared.Infrastructure.Interfaces.AspNetCore.Configuration.Extensions;
 
 namespace Prothia.API.Analytics.Interfaces.Rest.Transform;
-
 
 public static class CreateClinicalReportCommandFromResourceAssembler
 {
