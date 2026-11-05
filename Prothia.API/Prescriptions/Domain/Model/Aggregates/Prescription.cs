@@ -1,13 +1,15 @@
 ﻿using Prothia.API.Prescriptions.Domain.Model.Commands;
 using Prothia.API.Prescriptions.Domain.Model.Entities;
+using Prothia.API.Prescriptions.Domain.Model.Events;
 using Prothia.API.Prescriptions.Domain.Model.ValueObjects;
+using Prothia.API.Shared.Domain.Model.Aggregates.Internal;
 
 namespace Prothia.API.Prescriptions.Domain.Model.Aggregates;
 
 /// <summary>
-///     Therapeutic exercise prescription plan assigned to a patient for a rehabilitation phase.
+///     Patient rehabilitation prescription plan aggregate root.
 /// </summary>
-public partial class Prescription
+public partial class Prescription : AggregateRoot
 {
     public const int PhaseNumberMin = 1;
     public const int PhaseNumberMax = 10;
@@ -15,20 +17,20 @@ public partial class Prescription
     public const int DurationWeeksMax = 52;
     public const int FrequencyMin = 1;
     public const int FrequencyMax = 7;
-    
-    public int Id { get; private set; }
+
+    private readonly List<PrescribedExercise> _exercises = [];
+
+    public PrescriptionId Id { get; }
     public PatientId PatientId { get; private set; }
     public int PhaseNumber { get; private set; }
     public PhaseName PhaseName { get; private set; }
     public int DurationWeeks { get; private set; }
-    public int FrequencyPerWeek{ get; private set; }
-    public ICollection<PrescribedExercise> Excercise { get; private set; }
+    public int FrequencyPerWeek { get; private set; }
+    public IReadOnlyList<PrescribedExercise> Exercises => _exercises.AsReadOnly();
 
     protected Prescription()
     {
-        PatientId = null!;
         PhaseName = null!;
-        Excercise = new List<PrescribedExercise>();
     }
 
     public Prescription(CreatePrescriptionCommand command)
@@ -36,26 +38,29 @@ public partial class Prescription
         ArgumentNullException.ThrowIfNull(command);
         PatientId = command.PatientId;
         PhaseName = null!;
-        Exercises = new List<PrescribedExercise>();
         ApplyPlan(command.PhaseNumber, command.PhaseName, command.DurationWeeks, command.FrequencyPerWeek,
             command.Exercises);
+
+        AddDomainEvent(new PrescriptionCreatedEvent(Id, PatientId, PhaseNumber, PhaseName.Value));
     }
 
-    /// <summary>
-    ///     Replaces the rehabilitation phase, schedule parameters, and prescribed exercises of the prescription.
-    /// </summary>
-
-    public void Update(UpdatePrescriptionCommand command)
-    {
-        ArgumentNullException.ThrowIfNull(command);
-        ApplyPlan(command.PhaseNumber, command.PhaseName, command.DurationWeeks, command.FrequencyPerWeek,
-            command.Exercises);
-    }
-
-    private void ApplyPlan(int phaseNumber, PhaseName phaseName, int durationWeeks, int frequencyPerWeek,
+    public void UpdatePlan(
+        int phaseNumber,
+        PhaseName phaseName,
+        int durationWeeks,
+        int frequencyPerWeek,
         IReadOnlyList<PrescribedExerciseItem> exercises)
     {
-        ArgumentNullException.ThrowIfNull(phaseName);
+        ApplyPlan(phaseNumber, phaseName, durationWeeks, frequencyPerWeek, exercises);
+    }
+
+    private void ApplyPlan(
+        int phaseNumber,
+        PhaseName phaseName,
+        int durationWeeks,
+        int frequencyPerWeek,
+        IReadOnlyList<PrescribedExerciseItem> exercises)
+    {
         if (phaseNumber is < PhaseNumberMin or > PhaseNumberMax)
             throw new ArgumentOutOfRangeException(nameof(phaseNumber), phaseNumber,
                 $"PhaseNumber must be between {PhaseNumberMin} and {PhaseNumberMax}.");
@@ -66,17 +71,17 @@ public partial class Prescription
             throw new ArgumentOutOfRangeException(nameof(frequencyPerWeek), frequencyPerWeek,
                 $"FrequencyPerWeek must be between {FrequencyMin} and {FrequencyMax}.");
         if (exercises is null || exercises.Count == 0)
-            throw new ArgumentException("Exercises cannot be empty.", nameof(exercises));
-
-        var mappedExercises = exercises.Select(e => new PrescribedExercise(e)).ToList();
+            throw new ArgumentException("At least one prescribed exercise is required.", nameof(exercises));
 
         PhaseNumber = phaseNumber;
-        PhaseName = phaseName;
+        PhaseName = phaseName ?? throw new ArgumentNullException(nameof(phaseName));
         DurationWeeks = durationWeeks;
         FrequencyPerWeek = frequencyPerWeek;
-        Exercises.Clear();
-        foreach (var exercise in mappedExercises)
-            Exercises.Add(exercise);
-    }
 
+        _exercises.Clear();
+        foreach (var item in exercises)
+        {
+            _exercises.Add(new PrescribedExercise(item));
+        }
+    }
 }
