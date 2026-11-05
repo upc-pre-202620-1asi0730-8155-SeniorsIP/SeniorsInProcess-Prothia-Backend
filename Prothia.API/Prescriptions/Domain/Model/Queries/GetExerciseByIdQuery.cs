@@ -1,5 +1,10 @@
+using Prothia.API.Prescriptions.Domain.Model.ValueObjects;
+
 namespace Prothia.API.Prescriptions.Domain.Model.Queries;
-/// <summary>
-/// Query to retrieve an exercise by its identifier.
-/// </summary>
-public record GetExerciseByIdQuery(int Id);
+
+public record GetExerciseByIdQuery(ExerciseId Id)
+{
+    public GetExerciseByIdQuery(int id) : this(new ExerciseId(id))
+    {
+    }
+}

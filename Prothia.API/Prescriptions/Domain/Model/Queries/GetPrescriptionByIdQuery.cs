@@ -1,5 +1,10 @@
-﻿namespace Prothia.API.Prescriptions.Domain.Model.Queries;
-/// <summary>
-/// Query to retrieve a prescription by its identifier.
-/// </summary>
-public record GetPrescriptionByIdQuery(int Id);
+﻿using Prothia.API.Prescriptions.Domain.Model.ValueObjects;
+
+namespace Prothia.API.Prescriptions.Domain.Model.Queries;
+
+public record GetPrescriptionByIdQuery(PrescriptionId Id)
+{
+    public GetPrescriptionByIdQuery(int id) : this(new PrescriptionId(id))
+    {
+    }
+}
