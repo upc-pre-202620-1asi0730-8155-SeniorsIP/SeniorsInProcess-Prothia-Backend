@@ -5,9 +5,20 @@ using Prothia.API.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configur
 
 namespace Prothia.API.Shared.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 
-public class BaseRepository<TEntity>(AppDbContext context) : IBaseRepository<TEntity> where TEntity : class
+/// <summary>
+///     Base repository for all repositories
+/// </summary>
+/// <typeparam name="TEntity">
+///     The entity type for the repository
+/// </typeparam>
+public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
 {
-    protected readonly AppDbContext Context = context;
+    protected readonly AppDbContext Context;
+
+    protected BaseRepository(AppDbContext context)
+    {
+        Context = context;
+    }
 
     public async Task AddAsync(TEntity entity, CancellationToken cancellationToken = default)
     {
@@ -16,7 +27,16 @@ public class BaseRepository<TEntity>(AppDbContext context) : IBaseRepository<TEn
 
     public virtual async Task<TEntity?> FindByIdAsync(int id, CancellationToken cancellationToken = default)
     {
-        return await Context.Set<TEntity>().FindAsync([id], cancellationToken);
+        return await Context.Set<TEntity>().FindAsync([ToKeyValue(id)], cancellationToken);
+    }
+
+    /// <summary>
+    ///     Converts an integer id into the CLR type of the entity's primary key.
+    /// </summary>
+    private object ToKeyValue(int id)
+    {
+        var keyType = Context.Model.FindEntityType(typeof(TEntity))!.FindPrimaryKey()!.Properties[0].ClrType;
+        return keyType == typeof(int) ? id : Activator.CreateInstance(keyType, id)!;
     }
 
     public virtual async Task<TEntity?> FindByIdAsNoTrackingAsync(int id, CancellationToken cancellationToken = default)

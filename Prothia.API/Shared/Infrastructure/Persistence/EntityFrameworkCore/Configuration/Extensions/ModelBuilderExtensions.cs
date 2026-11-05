@@ -2,37 +2,45 @@
 
 namespace Prothia.API.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 
+/// <summary>
+///     Model builder extensions for the database context
+/// </summary>
 public static class ModelBuilderExtensions
 {
+    /// <summary>
+    ///     Use snake case naming convention for the database context
+    /// </summary>
+    /// <param name="builder">
+    ///     The model builder for the database context
+    /// </param>
     public static void UseSnakeCaseNamingConvention(this ModelBuilder builder)
     {
         foreach (var entity in builder.Model.GetEntityTypes())
         {
-            // Replace table names
-            entity.SetTableName(entity.GetTableName()!.ToPlural().ToSnakeCase());
-
+            var tableName = entity.GetTableName();
+            if (!string.IsNullOrEmpty(tableName)) entity.SetTableName(tableName.ToPlural().ToSnakeCase());
             // Replace column names            
             foreach (var property in entity.GetProperties())
-            {
-                property.SetColumnName(property.GetColumnName()!.ToSnakeCase());
-            }
-
+                property.SetColumnName(property.GetColumnName().ToSnakeCase());
             // Replace key names
             foreach (var key in entity.GetKeys())
             {
-                key.SetName(key.GetName()!.ToSnakeCase());
+                var keyName = key.GetName();
+                if (!string.IsNullOrEmpty(keyName)) key.SetName(keyName.ToSnakeCase());
             }
 
-            // Replace foreign key names
+
             foreach (var foreignKey in entity.GetForeignKeys())
             {
-                foreignKey.SetConstraintName(foreignKey.GetConstraintName()!.ToSnakeCase());
+                var foreignKeyName = foreignKey.GetConstraintName();
+                if (!string.IsNullOrEmpty(foreignKeyName)) foreignKey.SetConstraintName(foreignKeyName.ToSnakeCase());
             }
 
-            // Replace index names
+            
             foreach (var index in entity.GetIndexes())
             {
-                index.SetDatabaseName(index.GetDatabaseName()!.ToSnakeCase());
+                var indexDatabaseName = index.GetDatabaseName();
+                if (!string.IsNullOrEmpty(indexDatabaseName)) index.SetDatabaseName(indexDatabaseName.ToSnakeCase());
             }
         }
     }
