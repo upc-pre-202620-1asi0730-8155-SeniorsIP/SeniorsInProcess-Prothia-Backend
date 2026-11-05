@@ -6,5 +6,7 @@ namespace Prothia.API.Prescriptions.Domain.Repositories;
 
 public interface IPrescriptionRepository : IBaseRepository<Prescription>
 {
-    Task<IEnumerable<Prescription>> ListByPatientIdAsync(PatientId patientId, CancellationToken cancellationToken = default);
+    Task<Prescription?> FindByIdAsNoTrackingAsync(PrescriptionId id, CancellationToken cancellationToken = default);
+    Task<IEnumerable<Prescription>> ListByPatientIdAsync(PatientId patientId,
+        CancellationToken cancellationToken = default);
 }
