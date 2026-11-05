@@ -28,4 +28,8 @@
         
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Monitoring\Domain\Model\Queries\" />
+    </ItemGroup>
+
 </Project>
