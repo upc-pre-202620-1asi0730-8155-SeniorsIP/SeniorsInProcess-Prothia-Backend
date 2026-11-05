@@ -2,7 +2,6 @@
 using Prothia.API.Shared.Domain.Repositories;
 using Prothia.API.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration;
 
-
 namespace Prothia.API.Shared.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 
 /// <summary>
@@ -31,7 +30,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     }
 
     /// <summary>
-    ///     Converts an integer id into the CLR type of the entity's primary key.
+    ///     Converts an integer id into the CLR type of the entity's primary key (e.g. a strongly typed id).
     /// </summary>
     private object ToKeyValue(int id)
     {
