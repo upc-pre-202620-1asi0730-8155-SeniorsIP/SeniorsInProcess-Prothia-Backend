@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="SubscriptionCreatedSuccessfully" xml:space="preserve"> 
+        <value>Clinic subscription created successfully.</value>
+    </data>
+    <data name="InvoiceIssuedSuccessfully" xml:space="preserve">
+        <value>Electronicc invoice issued successfully.</value>
+    </data>
+</root>
