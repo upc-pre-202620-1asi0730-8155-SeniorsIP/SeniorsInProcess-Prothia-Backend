@@ -1,7 +1,8 @@
-﻿using Prothia.API.Analytics.Domain.Model.Aggregates;
+﻿using Microsoft.EntityFrameworkCore;
+using Prothia.API.Analytics.Domain.Model.Aggregates;
 using Prothia.API.Analytics.Domain.Model.Entities;
 using Prothia.API.Analytics.Domain.Model.ValueObjects;
-using Microsoft.EntityFrameworkCore;
+using Prothia.API.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration.ValueConverters;
 
 namespace Prothia.API.Analytics.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 
@@ -11,7 +12,10 @@ public static class ModelBuilderExtensions
     {
         // Clinical reports
         builder.Entity<ClinicalReport>().HasKey(r => r.Id);
-        builder.Entity<ClinicalReport>().Property(r => r.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<ClinicalReport>().Property(r => r.Id)
+            .HasConversion(new StronglyTypedIdConverter<ClinicalReportId, int>(id => id.Value, value => new ClinicalReportId(value)))
+            .IsRequired()
+            .ValueGeneratedOnAdd();
         builder.Entity<ClinicalReport>()
             .Property(r => r.ReportCode)
             .HasConversion(valueObject => valueObject.Value, value => new ReportCode(value))
@@ -25,7 +29,7 @@ public static class ModelBuilderExtensions
             .IsRequired();
         builder.Entity<ClinicalReport>()
             .Property(r => r.PatientId)
-            .HasConversion(valueObject => valueObject.Value, value => new PatientId(value))
+            .HasConversion(new StronglyTypedIdConverter<PatientId, int>(id => id.Value, value => new PatientId(value)))
             .IsRequired();
         builder.Entity<ClinicalReport>().Property(r => r.PatientName).HasMaxLength(ClinicalReport.PatientNameMaxLength)
             .IsRequired();
@@ -60,9 +64,15 @@ public static class ModelBuilderExtensions
         builder.Entity<ClinicalReport>().HasIndex(r => r.ReportCode).IsUnique();
         builder.Entity<ClinicalReport>().HasIndex(r => r.PatientId);
 
+        // Report indicators
         builder.Entity<ReportIndicator>().HasKey(i => i.Id);
-        builder.Entity<ReportIndicator>().Property(i => i.Id).IsRequired().ValueGeneratedOnAdd();
-        builder.Entity<ReportIndicator>().Property(i => i.ClinicalReportId).IsRequired();
+        builder.Entity<ReportIndicator>().Property(i => i.Id)
+            .HasConversion(new StronglyTypedIdConverter<ReportIndicatorId, int>(id => id.Value, value => new ReportIndicatorId(value)))
+            .IsRequired()
+            .ValueGeneratedOnAdd();
+        builder.Entity<ReportIndicator>().Property(i => i.ClinicalReportId)
+            .HasConversion(new StronglyTypedIdConverter<ClinicalReportId, int>(id => id.Value, value => new ClinicalReportId(value)))
+            .IsRequired();
         builder.Entity<ReportIndicator>().Property(i => i.Name).HasMaxLength(ReportIndicator.NameMaxLength)
             .IsRequired();
         builder.Entity<ReportIndicator>().Property(i => i.Value).HasMaxLength(ReportIndicator.ValueMaxLength)
