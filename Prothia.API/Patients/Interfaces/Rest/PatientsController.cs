@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Prothia.API.Patients.Application.CommandServices;
@@ -6,6 +7,8 @@ using Prothia.API.Patients.Domain.Model.Queries;
 using Prothia.API.Patients.Domain.Model.ValueObjects;
 using Prothia.API.Patients.Interfaces.Rest.Resources;
 using Prothia.API.Patients.Interfaces.Rest.Transform;
+using Prothia.API.Shared.Interfaces.Rest.ProblemDetails;
+using Prothia.API.Shared.Resources.Errors;
 
 namespace Prothia.API.Patients.Interfaces.Rest;
 
@@ -36,7 +39,7 @@ public class PatientsController(
             result,
             _errorLocalizer,
             _problemDetailsFactory,
-            createdPatient => CreatedAtAction(nameof(GetPatientById), new { id = createdPatient.Id.Value },
+            createdPatient => CreatedAtAction(nameof(GetPatientById), new { id = createdPatient.Id },
                 PatientResourceFromEntityAssembler.ToResourceFromEntity(createdPatient))
         );
     }

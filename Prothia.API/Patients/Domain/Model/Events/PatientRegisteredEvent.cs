@@ -1,4 +1,5 @@
 using Prothia.API.Patients.Domain.Model.ValueObjects;
+using Prothia.API.Shared.Domain.Model.Events;
 
 namespace Prothia.API.Patients.Domain.Model.Events;
 

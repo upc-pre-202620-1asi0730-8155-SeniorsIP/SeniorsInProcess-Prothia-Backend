@@ -1,5 +1,6 @@
 using Prothia.API.Patients.Domain.Model.Aggregates;
 using Prothia.API.Patients.Interfaces.Rest.Resources;
+using Prothia.API.Shared.Infrastructure.Interfaces.AspNetCore.Configuration.Extensions;
 
 namespace Prothia.API.Patients.Interfaces.Rest.Transform;
 
@@ -8,7 +9,7 @@ public static class PatientResourceFromEntityAssembler
     public static PatientResource ToResourceFromEntity(Patient entity)
     {
         return new PatientResource(
-            entity.Id.Value,
+            entity.Id,
             entity.FullName.Value,
             entity.Dni.Value,
             entity.Age,

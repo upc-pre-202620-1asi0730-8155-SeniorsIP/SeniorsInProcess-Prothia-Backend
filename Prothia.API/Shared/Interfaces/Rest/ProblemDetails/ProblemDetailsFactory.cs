@@ -2,6 +2,8 @@
 using Microsoft.Extensions.Localization;
 using Prothia.API.Resources.Errors;
 using Prothia.API.Resources.Shared;
+using Prothia.API.Shared.Resources;
+using Prothia.API.Shared.Resources.Errors;
 
 namespace Prothia.API.Shared.Interfaces.Rest.ProblemDetails;
 
