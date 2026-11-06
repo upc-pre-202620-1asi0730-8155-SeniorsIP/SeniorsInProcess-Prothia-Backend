@@ -1,3 +1,4 @@
+using Prothia.API.Shared.Domain.Model.ValueObjects;
 namespace Prothia.API.Patients.Domain.Model.ValueObjects;
 
 public readonly record struct PatientId(int Value) : IEntityId<int>

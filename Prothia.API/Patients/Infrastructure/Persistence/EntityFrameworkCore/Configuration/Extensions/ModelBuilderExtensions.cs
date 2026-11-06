@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Prothia.API.Patients.Domain.Model.Aggregates;
 using Prothia.API.Patients.Domain.Model.ValueObjects;
+using Prothia.API.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration.ValueConverters;
 
 namespace Prothia.API.Patients.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 

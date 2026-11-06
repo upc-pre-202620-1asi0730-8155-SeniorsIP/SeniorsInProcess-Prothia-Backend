@@ -1,6 +1,8 @@
+using Prothia.API.Shared.Domain.Model.Errors;
+
 namespace Prothia.API.Patients.Domain.Model.Errors;
 
-public class PatientsErrors
+public static class PatientsErrors
 {
     public static readonly Error PatientNotFound =
         Error.NotFound("Patients.PatientNotFound", "The specified patient was not found.");
