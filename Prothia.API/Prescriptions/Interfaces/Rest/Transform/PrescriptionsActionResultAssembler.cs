@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Localization;
 using Prothia.API.Prescriptions.Domain.Model;
 using Prothia.API.Prescriptions.Domain.Model.Aggregates;
-using Prothia.API.Resources.Errors;
 using Prothia.API.Shared.Application.Model;
 using Prothia.API.Shared.Interfaces.Rest.ProblemDetails;
+using Prothia.API.Shared.Resources.Errors;
 
 namespace Prothia.API.Prescriptions.Interfaces.Rest.Transform;
 

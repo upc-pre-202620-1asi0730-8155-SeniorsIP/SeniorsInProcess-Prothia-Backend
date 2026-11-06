@@ -6,8 +6,8 @@ using Prothia.API.Prescriptions.Application.QueryServices;
 using Prothia.API.Prescriptions.Domain.Model.Queries;
 using Prothia.API.Prescriptions.Interfaces.Rest.Resources;
 using Prothia.API.Prescriptions.Interfaces.Rest.Transform;
-using Prothia.API.Resources.Errors;
 using Prothia.API.Shared.Interfaces.Rest.ProblemDetails;
+using Prothia.API.Shared.Resources.Errors;
 
 namespace Prothia.API.Prescriptions.Interfaces.Rest;
 
