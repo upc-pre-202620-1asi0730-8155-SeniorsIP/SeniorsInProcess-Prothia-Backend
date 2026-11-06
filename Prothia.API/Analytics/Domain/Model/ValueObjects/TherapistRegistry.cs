@@ -1,8 +1,5 @@
 ﻿namespace Prothia.API.Analytics.Domain.Model.ValueObjects;
 
-/// <summary>
-///     Represents the professional licensing registration code of a certifying physiotherapist (e.g. 'CTMP 14820').
-/// </summary>
 public sealed record TherapistRegistry
 {
     public const int MaxLength = 50;

@@ -1,4 +1,5 @@
 using Prothia.API.Patients.Domain.Model.Events;
+using Prothia.API.Shared.Application.Internal.EventHandlers;
 
 namespace Prothia.API.Patients.Application.Internal.EventHandlers;
 

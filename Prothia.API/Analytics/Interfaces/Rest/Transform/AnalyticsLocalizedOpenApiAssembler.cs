@@ -1,5 +1,5 @@
 ﻿using Prothia.API.Analytics.Interfaces.Rest.Resources;
-using Prothia.API.Shared.Infrastructure.Interfaces.Asp.Configuration;
+using Prothia.API.Shared.Interfaces.Asp.Configuration;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi;
 

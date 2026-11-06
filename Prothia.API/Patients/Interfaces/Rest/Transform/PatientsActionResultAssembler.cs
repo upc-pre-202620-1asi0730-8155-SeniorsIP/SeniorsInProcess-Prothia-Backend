@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Localization;
 using Prothia.API.Patients.Domain.Model;
 using Prothia.API.Patients.Domain.Model.Aggregates;
+using Prothia.API.Shared.Application.Model;
+using Prothia.API.Shared.Interfaces.Rest.ProblemDetails;
+using Prothia.API.Shared.Resources.Errors;
 
 namespace Prothia.API.Patients.Interfaces.Rest.Transform;
 
