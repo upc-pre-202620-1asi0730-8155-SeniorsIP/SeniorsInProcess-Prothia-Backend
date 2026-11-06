@@ -1,7 +1,7 @@
-﻿using Prothia.API.Billing.Domain.Model.Aggregates;
+using Prothia.API.Billing.Domain.Model.Aggregates;
 using Prothia.API.Billing.Domain.Model.Queries;
 
-namespace Prothia.API.Billing.Application.Services;
+namespace Prothia.API.Billing.Application.QueryServices;
 
 public interface IClinicSubscriptionQueryService
 {
