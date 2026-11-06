@@ -1,0 +1,16 @@
+using Prothia.API.Patients.Domain.Model.Events;
+using Prothia.API.Shared.Application.Internal.EventHandlers;
+
+namespace Prothia.API.Patients.Application.Internal.EventHandlers;
+
+public class PatientRegisteredEventHandler(ILogger<PatientRegisteredEventHandler> logger)
+    : IEventHandler<PatientRegisteredEvent>
+{
+    public Task Handle(PatientRegisteredEvent domainEvent, CancellationToken cancellationToken)
+    {
+        logger.LogInformation(
+            "Processed PatientRegisteredEvent for Patient {FullName} (DNI: {MaskedDni}, EKLevel: {EKLevel})",
+            domainEvent.FullName, domainEvent.MaskedDni, domainEvent.EkLevel);
+        return Task.CompletedTask;
+    }
+}
