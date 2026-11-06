@@ -1,4 +1,4 @@
-﻿using Prothia.API.Patients.Interfaces.Acl;
+﻿using Prothia.API.Patients.Interfaces.ACL;
 using Prothia.API.Prescriptions.Domain.Model.ValueObjects;
 
 namespace Prothia.API.Prescriptions.Application.Internal.OutboundServices.ACL;
