@@ -1,17 +1,17 @@
 ﻿using Prothia.API.Billing.Domain.Model.Commands;
 using Prothia.API.Billing.Domain.Model.ValueObjects;
+using Prothia.API.Shared.Domain.Model.Aggregates.Internal;
 
 namespace Prothia.API.Billing.Domain.Model.Aggregates;
 
-
-public partial class ClinicSubscription
+public partial class ClinicSubscription : AggregateRoot
 {
     public const int PlanNameMaxLength = 150;
     public const int StatusMaxLength = 50;
     public const int PlanTypeMaxLength = 150;
     public const int DateMaxLength = 30;
 
-    public int Id { get; private set; }
+    public ClinicSubscriptionId Id { get; private set; }
     public string PlanName { get; private set; }
     public string Status { get; private set; }
     public string PlanType { get; private set; }

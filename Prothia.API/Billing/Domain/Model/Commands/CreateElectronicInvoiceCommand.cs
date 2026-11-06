@@ -4,10 +4,10 @@ namespace Prothia.API.Billing.Domain.Model.Commands;
 
 public record CreateElectronicInvoiceCommand(
     InvoiceNumber InvoiceNumber,
-    string IssuaDate,
+    string IssueDate,
     string Concept,
     decimal Amount,
-    string currency,
+    string Currency,
     InvoiceStatus Status,
     string StatusLabel,
     string DownloadUrl);

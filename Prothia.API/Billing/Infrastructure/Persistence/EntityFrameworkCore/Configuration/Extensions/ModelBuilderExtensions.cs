@@ -1,6 +1,7 @@
-﻿using Prothia.API.Billing.Domain.Model.Aggregates;
+﻿using Microsoft.EntityFrameworkCore;
+using Prothia.API.Billing.Domain.Model.Aggregates;
 using Prothia.API.Billing.Domain.Model.ValueObjects;
-using Microsoft.EntityFrameworkCore;
+using Prothia.API.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration.ValueConverters;
 
 namespace Prothia.API.Billing.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 
@@ -9,7 +10,10 @@ public static class ModelBuilderExtensions
     public static void ApplyBillingConfiguration(this ModelBuilder builder)
     {
         builder.Entity<ClinicSubscription>().HasKey(s => s.Id);
-        builder.Entity<ClinicSubscription>().Property(s => s.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<ClinicSubscription>().Property(s => s.Id)
+            .HasConversion(new StronglyTypedIdConverter<ClinicSubscriptionId, int>(id => id.Value, value => new ClinicSubscriptionId(value)))
+            .IsRequired()
+            .ValueGeneratedOnAdd();
         builder.Entity<ClinicSubscription>().Property(s => s.PlanName)
             .HasMaxLength(ClinicSubscription.PlanNameMaxLength).IsRequired();
         builder.Entity<ClinicSubscription>().Property(s => s.Status)
@@ -35,10 +39,12 @@ public static class ModelBuilderExtensions
                 .HasMaxLength(PaymentMethod.ExpiryMaxLength).IsRequired();
             pm.Property(p => p.AutoRenew).HasColumnName("payment_method_auto_renew").IsRequired();
         });
-
-        // Electronic invoices
+        
         builder.Entity<ElectronicInvoice>().HasKey(i => i.Id);
-        builder.Entity<ElectronicInvoice>().Property(i => i.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<ElectronicInvoice>().Property(i => i.Id)
+            .HasConversion(new StronglyTypedIdConverter<ElectronicInvoiceId, int>(id => id.Value, value => new ElectronicInvoiceId(value)))
+            .IsRequired()
+            .ValueGeneratedOnAdd();
         builder.Entity<ElectronicInvoice>()
             .Property(i => i.InvoiceNumber)
             .HasConversion(valueObject => valueObject.Value, value => new InvoiceNumber(value))
@@ -57,6 +63,6 @@ public static class ModelBuilderExtensions
             .HasMaxLength(ElectronicInvoice.StatusLabelMaxLength).IsRequired();
         builder.Entity<ElectronicInvoice>().Property(i => i.DownloadUrl)
             .HasMaxLength(ElectronicInvoice.DownloadUrlMaxLength).IsRequired();
-        builder.Entity<ElectronicInvoice>().HasIndex(i => i.InvoiceNumber).IsUnique(); 
+        builder.Entity<ElectronicInvoice>().HasIndex(i => i.InvoiceNumber).IsUnique();
     }
 }

@@ -1,12 +1,13 @@
 ﻿using Prothia.API.Billing.Domain.Model.Commands;
 using Prothia.API.Billing.Domain.Model.ValueObjects;
+using Prothia.API.Shared.Domain.Model.Aggregates.Internal;
 
 namespace Prothia.API.Billing.Domain.Model.Aggregates;
 
 /// <summary>
 ///     Electronic invoice aggregate root issued for subscription billing.
 /// </summary>
-public partial class ElectronicInvoice
+public partial class ElectronicInvoice : AggregateRoot
 {
     public const int IssueDateMaxLength = 30;
     public const int ConceptMaxLength = 250;
@@ -14,7 +15,7 @@ public partial class ElectronicInvoice
     public const int StatusLabelMaxLength = 50;
     public const int DownloadUrlMaxLength = 500;
 
-    public int Id { get; private set; }
+    public ElectronicInvoiceId Id { get; private set; }
     public InvoiceNumber InvoiceNumber { get; private set; }
     public string IssueDate { get; private set; }
     public string Concept { get; private set; }
@@ -45,10 +46,10 @@ public partial class ElectronicInvoice
 
         InvoiceNumber = command.InvoiceNumber ??
                         throw new ArgumentNullException(nameof(command), "InvoiceNumber is required.");
-        IssueDate = ValidateRequiredString(command.IssuaDate, IssueDateMaxLength, nameof(command.IssuaDate));
+        IssueDate = ValidateRequiredString(command.IssueDate, IssueDateMaxLength, nameof(command.IssueDate));
         Concept = ValidateRequiredString(command.Concept, ConceptMaxLength, nameof(command.Concept));
         Amount = Math.Round(command.Amount, 2);
-        Currency = ValidateRequiredString(command.currency, CurrencyMaxLength, nameof(command.currency))
+        Currency = ValidateRequiredString(command.Currency, CurrencyMaxLength, nameof(command.Currency))
             .ToUpperInvariant();
         Status = command.Status;
         StatusLabel = ValidateRequiredString(command.StatusLabel, StatusLabelMaxLength, nameof(command.StatusLabel));
