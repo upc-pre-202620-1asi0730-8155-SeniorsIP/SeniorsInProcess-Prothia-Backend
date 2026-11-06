@@ -1,7 +1,7 @@
-﻿using System.Net.Mail;
-using Prothia.API.Prescriptions.Domain.Model.ValueObjects;
+﻿using Prothia.API.Prescriptions.Domain.Model.ValueObjects;
 
 namespace Prothia.API.Prescriptions.Application.Internal.OutboundServices;
+
 /// <summary>
 ///     Outbound port through which Prescriptions asks the Patients bounded context about patients.
 /// </summary>

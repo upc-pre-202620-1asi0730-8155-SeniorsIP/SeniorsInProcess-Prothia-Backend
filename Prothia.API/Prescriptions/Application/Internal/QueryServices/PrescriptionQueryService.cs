@@ -1,4 +1,4 @@
-﻿using Prothia.API.Prescriptions.Application.Services;
+﻿using Prothia.API.Prescriptions.Application.QueryServices;
 using Prothia.API.Prescriptions.Domain.Model.Aggregates;
 using Prothia.API.Prescriptions.Domain.Model.Queries;
 using Prothia.API.Prescriptions.Domain.Repositories;
@@ -10,15 +10,15 @@ public class PrescriptionQueryService(IPrescriptionRepository prescriptionReposi
     public async Task<IEnumerable<Prescription>> Handle(GetAllPrescriptionsQuery query,
         CancellationToken cancellationToken = default)
     {
-        if (query.PatientId is not null)
-            return await prescriptionRepository.ListByPatientIdAsync(query.PatientId, cancellationToken);
+        if (query.PatientId is null)
+            return await prescriptionRepository.ListAsNoTrackingAsync(cancellationToken);
 
-        return await prescriptionRepository.ListAsync(cancellationToken);
+        return await prescriptionRepository.ListByPatientIdAsync(query.PatientId.Value, cancellationToken);
     }
 
     public async Task<Prescription?> Handle(GetPrescriptionByIdQuery query,
         CancellationToken cancellationToken = default)
     {
-        return await prescriptionRepository.FindByIdAsync(query.Id, cancellationToken);
+        return await prescriptionRepository.FindByIdAsNoTrackingAsync(query.Id, cancellationToken);
     }
 }
