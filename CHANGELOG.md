@@ -8,62 +8,45 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 ## [Unreleased]
 
 ### Added
-- Baseline for upcoming backend improvements and feature releases.
-- Planned work to expand and stabilize the modular domain architecture.
+- Planned improvements for API stability, validation, and feature expansion.
+- Ongoing work to strengthen the modular backend architecture across bounded contexts.
 
 ### Changed
-- Documentation structure to be maintained using a project-level changelog.
-- Release tracking to follow a consistent versioning and maintenance workflow.
+- Changelog structure aligned with project-level release tracking best practices.
+- Release documentation is maintained as a living record of the repository's evolution.
 
 ### Fixed
 - No fixes recorded yet for this unreleased cycle.
 
----
-
 ## [0.0.1] - 2026-11-05
 
 ### Added
-- Initial backend project scaffold for Prothia API using .NET 10.
-- ASP.NET Core web application setup with routing conventions and controller registration.
-- OpenAPI support enabled via Microsoft ASP.NET Core OpenAPI and Scalar integration.
-- Modular architecture foundation for:
-    - Analytics
-    - Billing
-    - Patients
-    - Monitoring
-    - Shared infrastructure
-- Domain-driven design-inspired structure with:
-    - Application services
-    - Domain model folders
-    - Repositories
-    - Infrastructure persistence layers
-    - Resources and localized message files
-- Support for EF Core and MySQL Entity Framework Core integration.
-- Common middleware and configuration extensions for API bootstrapping.
-- Resource localization entries in English and Spanish for common and domain-level messages.
-- Initial package configuration and project metadata in `Prothia.API/Prothia.API.csproj`.
+- Initial Prothia backend API scaffold built on .NET 10.
+- ASP.NET Core application configuration with controller registration, lowercase URL routing, and kebab-case endpoint naming.
+- OpenAPI documentation support via Microsoft ASP.NET Core OpenAPI, with Scalar UI integration for API exploration.
+- Modular backend structure organized by bounded contexts, including:
+  - Analytics
+  - Billing
+  - Patients
+  - Monitoring
+  - Shared infrastructure
+- Domain-driven design foundation with application services, domain aggregates, value objects, repositories, and infrastructure layers.
+- Persistence and data-access foundation using EF Core with MySQL integration.
+- Shared middleware and configuration extensions for API bootstrap and common behavior.
+- Global error-handling and problem-details infrastructure for consistent API responses.
+- Resource localization support in English and Spanish for shared and domain-specific messaging.
+- Initial solution and project metadata configuration in `prothia.sln`, `global.json`, and `Prothia.API/Prothia.API.csproj`.
 
 ### Changed
-- Standardized project SDK to .NET 10 with `global.json` pinning and roll-forward configuration.
-- Configured lowercase URL routing and kebab-case route naming conventions for API endpoints.
-- Organized project by bounded contexts to align with DDD-friendly service boundaries.
+- Standardized the SDK and runtime configuration using `global.json` for a consistent .NET 10 build experience.
+- Organized the codebase around modular, DDD-flavored service boundaries to support incremental feature delivery.
+- Adopted consistent interface and configuration conventions for routing, OpenAPI, and persistence setup.
 
 ### Fixed
-- No production fixes recorded for the initial release milestone.
+- No production fixes were recorded for the initial release milestone.
 
 ### Security
-- No security-specific changes recorded in this initial version.
+- No explicit security hardening or authentication changes were recorded in this initial release.
 
 ### Deprecated
-- No deprecated APIs or features recorded yet.
-
----
-
-## Notes
-
-This changelog reflects the current project state as defined by the repository structure and the initial configuration in:
-- `Prothia.API/Program.cs`
-- `Prothia.API/Prothia.API.csproj`
-- `global.json`
-
-If you want, I can also tailor the changelog to a more formal enterprise style or a more conventional release style for an MVP.
+- No deprecated APIs or features were recorded in this initial release.
