@@ -7,7 +7,7 @@ public static class ClinicSubscriptionResourceFromEntityAssembler
 {
     public static ClinicSubscriptionResource ToResourceFromEntity(ClinicSubscription entity) =>
         new(
-            entity.Id,
+            entity.Id.Value,
             entity.PlanName,
             entity.Status,
             entity.PlanType,
