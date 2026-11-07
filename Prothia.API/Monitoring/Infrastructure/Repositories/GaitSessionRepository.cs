@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Prothia.API.Monitoring.Domain.Model.Aggregates;
 using Prothia.API.Monitoring.Domain.Model.ValueObjects;
+using Prothia.API.Monitoring.Domain.Repositories;
 using Prothia.API.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration;
 using Prothia.API.Shared.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 
@@ -16,3 +17,4 @@ public class GaitSessionRepository(AppDbContext context)
         if (patientId is not null) query = query.Where(s => s.PatientId == patientId);
         return await query.OrderByDescending(s => s.RecordedAt).ToListAsync(cancellationToken);
     }
+}
