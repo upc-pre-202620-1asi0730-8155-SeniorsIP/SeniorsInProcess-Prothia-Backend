@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="AlertCreatedSuccessfully" xml:space="preserve">
+    <value>Biomechanical alert created successfully.</value>
+  </data>
+</root>
