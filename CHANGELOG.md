@@ -17,6 +17,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 ### Fixed
 - None recorded.
 
+## [0.1.4] - 2026-11-07
+
+### Added
+- Release metadata aligned to the 0.1.4 project version.
+- Documentation updated to reflect the current backend release state.
+
+### Changed
+- Updated project version tracking and changelog ordering to match the active solution version.
+- Kept release notes aligned with Keep a Changelog best practices.
+
+### Fixed
+- No functional fixes were recorded for this maintenance release.
+
+### Security
+- No security-related changes were introduced in this release.
+
+### Deprecated
+- No deprecated APIs or features were recorded for this release.
+
 ## [0.1.3] - 2026-11-06
 
 ### Added
