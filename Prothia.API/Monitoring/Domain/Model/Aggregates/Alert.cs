@@ -1,18 +1,16 @@
 using Prothia.API.Monitoring.Domain.Model.Commands;
+using Prothia.API.Monitoring.Domain.Model.Events;
 using Prothia.API.Monitoring.Domain.Model.ValueObjects;
 
 namespace Prothia.API.Monitoring.Domain.Model.Aggregates;
 
-public partial class Alert
+public partial class Alert : AggregateRoot
 {
     public const int PatientNameMaxLength = 150;
-    
-    public int Id { get; private set; }
-    
-    public PatientId PatientId {get; private set;}
-    
-    public string PatientName {get; private set; }
-    
+
+    public AlertId Id { get; private set; }
+    public PatientId PatientId { get; private set; }
+    public string PatientName { get; private set; }
     public DeviationType DeviationType { get; private set; }
     public ReadingText RecordedValue { get; private set; }
     public ReadingText Threshold { get; private set; }
@@ -25,7 +23,6 @@ public partial class Alert
 
     protected Alert()
     {
-        PatientId = null!;
         PatientName = string.Empty;
         DeviationType = null!;
         RecordedValue = null!;
@@ -51,6 +48,8 @@ public partial class Alert
         Severity = command.Severity;
         Status = EAlertStatus.Pending;
         OccurredAt = command.OccurredAt;
+
+        AddDomainEvent(new AlertCreatedEvent(PatientId.Value, DeviationType.Value, Severity));
     }
     
     public void Resolve(DateTimeOffset resolvedAt)
