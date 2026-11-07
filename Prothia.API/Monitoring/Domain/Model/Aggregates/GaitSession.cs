@@ -1,3 +1,4 @@
+using Prothia.API.Monitoring.Domain.Model.Commands;
 using Prothia.API.Monitoring.Domain.Model.ValueObjects;
 
 namespace Prothia.API.Monitoring.Domain.Model.Aggregates;
@@ -20,12 +21,12 @@ public partial class GaitSession : AggregateRoot
     
     public int ImpactPeakNewtons { get; private set; }
     
-    public SymmetryGrade SymmetryGrade => SymmetryPercent switch
+    public ESymmetryGrade SymmetryGrade => SymmetryPercent switch
     {
-        >= 92 => SymmetryGrade.Excellent,
-        >= 90 => SymmetryGrade.Optimal,
-        >= 85 => SymmetryGrade.Acceptable,
-        _ => SymmetryGrade.NeedsAttention
+        >= 92 => ESymmetryGrade.Excellent,
+        >= 90 => ESymmetryGrade.Optimal,
+        >= 85 => ESymmetryGrade.Acceptable,
+        _ => ESymmetryGrade.NeedsAttention
     };
 
     protected GaitSession()
