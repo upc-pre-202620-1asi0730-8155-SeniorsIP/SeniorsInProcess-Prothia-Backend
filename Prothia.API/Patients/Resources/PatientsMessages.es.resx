@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="PatientCreatedSuccessfully" xml:space="preserve">
+        <value>Paciente registrado exitosamente.</value>
+    </data>
+</root>
