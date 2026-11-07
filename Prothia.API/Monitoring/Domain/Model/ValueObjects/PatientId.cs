@@ -1,6 +1,6 @@
 namespace Prothia.API.Monitoring.Domain.Model.ValueObjects;
 
-public sealed record PatientId
+public readonly record struct PatientId : IEntityId<int>
 {
     public int Value { get; }
 
