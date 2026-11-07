@@ -1,3 +1,5 @@
+using Prothia.API.Shared.Domain.Model.ValueObjects;
+
 namespace Prothia.API.Monitoring.Domain.Model.ValueObjects;
 
 public readonly record struct GaitSessionId(int Value) : IEntityId<int>

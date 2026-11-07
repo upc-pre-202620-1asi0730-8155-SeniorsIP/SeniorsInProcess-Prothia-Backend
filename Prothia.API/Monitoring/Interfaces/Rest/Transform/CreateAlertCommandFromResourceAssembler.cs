@@ -1,6 +1,7 @@
 using Prothia.API.Monitoring.Domain.Model.Commands;
 using Prothia.API.Monitoring.Domain.Model.ValueObjects;
 using Prothia.API.Monitoring.Interfaces.Rest.Resources;
+using Prothia.API.Shared.Interfaces.Asp.Configuration.Extensions;
 
 namespace Prothia.API.Monitoring.Interfaces.Rest.Transform;
 

@@ -1,5 +1,6 @@
 using Prothia.API.Monitoring.Domain.Model.Aggregates;
 using Prothia.API.Monitoring.Domain.Model.Commands;
+using Prothia.API.Shared.Application.Model;
 
 namespace Prothia.API.Monitoring.Application.CommandServices;
 

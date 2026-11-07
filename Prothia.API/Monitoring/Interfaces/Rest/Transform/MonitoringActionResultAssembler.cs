@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Prothia.API.Monitoring.Domain.Model;
 using Prothia.API.Monitoring.Domain.Model.Aggregates;
+using Prothia.API.Shared.Application.Model;
+using Prothia.API.Shared.Interfaces.Rest.ProblemDetails;
+using Prothia.API.Shared.Resources.Errors;
 
 namespace Prothia.API.Monitoring.Interfaces.Rest.Transform;
 

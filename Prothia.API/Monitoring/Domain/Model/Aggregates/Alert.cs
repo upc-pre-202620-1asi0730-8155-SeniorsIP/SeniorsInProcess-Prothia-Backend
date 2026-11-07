@@ -1,6 +1,7 @@
 using Prothia.API.Monitoring.Domain.Model.Commands;
 using Prothia.API.Monitoring.Domain.Model.Events;
 using Prothia.API.Monitoring.Domain.Model.ValueObjects;
+using Prothia.API.Shared.Domain.Model.Aggregates.Internal;
 
 namespace Prothia.API.Monitoring.Domain.Model.Aggregates;
 

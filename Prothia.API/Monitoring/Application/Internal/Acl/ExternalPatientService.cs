@@ -1,4 +1,5 @@
 using Prothia.API.Monitoring.Domain.Model.ValueObjects;
+using Prothia.API.Patients.Interfaces.ACL;
 
 namespace Prothia.API.Monitoring.Application.Internal.Acl;
 

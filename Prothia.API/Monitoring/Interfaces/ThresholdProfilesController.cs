@@ -1,6 +1,5 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Localization;
 using Prothia.API.Monitoring.Application.CommandServices;
 using Prothia.API.Monitoring.Application.QueryServices;
@@ -8,8 +7,10 @@ using Prothia.API.Monitoring.Domain.Model.Queries;
 using Prothia.API.Monitoring.Domain.Model.ValueObjects;
 using Prothia.API.Monitoring.Interfaces.Rest.Resources;
 using Prothia.API.Monitoring.Interfaces.Rest.Transform;
+using Prothia.API.Shared.Interfaces.Rest.ProblemDetails;
+using Prothia.API.Shared.Resources.Errors;
 
-namespace Prothia.API.Monitoring.Interfaces.Rest;
+namespace Prothia.API.Monitoring.Interfaces;
 
 [ApiController]
 [Route("api/v1/[controller]")]

@@ -1,3 +1,5 @@
+using Prothia.API.Shared.Domain.Model.Errors;
+
 namespace Prothia.API.Monitoring.Domain.Model.Errors;
 
 public static class MonitoringErrors

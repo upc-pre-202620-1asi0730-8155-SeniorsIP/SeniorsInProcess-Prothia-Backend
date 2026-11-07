@@ -1,5 +1,6 @@
 using Prothia.API.Monitoring.Domain.Model.Aggregates;
 using Prothia.API.Monitoring.Interfaces.Rest.Resources;
+using Prothia.API.Shared.Infrastructure.Interfaces.AspNetCore.Configuration.Extensions;
 
 namespace Prothia.API.Monitoring.Interfaces.Rest.Transform;
 
