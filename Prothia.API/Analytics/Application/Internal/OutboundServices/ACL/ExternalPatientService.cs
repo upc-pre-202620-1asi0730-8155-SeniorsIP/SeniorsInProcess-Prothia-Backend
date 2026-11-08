@@ -3,7 +3,7 @@ using Prothia.API.Patients.Interfaces.ACL;
 
 namespace Prothia.API.Analytics.Application.Internal.OutboundServices.ACL;
 
-public class ExternalPatientService(IPatientsContextFacade patientsContextFacade) : IExternalPatientService
+public class ExternalPatientService(IPatientsContextFacade patientsContextFacade)
 {
     public Task<bool> ExistsPatientByIdAsync(PatientId patientId, CancellationToken cancellationToken = default) =>
         patientsContextFacade.ExistsPatientByIdAsync(patientId.Value, cancellationToken);

@@ -1,11 +1,12 @@
 ﻿using Prothia.API.Analytics.Domain.Model.Commands;
 using Prothia.API.Analytics.Domain.Model.Entities;
+using Prothia.API.Analytics.Domain.Model.Events;
 using Prothia.API.Analytics.Domain.Model.ValueObjects;
+using Prothia.API.Shared.Domain.Model.Aggregates.Internal;
 
 namespace Prothia.API.Analytics.Domain.Model.Aggregates;
 
-
-public partial class ClinicalReport
+public partial class ClinicalReport : AggregateRoot
 {
     public const int IssueDateMaxLength = 30;
     public const int ClinicNameMaxLength = 150;
@@ -20,7 +21,7 @@ public partial class ClinicalReport
     public const int TherapistNameMaxLength = 150;
     public const int TherapistRoleMaxLength = 150;
 
-    public int Id { get; private set; }
+    public ClinicalReportId Id { get; private set; }
     public ReportCode ReportCode { get; private set; }
     public string IssueDate { get; private set; }
     public string ClinicName { get; private set; }
@@ -45,7 +46,6 @@ public partial class ClinicalReport
         IssueDate = string.Empty;
         ClinicName = string.Empty;
         ClinicUnit = string.Empty;
-        PatientId = null!;
         PatientName = string.Empty;
         Dni = string.Empty;
         Diagnosis = string.Empty;
@@ -90,7 +90,7 @@ public partial class ClinicalReport
             nameof(command.TherapistRole));
 
         ReportCode = command.ReportCode ?? throw new ArgumentNullException(nameof(command), "ReportCode is required.");
-        PatientId = command.PatientId ?? throw new ArgumentNullException(nameof(command), "PatientId is required.");
+        PatientId = command.PatientId;
         Age = command.Age;
         TherapistRegistry = command.TherapistRegistry ??
                             throw new ArgumentNullException(nameof(command), "TherapistRegistry is required.");
@@ -98,6 +98,8 @@ public partial class ClinicalReport
         Indicators = (command.Indicators ?? [])
             .Select(i => new ReportIndicator(i.Name, i.Value, i.NormalRange, i.Evaluation, i.Status))
             .ToList();
+
+        AddDomainEvent(new ClinicalReportIssuedEvent(ReportCode.Value, PatientId.Value, ClinicName));
     }
 
     private static string ValidateRequiredString(string? value, int maxLength, string paramName)

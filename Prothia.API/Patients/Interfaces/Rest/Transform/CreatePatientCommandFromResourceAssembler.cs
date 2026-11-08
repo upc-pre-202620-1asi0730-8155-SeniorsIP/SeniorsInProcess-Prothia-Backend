@@ -1,6 +1,7 @@
 using Prothia.API.Patients.Domain.Model.Commands;
 using Prothia.API.Patients.Domain.Model.ValueObjects;
 using Prothia.API.Patients.Interfaces.Rest.Resources;
+using Prothia.API.Shared.Infrastructure.Interfaces.AspNetCore.Configuration.Extensions;
 
 namespace Prothia.API.Patients.Interfaces.Rest.Transform;
 

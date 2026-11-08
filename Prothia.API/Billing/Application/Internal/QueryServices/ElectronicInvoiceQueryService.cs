@@ -1,4 +1,4 @@
-﻿using Prothia.API.Billing.Application.Services;
+﻿using Prothia.API.Billing.Application.QueryServices;
 using Prothia.API.Billing.Domain.Model.Aggregates;
 using Prothia.API.Billing.Domain.Model.Queries;
 using Prothia.API.Billing.Domain.Repositories;
@@ -11,12 +11,12 @@ public class ElectronicInvoiceQueryService(IElectronicInvoiceRepository electron
     public async Task<IEnumerable<ElectronicInvoice>> Handle(GetAllElectronicInvoicesQuery query,
         CancellationToken cancellationToken = default)
     {
-        return await electronicInvoiceRepository.ListAsync(cancellationToken);
+        return await electronicInvoiceRepository.ListAsNoTrackingAsync(cancellationToken);
     }
 
     public async Task<ElectronicInvoice?> Handle(GetElectronicInvoiceByIdQuery query,
         CancellationToken cancellationToken = default)
     {
-        return await electronicInvoiceRepository.FindByIdAsync(query.Id, cancellationToken);
+        return await electronicInvoiceRepository.FindByIdAsNoTrackingAsync(query.Id, cancellationToken);
     }
 }

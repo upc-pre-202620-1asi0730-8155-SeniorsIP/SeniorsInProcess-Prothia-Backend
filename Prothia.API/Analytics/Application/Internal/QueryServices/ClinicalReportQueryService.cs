@@ -1,4 +1,4 @@
-﻿using Prothia.API.Analytics.Application.Services;
+﻿using Prothia.API.Analytics.Application.QueryServices;
 using Prothia.API.Analytics.Domain.Model.Aggregates;
 using Prothia.API.Analytics.Domain.Model.Queries;
 using Prothia.API.Analytics.Domain.Repositories;
@@ -14,12 +14,12 @@ public class ClinicalReportQueryService(IClinicalReportRepository clinicalReport
         if (query.PatientId is not null)
             return await clinicalReportRepository.ListByPatientIdAsync(query.PatientId, cancellationToken);
 
-        return await clinicalReportRepository.ListAsync(cancellationToken);
+        return await clinicalReportRepository.ListAsNoTrackingAsync(cancellationToken);
     }
 
     public async Task<ClinicalReport?> Handle(GetClinicalReportByIdQuery query,
         CancellationToken cancellationToken = default)
     {
-        return await clinicalReportRepository.FindByIdAsync(query.Id, cancellationToken);
+        return await clinicalReportRepository.FindByIdAsNoTrackingAsync(query.Id, cancellationToken);
     }
 }

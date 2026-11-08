@@ -2,7 +2,6 @@
 
 namespace Prothia.API.Analytics.Domain.Model.Commands;
 
-
 public record ReportIndicatorItem(
     string Name,
     string Value,
