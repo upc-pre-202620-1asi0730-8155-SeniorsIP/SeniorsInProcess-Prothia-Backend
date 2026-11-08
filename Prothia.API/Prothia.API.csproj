@@ -30,6 +30,16 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Communication\Application\" />
+      <Folder Include="Communication\Domain\Model\Aggregates\" />
+      <Folder Include="Communication\Domain\Model\Commands\" />
+      <Folder Include="Communication\Domain\Model\Queries\" />
+      <Folder Include="Communication\Domain\Model\ValueObjects\" />
+      <Folder Include="Communication\Domain\Repositories\" />
+      <Folder Include="Communication\Infrastructure\Persistence\EntityFrameworkCore\Repositories\" />
+      <Folder Include="Communication\Interfaces\REST\Controllers\" />
+      <Folder Include="Communication\Interfaces\REST\Resources\" />
+      <Folder Include="Communication\Interfaces\REST\Transform\" />
       <Folder Include="Monitoring\Domain\Model\Queries\" />
     </ItemGroup>
 
