@@ -1,5 +1,5 @@
 using Prothia.API.Communication.Domain.Model.ValueObjects;
-using Prothia.API.Shared.Domain.Model;
+using Prothia.API.Shared.Domain.Model.Entities;
 
 namespace Prothia.API.Communication.Domain.Model.Aggregates;
 
