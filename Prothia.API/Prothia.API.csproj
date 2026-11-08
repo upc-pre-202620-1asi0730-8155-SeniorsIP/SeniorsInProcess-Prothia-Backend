@@ -31,7 +31,6 @@
 
     <ItemGroup>
       <Folder Include="Monitoring\Domain\Model\Queries\" />
-      <Folder Include="Workshop\Resources\" />
     </ItemGroup>
 
 </Project>
