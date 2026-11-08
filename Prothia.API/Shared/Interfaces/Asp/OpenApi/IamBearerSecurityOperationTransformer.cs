@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi;
-using Prothia.API.Iam.Infrastructure.Pipeline.Middleware.Attributes;
 
 namespace Prothia.API.Shared.Interfaces.Asp.OpenApi;
 

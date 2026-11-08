@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.Extensions.Localization;
 using Microsoft.OpenApi;
-using Prothia.API.Resources.Shared;
 using Prothia.API.Shared.Resources;
 
 namespace Prothia.API.Shared.Interfaces.Asp.Configuration;
