@@ -17,6 +17,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 ### Fixed
 - None recorded.
 
+### Security
+- Security hardening and authentication work remain on the roadmap.
+
+### Deprecated
+- No deprecated APIs or features are currently planned.
+
+## [0.1.6] - 2026-11-08
+
+### Added
+- Release metadata aligned to the 0.1.6 project version.
+- Documentation updates reflecting the current backend release state.
+
+### Changed
+- Kept the changelog and project documentation synchronized with the latest release milestone.
+- Standardized release-note ordering and wording to follow Keep a Changelog best practices.
+
+### Fixed
+- Corrected release documentation inconsistencies and ensured the changelog reflects the current project state.
+
+### Security
+- No security-related changes were introduced in this release.
+
+### Deprecated
+- No deprecated APIs or features were recorded.
+
 ## [0.1.5] - 2026-11-08
 
 ### Added
