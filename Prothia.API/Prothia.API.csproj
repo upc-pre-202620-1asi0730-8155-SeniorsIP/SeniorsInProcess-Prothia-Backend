@@ -30,7 +30,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Communication\Application\" />
       <Folder Include="Communication\Interfaces\REST\Controllers\" />
       <Folder Include="Communication\Interfaces\REST\Resources\" />
       <Folder Include="Communication\Interfaces\REST\Transform\" />
