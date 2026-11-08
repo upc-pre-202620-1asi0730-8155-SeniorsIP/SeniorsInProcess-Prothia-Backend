@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Prothia.API.Analytics.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 using Prothia.API.Billing.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
-// using Prothia.API.Communication.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
+using Prothia.API.Communication.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 using Prothia.API.Patients.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 using Prothia.API.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 using Prothia.API.Shared.Infrastructure.Persistence.EntityFrameworkCore.Interceptors;
@@ -24,8 +24,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.ApplyPatientsConfiguration();
         builder.ApplyAnalyticsConfiguration();
         builder.ApplyBillingConfiguration();
-        // builder.ApplyCommunicationConfiguration();
-
+        builder.ApplyCommunicationConfiguration();
         builder.UseSnakeCaseNamingConvention();
     }
 }
