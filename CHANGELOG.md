@@ -17,6 +17,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 ### Fixed
 - None recorded.
 
+## [0.1.5] - 2026-11-08
+
+### Added
+- Communication bounded context with domain entities, application services, repositories, and API endpoints.
+- Release metadata aligned to the 0.1.5 project version.
+- Changelog entries updated to reflect the current backend release milestone.
+
+### Changed
+- Updated project documentation and release tracking to reflect the Communication bounded context integration.
+- Kept the project documentation synchronized with the active 0.1.5 release branch.
+- Standardized release-note ordering and wording to match Keep a Changelog conventions.
+
+### Fixed
+- No functional regressions were recorded for this maintenance release.
+
+### Security
+- No security-related changes were introduced in this release.
+
+### Deprecated
+- No deprecated APIs or features were recorded for this release.
+
 ## [0.1.4] - 2026-11-07
 
 ### Added
