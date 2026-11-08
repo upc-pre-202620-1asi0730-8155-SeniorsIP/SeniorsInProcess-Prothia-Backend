@@ -31,10 +31,6 @@
 
     <ItemGroup>
       <Folder Include="Monitoring\Domain\Model\Queries\" />
-      <Folder Include="Workshop\Application\" />
-      <Folder Include="Workshop\Domain\Repositories\" />
-      <Folder Include="Workshop\Infraestructure\" />
-      <Folder Include="Workshop\Interfaces\" />
       <Folder Include="Workshop\Resources\" />
     </ItemGroup>
 
