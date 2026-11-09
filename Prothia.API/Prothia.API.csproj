@@ -24,13 +24,13 @@
         <PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.9"/>
         <!-- Naming convention conversion related packages -->
         <PackageReference Include="Humanizer" Version="3.0.10" />
-        
-        
-        
+
+
+
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Monitoring\Domain\Model\Queries\" />
+        <Folder Include="Monitoring\Domain\Model\Queries\" />
     </ItemGroup>
 
 </Project>
