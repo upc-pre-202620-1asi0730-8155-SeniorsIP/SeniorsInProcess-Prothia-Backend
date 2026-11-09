@@ -23,6 +23,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 ### Deprecated
 - No deprecated APIs or features are currently planned.
 
+## [0.1.7] - 2026-11-08
+
+### Added
+- Release metadata aligned to the 0.1.7 project version.
+- Changelog documentation updated for the current backend release milestone.
+
+### Changed
+- Kept the project documentation synchronized with the active 0.1.7 release state.
+- Standardized the release-note structure and wording to follow Keep a Changelog best practices.
+
+### Fixed
+- Corrected release documentation ordering and wording so the version history reflects the current project state accurately.
+
+### Security
+- No security-related changes were introduced in this release.
+
+### Deprecated
+- No deprecated APIs or features were recorded for this release.
+
 ## [0.1.6] - 2026-11-08
 
 ### Added
