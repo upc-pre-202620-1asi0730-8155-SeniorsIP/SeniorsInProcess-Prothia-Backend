@@ -11,7 +11,21 @@ public static class CreatePatientCommandFromResourceAssembler
         new(new FullName(resource.FullName),
             new Dni(resource.Dni),
             resource.Age,
-            EnumConversions.Parse<EAmputationLevel>(resource.Amputation, nameof(resource.Amputation)),
+            ParseAmputationLevel(resource.Amputation),
             EnumConversions.Parse<EKLevel>(resource.KLevel, nameof(resource.KLevel)),
             string.IsNullOrWhiteSpace(resource.ProsthesisCode) ? null : new ProsthesisCode(resource.ProsthesisCode));
+
+    private static EAmputationLevel ParseAmputationLevel(string? value)
+    {
+        return value?.Trim() switch
+        {
+            "Transtibial Der." => EAmputationLevel.TranstibialRight,
+            "Transtibial Izq." => EAmputationLevel.TranstibialLeft,
+            "Transtibial Bilateral" => EAmputationLevel.TranstibialBilateral,
+            "Transfemoral Der." => EAmputationLevel.TransfemoralRight,
+            "Transfemoral Izq." => EAmputationLevel.TransfemoralLeft,
+            "Transfemoral Bilateral" => EAmputationLevel.TransfemoralBilateral,
+            _ => EnumConversions.Parse<EAmputationLevel>(value?.Replace(" ", string.Empty), nameof(CreatePatientResource.Amputation))
+        };
+    }
 }

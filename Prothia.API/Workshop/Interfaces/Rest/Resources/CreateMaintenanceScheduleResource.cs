@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace Prothia.API.Workshop.Interfaces.Rest.Resources;
 
@@ -15,4 +15,4 @@ public record CreateMaintenanceScheduleResource(
     string TechnicianName,
     [Required(ErrorMessage = "RequiredMaintenanceStatus")]
     string Status,
-    string Notes = "");
+    string? Notes = "");

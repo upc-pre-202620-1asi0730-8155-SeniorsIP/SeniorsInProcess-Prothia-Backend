@@ -12,6 +12,10 @@ using Prothia.API.Shared.Resources.Errors;
 
 namespace Prothia.API.Patients.Interfaces.Rest;
 
+[ApiController]
+[Route("api/v1/[controller]")]
+[Produces(MediaTypeNames.Application.Json)]
+[Tags("Available Patient Endpoints.")]
 public class PatientsController(
     IPatientCommandService patientCommandService,
     IPatientQueryService patientQueryService,

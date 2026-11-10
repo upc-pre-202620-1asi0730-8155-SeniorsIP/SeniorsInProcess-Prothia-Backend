@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace Prothia.API.Workshop.Interfaces.Rest.Resources;
 
@@ -11,7 +11,7 @@ public record CreateMechanicalAlertResource(
     int Cycles,
     [Range(1, int.MaxValue, ErrorMessage = "InvalidCycleLimit")]
     int CycleLimit,
-    string PatientName,
+    string? PatientName,
     [Required(ErrorMessage = "RequiredKLevel")]
     string KLevel,
     [Required(ErrorMessage = "RequiredMechanicalComponent")]

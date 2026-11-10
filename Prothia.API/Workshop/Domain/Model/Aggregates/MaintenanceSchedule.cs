@@ -1,4 +1,4 @@
-﻿using Prothia.API.Shared.Domain.Model.Aggregates.Internal;
+using Prothia.API.Shared.Domain.Model.Aggregates.Internal;
 using Prothia.API.Workshop.Domain.Model.Commands;
 using Prothia.API.Workshop.Domain.Model.ValueObjects;
 
@@ -54,5 +54,12 @@ public partial class MaintenanceSchedule : AggregateRoot
         TechnicianName = command.TechnicianName.Trim();
         Status = command.Status;
         Notes = (command.Notes ?? string.Empty).Trim();
+    }
+
+    public void Complete(string? notes)
+    {
+        Status = MaintenanceStatus.Completed;
+        if (!string.IsNullOrWhiteSpace(notes))
+            Notes = notes.Trim();
     }
 }

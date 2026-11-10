@@ -11,7 +11,6 @@ public static class ModelBuilderExtensions
     {
         builder.Entity<Patient>().HasKey(p => p.Id);
         builder.Entity<Patient>().Property(p => p.Id)
-            .HasConversion(new StronglyTypedIdConverter<PatientId, int>(id => id.Value, value => new PatientId(value)))
             .IsRequired()
             .ValueGeneratedOnAdd();
         builder.Entity<Patient>()

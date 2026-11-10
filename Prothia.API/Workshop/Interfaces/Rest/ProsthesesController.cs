@@ -1,4 +1,4 @@
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Prothia.API.Shared.Interfaces.Rest.ProblemDetails;
@@ -75,4 +75,27 @@ public class ProsthesesController(
             foundProsthesis => Ok(ProsthesisResourceFromEntityAssembler.ToResourceFromEntity(foundProsthesis))
         );
     }
+
+    [HttpPut("{id:int}/associate")]
+    [EndpointSummary("Associate Prosthesis")]
+    [EndpointDescription("Associate a prosthesis in inventory with a patient and clinic.")]
+    [ProducesResponseType(typeof(ProsthesisResource), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> AssociateProsthesis(int id,
+        [FromBody] AssociateProsthesisResource resource,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await prosthesisCommandService.AssociateAsync(id, resource.PatientName, resource.ClinicName,
+            cancellationToken);
+
+        return WorkshopActionResultAssembler.ToActionResultFromProsthesisResult(
+            this,
+            result,
+            _errorLocalizer,
+            _problemDetailsFactory,
+            updatedProsthesis => Ok(ProsthesisResourceFromEntityAssembler.ToResourceFromEntity(updatedProsthesis))
+        );
+    }
 }
+
+public record AssociateProsthesisResource(string? PatientName, string? ClinicName);
