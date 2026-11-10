@@ -1,4 +1,4 @@
-﻿using Prothia.API.Shared.Domain.Model.Aggregates.Internal;
+using Prothia.API.Shared.Domain.Model.Aggregates.Internal;
 using Prothia.API.Workshop.Domain.Model.Commands;
 using Prothia.API.Workshop.Domain.Model.ValueObjects;
 
@@ -78,5 +78,13 @@ public partial class Prosthesis : AggregateRoot
         SocketType = (command.SocketType ?? string.Empty).Trim();
         KneeType = (command.KneeType ?? string.Empty).Trim();
         FootType = (command.FootType ?? string.Empty).Trim();
+    }
+
+    public void Associate(string? patientName, string? clinicName)
+    {
+        PatientName = (patientName ?? string.Empty).Trim();
+        ClinicName = (clinicName ?? string.Empty).Trim();
+        Status = ProsthesisStatus.Optimal;
+        SensorStatus = SensorStatus.Online;
     }
 }

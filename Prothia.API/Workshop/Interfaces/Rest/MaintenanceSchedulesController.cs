@@ -1,4 +1,4 @@
-﻿using System.Net.Mime;
+using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Prothia.API.Shared.Interfaces.Rest.ProblemDetails;
@@ -76,4 +76,26 @@ public class MaintenanceSchedulesController(
             foundSchedule => Ok(MaintenanceScheduleResourceFromEntityAssembler.ToResourceFromEntity(foundSchedule))
         );
     }
+
+    [HttpPut("{id:int}/complete")]
+    [EndpointSummary("Complete Maintenance Schedule")]
+    [EndpointDescription("Mark a scheduled maintenance intervention as completed.")]
+    [ProducesResponseType(typeof(MaintenanceScheduleResource), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> CompleteMaintenanceSchedule(int id,
+        [FromBody] CompleteMaintenanceResource? resource = null,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await maintenanceScheduleCommandService.CompleteAsync(id, resource?.Notes, cancellationToken);
+
+        return WorkshopActionResultAssembler.ToActionResultFromMaintenanceScheduleResult(
+            this,
+            result,
+            _errorLocalizer,
+            _problemDetailsFactory,
+            updatedSchedule => Ok(MaintenanceScheduleResourceFromEntityAssembler.ToResourceFromEntity(updatedSchedule))
+        );
+    }
 }
+
+public record CompleteMaintenanceResource(string? Notes = null);

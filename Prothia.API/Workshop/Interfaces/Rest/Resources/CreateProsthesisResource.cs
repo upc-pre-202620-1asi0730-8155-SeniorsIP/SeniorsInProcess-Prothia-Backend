@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using Prothia.API.Workshop.Domain.Model.Aggregates;
 
 namespace Prothia.API.Workshop.Interfaces.Rest.Resources;
@@ -8,21 +8,21 @@ public record CreateProsthesisResource(
     string SerialNumber,
     [Required(ErrorMessage = "RequiredProsthesisType")]
     string Type,
-    string PatientName,
-    string ClinicName,
+    string? PatientName = "",
+    string? ClinicName = "",
     [Range(0, int.MaxValue, ErrorMessage = "InvalidAccumulatedCycles")]
-    int AccumulatedCycles,
+    int AccumulatedCycles = 0,
     [Range(1, int.MaxValue, ErrorMessage = "InvalidCycleLimit")]
-    int CycleLimit,
-    string LastService,
+    int CycleLimit = 800000,
+    string? LastService = "",
     [Required(ErrorMessage = "RequiredProsthesisStatus")]
-    string Status,
+    string Status = "optimal",
     [Range(Prosthesis.BatteryLevelMin, Prosthesis.BatteryLevelMax, ErrorMessage = "InvalidBatteryLevel")]
-    int BatteryLevel,
+    int BatteryLevel = 100,
     [Required(ErrorMessage = "RequiredSensorStatus")]
-    string SensorStatus,
+    string SensorStatus = "online",
     [Required(ErrorMessage = "RequiredKLevel")]
-    string KLevel,
-    string SocketType,
-    string KneeType,
-    string FootType);
+    string KLevel = "K3",
+    string? SocketType = "",
+    string? KneeType = "",
+    string? FootType = "");
