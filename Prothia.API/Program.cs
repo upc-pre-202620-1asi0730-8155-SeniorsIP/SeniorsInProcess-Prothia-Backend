@@ -57,6 +57,7 @@ using Prothia.API.Monitoring.Resources;
 using MonitoringExternalPatientService = Prothia.API.Monitoring.Application.Internal.Acl.ExternalPatientService;
 
 // Patients
+using Prothia.API.Patients.Application.Acl;
 using Prothia.API.Patients.Application.CommandServices;
 using Prothia.API.Patients.Application.Internal.CommandServices;
 using Prothia.API.Patients.Application.Internal.QueryServices;
@@ -221,12 +222,22 @@ builder.Services.AddScoped<IProsthesisQueryService, ProsthesisQueryService>();
 
 var app = builder.Build();
 
-// Ensure Database is created on startup
+// Ensure Database is created on startup if MySQL is available
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    var context = services.GetRequiredService<AppDbContext>();
-    context.Database.EnsureCreated();
+    var logger = services.GetRequiredService<ILogger<Program>>();
+    try
+    {
+        EnsureLocalMySqlRunning(logger);
+        var context = services.GetRequiredService<AppDbContext>();
+        context.Database.EnsureCreated();
+        logger.LogInformation("Database 'prothia-db' and all tables verified/created successfully.");
+    }
+    catch (Exception ex)
+    {
+        logger.LogWarning(ex, "Could not initialize database on startup. Ensure MySQL is running and connection string is configured.");
+    }
 }
 
 // Exception Handler
@@ -258,3 +269,71 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+static void EnsureLocalMySqlRunning(ILogger logger)
+{
+    static bool IsPortOpen(int port)
+    {
+        try
+        {
+            using var client = new System.Net.Sockets.TcpClient();
+            var result = client.BeginConnect("127.0.0.1", port, null, null);
+            var success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromMilliseconds(500));
+            return success && client.Connected;
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    if (IsPortOpen(3306)) return;
+
+    const string mysqldPath = @"C:\Program Files\MySQL\MySQL Server 8.4\bin\mysqld.exe";
+    if (!File.Exists(mysqldPath)) return;
+
+    var userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+    var dataDir = Path.Combine(userProfile, "mysql-prothia-data");
+    var initSqlFile = Path.Combine(userProfile, "mysql-prothia-init.sql");
+
+    File.WriteAllText(initSqlFile, """
+        ALTER USER 'root'@'localhost' IDENTIFIED BY 'Mysql123$';
+        FLUSH PRIVILEGES;
+        """);
+
+    if (!Directory.Exists(dataDir) || !File.Exists(Path.Combine(dataDir, "ibdata1")))
+    {
+        if (Directory.Exists(dataDir)) Directory.Delete(dataDir, true);
+        Directory.CreateDirectory(dataDir);
+
+        logger.LogInformation("Initializing local MySQL 8.4 data directory at {DataDir}...", dataDir);
+        var initProcess = System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+        {
+            FileName = mysqldPath,
+            Arguments = $"--initialize-insecure --datadir=\"{dataDir}\"",
+            UseShellExecute = false,
+            CreateNoWindow = true
+        });
+        initProcess?.WaitForExit(30000);
+    }
+
+    logger.LogInformation("Starting local MySQL 8.4 Server on port 3306...");
+    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+    {
+        FileName = mysqldPath,
+        Arguments = $"--datadir=\"{dataDir}\" --init-file=\"{initSqlFile}\" --port=3306",
+        UseShellExecute = false,
+        CreateNoWindow = true
+    });
+
+    for (var i = 0; i < 20; i++)
+    {
+        if (IsPortOpen(3306))
+        {
+            Thread.Sleep(1000);
+            logger.LogInformation("Local MySQL 8.4 Server is online on port 3306.");
+            return;
+        }
+        Thread.Sleep(500);
+    }
+}
