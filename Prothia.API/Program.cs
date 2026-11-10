@@ -434,7 +434,7 @@ static void EnsureLocalMySqlRunning(ILogger logger)
     var initSqlFile = Path.Combine(userProfile, "mysql-prothia-init.sql");
 
     File.WriteAllText(initSqlFile, """
-        ALTER USER 'root'@'localhost' IDENTIFIED BY 'Mysql123$';
+        ALTER USER 'root'@'localhost' IDENTIFIED BY '12345Mysql$';
         FLUSH PRIVILEGES;
         """);
 
