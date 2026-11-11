@@ -15,7 +15,7 @@ namespace Prothia.API.Analytics.Interfaces.Rest;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-[Tags("Available Report Endpoints.")]
+[Tags("Available Reports Endpoints.")]
 public class ReportsController(
     IClinicalReportCommandService clinicalReportCommandService,
     IClinicalReportQueryService clinicalReportQueryService,
@@ -27,7 +27,7 @@ public class ReportsController(
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
 
     [HttpPost]
-    [EndpointSummary("Create Clinical Report")]
+    [EndpointSummary("Generate Clinical Reports")]
     [EndpointDescription("Issue a new clinical biomechanical report for a patient.")]
     [ProducesResponseType(typeof(ClinicalReportResource), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -63,7 +63,7 @@ public class ReportsController(
     }
 
     [HttpGet("{id:int}")]
-    [EndpointSummary("Get Clinical Report by Id")]
+    [EndpointSummary("Get Clinical Reports by Id")]
     [EndpointDescription("Get a clinical report by its unique identifier.")]
     [ProducesResponseType(typeof(ClinicalReportResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

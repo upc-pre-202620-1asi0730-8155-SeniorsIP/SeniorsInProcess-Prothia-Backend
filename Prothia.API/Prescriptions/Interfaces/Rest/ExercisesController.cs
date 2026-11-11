@@ -14,7 +14,7 @@ namespace Prothia.API.Prescriptions.Interfaces.Rest;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-[Tags("Available Exercise Catalog Endpoints.")]
+[Tags("Available Exercises Endpoints.")]
 public class ExercisesController(
     IExerciseCommandService exerciseCommandService,
     IExerciseQueryService exerciseQueryService,
@@ -26,7 +26,7 @@ public class ExercisesController(
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
 
     [HttpPost]
-    [EndpointSummary("Create Exercise")]
+    [EndpointSummary("Create Exercises")]
     [EndpointDescription("Register an exercise in the clinical catalog.")]
     [ProducesResponseType(typeof(ExerciseResource), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -58,7 +58,7 @@ public class ExercisesController(
     }
 
     [HttpGet("{id:int}")]
-    [EndpointSummary("Get Exercise by Id")]
+    [EndpointSummary("Get Exercises by Id")]
     [EndpointDescription("Get an exercise by its unique identifier.")]
     [ProducesResponseType(typeof(ExerciseResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

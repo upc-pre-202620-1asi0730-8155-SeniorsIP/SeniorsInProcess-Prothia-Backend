@@ -18,7 +18,7 @@ namespace Prothia.API.Monitoring.Interfaces;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-[Tags("Available Alert Endpoints.")]
+[Tags("Available Alerts Endpoints.")]
 public class AlertsController(
     IAlertCommandService alertCommandService,
     IAlertQueryService alertQueryService,
@@ -30,7 +30,7 @@ public class AlertsController(
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
 
     [HttpPost]
-    [EndpointSummary("Create Alert")]
+    [EndpointSummary("Create Alerts")]
     [EndpointDescription("Raise a biomechanical alert for a patient.")]
     [ProducesResponseType(typeof(AlertResource), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -67,7 +67,7 @@ public class AlertsController(
     }
 
     [HttpGet("{id:int}")]
-    [EndpointSummary("Get Alert by Id")]
+    [EndpointSummary("Get Alerts by Id")]
     [EndpointDescription("Get a biomechanical alert by its unique identifier.")]
     [ProducesResponseType(typeof(AlertResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -85,7 +85,7 @@ public class AlertsController(
     }
 
     [HttpPut("{id:int}/resolve")]
-    [EndpointSummary("Resolve Alert")]
+    [EndpointSummary("Resolve Alerts")]
     [EndpointDescription("Mark a pending biomechanical alert as resolved.")]
     [ProducesResponseType(typeof(AlertResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

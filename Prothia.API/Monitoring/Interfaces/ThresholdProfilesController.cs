@@ -15,7 +15,7 @@ namespace Prothia.API.Monitoring.Interfaces;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-[Tags("Available Threshold Profile Endpoints.")]
+[Tags("Available Threshold Profiles Endpoints.")]
 public class ThresholdProfilesController(
     IThresholdProfileCommandService thresholdProfileCommandService,
     IThresholdProfileQueryService thresholdProfileQueryService,
@@ -27,7 +27,7 @@ public class ThresholdProfilesController(
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
 
     [HttpPost]
-    [EndpointSummary("Create Threshold Profile")]
+    [EndpointSummary("Create Threshold Profiles")]
     [EndpointDescription("Create a personalized clinical threshold profile for a patient.")]
     [ProducesResponseType(typeof(ThresholdProfileResource), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -63,7 +63,7 @@ public class ThresholdProfilesController(
     }
 
     [HttpGet("{id:int}")]
-    [EndpointSummary("Get Threshold Profile by Id")]
+    [EndpointSummary("Get Threshold Profiles by Id")]
     [EndpointDescription("Get a threshold profile by its unique identifier.")]
     [ProducesResponseType(typeof(ThresholdProfileResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -82,7 +82,7 @@ public class ThresholdProfilesController(
     }
 
     [HttpPut("{id:int}")]
-    [EndpointSummary("Update Threshold Profile")]
+    [EndpointSummary("Update Threshold Profiles")]
     [EndpointDescription("Update an existing clinical threshold profile.")]
     [ProducesResponseType(typeof(ThresholdProfileResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

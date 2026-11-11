@@ -32,6 +32,8 @@ public class TransmissionsController(
     ///     Creates a clinical data transmission to an orthoprosthetic workshop.
     /// </summary>
     [HttpPost]
+    [EndpointSummary("Create Transmissions")]
+    [EndpointDescription("Creates a clinical data transmission to an orthoprosthetic workshop.")]
     [ProducesResponseType(typeof(ClinicalTransmissionResource), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -71,6 +73,8 @@ public class TransmissionsController(
     ///     Gets clinical data transmissions, optionally filtered by patient.
     /// </summary>
     [HttpGet]
+    [EndpointSummary("Get Transmissions")]
+    [EndpointDescription("Gets clinical data transmissions, optionally filtered by patient.")]
     [ProducesResponseType(typeof(IEnumerable<ClinicalTransmissionResource>), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetTransmissions([FromQuery] int? patientId = null,
@@ -100,6 +104,8 @@ public class TransmissionsController(
     ///     Gets a clinical data transmission by id.
     /// </summary>
     [HttpGet("{id:int}")]
+    [EndpointSummary("Get Transmissions by Id")]
+    [EndpointDescription("Gets a clinical data transmission by its identifier.")]
     [ProducesResponseType(typeof(ClinicalTransmissionResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetTransmissionById(int id, CancellationToken cancellationToken = default)

@@ -16,7 +16,7 @@ namespace Prothia.API.Monitoring.Interfaces;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-[Tags("Available Gait Session Endpoints.")]
+[Tags("Available Gait Sessions Endpoints.")]
 public class GaitSessionsController(
     IGaitSessionCommandService gaitSessionCommandService,
     IGaitSessionQueryService gaitSessionQueryService,
@@ -28,7 +28,7 @@ public class GaitSessionsController(
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
 
     [HttpPost]
-    [EndpointSummary("Record Gait Session")]
+    [EndpointSummary("Record Gait Sessions")]
     [EndpointDescription("Record a biomechanical gait session for a patient.")]
     [ProducesResponseType(typeof(GaitSessionResource), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -63,7 +63,7 @@ public class GaitSessionsController(
     }
 
     [HttpGet("{id:int}")]
-    [EndpointSummary("Get Gait Session by Id")]
+    [EndpointSummary("Get Gait Sessions by Id")]
     [EndpointDescription("Get a gait session by its unique identifier.")]
     [ProducesResponseType(typeof(GaitSessionResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

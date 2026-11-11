@@ -16,7 +16,7 @@ namespace Prothia.API.Prescriptions.Interfaces.Rest;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-[Tags("Available Prescription Endpoints.")]
+[Tags("Available Prescriptions Endpoints.")]
 public class PrescriptionsController(
     IPrescriptionCommandService prescriptionCommandService,
     IPrescriptionQueryService prescriptionQueryService,
@@ -28,7 +28,7 @@ public class PrescriptionsController(
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
 
     [HttpPost]
-    [EndpointSummary("Create Prescription")]
+    [EndpointSummary("Create Prescriptions")]
     [EndpointDescription("Create a rehabilitation prescription for a patient.")]
     [ProducesResponseType(typeof(PrescriptionResource), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -63,7 +63,7 @@ public class PrescriptionsController(
     }
 
     [HttpGet("{id:int}")]
-    [EndpointSummary("Get Prescription by Id")]
+    [EndpointSummary("Get Prescriptions by Id")]
     [EndpointDescription("Get a prescription by its unique identifier.")]
     [ProducesResponseType(typeof(PrescriptionResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -81,7 +81,7 @@ public class PrescriptionsController(
     }
 
     [HttpPut("{id:int}")]
-    [EndpointSummary("Update Prescription")]
+    [EndpointSummary("Update Prescriptions")]
     [EndpointDescription("Update an existing rehabilitation prescription.")]
     [ProducesResponseType(typeof(PrescriptionResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]

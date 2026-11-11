@@ -14,7 +14,7 @@ namespace Prothia.API.Workshop.Interfaces.Rest;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-[Tags("Available Maintenance Schedule Endpoints.")]
+[Tags("Available Maintenance Schedules Endpoints.")]
 public class MaintenanceSchedulesController(
     IMaintenanceScheduleCommandService maintenanceScheduleCommandService,
     IMaintenanceScheduleQueryService maintenanceScheduleQueryService,
@@ -26,7 +26,7 @@ public class MaintenanceSchedulesController(
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
 
     [HttpPost]
-    [EndpointSummary("Create Maintenance Schedule")]
+    [EndpointSummary("Create Maintenance Schedules")]
     [EndpointDescription("Schedule a maintenance intervention in the workshop.")]
     [ProducesResponseType(typeof(MaintenanceScheduleResource), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -59,7 +59,7 @@ public class MaintenanceSchedulesController(
     }
 
     [HttpGet("{id:int}")]
-    [EndpointSummary("Get Maintenance Schedule by Id")]
+    [EndpointSummary("Get Maintenance Schedules by Id")]
     [EndpointDescription("Get a maintenance schedule by its unique identifier.")]
     [ProducesResponseType(typeof(MaintenanceScheduleResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -78,7 +78,7 @@ public class MaintenanceSchedulesController(
     }
 
     [HttpPut("{id:int}/complete")]
-    [EndpointSummary("Complete Maintenance Schedule")]
+    [EndpointSummary("Complete Maintenance Schedules")]
     [EndpointDescription("Mark a scheduled maintenance intervention as completed.")]
     [ProducesResponseType(typeof(MaintenanceScheduleResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

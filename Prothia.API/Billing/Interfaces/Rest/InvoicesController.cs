@@ -14,7 +14,7 @@ namespace Prothia.API.Billing.Interfaces.Rest;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-[Tags("Available Invoice Endpoints.")]
+[Tags("Available Electronic Invoices Endpoints.")]
 public class InvoicesController(
     IElectronicInvoiceCommandService electronicInvoiceCommandService,
     IElectronicInvoiceQueryService electronicInvoiceQueryService,
@@ -26,7 +26,7 @@ public class InvoicesController(
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
 
     [HttpPost]
-    [EndpointSummary("Create Electronic Invoice")]
+    [EndpointSummary("Create Electronic Invoices")]
     [EndpointDescription("Issue a new electronic invoice.")]
     [ProducesResponseType(typeof(ElectronicInvoiceResource), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -59,7 +59,7 @@ public class InvoicesController(
     }
 
     [HttpGet("{id:int}")]
-    [EndpointSummary("Get Electronic Invoice by Id")]
+    [EndpointSummary("Get Electronic Invoices by Id")]
     [EndpointDescription("Get an electronic invoice by its unique identifier.")]
     [ProducesResponseType(typeof(ElectronicInvoiceResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

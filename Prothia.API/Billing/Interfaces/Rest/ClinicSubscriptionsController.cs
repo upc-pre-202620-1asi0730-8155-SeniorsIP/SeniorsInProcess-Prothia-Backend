@@ -14,7 +14,7 @@ namespace Prothia.API.Billing.Interfaces.Rest;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-[Tags("Available Clinic Subscription Endpoints.")]
+[Tags("Available Clinic Subscriptions Endpoints.")]
 public class ClinicSubscriptionsController(
     IClinicSubscriptionCommandService clinicSubscriptionCommandService,
     IClinicSubscriptionQueryService clinicSubscriptionQueryService,
@@ -26,7 +26,7 @@ public class ClinicSubscriptionsController(
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
 
     [HttpPost]
-    [EndpointSummary("Create Clinic Subscription")]
+    [EndpointSummary("Create Clinic Subscriptions")]
     [EndpointDescription("Create a new institutional clinic subscription.")]
     [ProducesResponseType(typeof(ClinicSubscriptionResource), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -59,7 +59,7 @@ public class ClinicSubscriptionsController(
     }
 
     [HttpGet("{id:int}")]
-    [EndpointSummary("Get Clinic Subscription by Id")]
+    [EndpointSummary("Get Clinic Subscriptions by Id")]
     [EndpointDescription("Get a clinic subscription by its unique identifier.")]
     [ProducesResponseType(typeof(ClinicSubscriptionResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -78,7 +78,7 @@ public class ClinicSubscriptionsController(
     }
 
     [HttpPut("{id:int}")]
-    [EndpointSummary("Update Clinic Subscription")]
+    [EndpointSummary("Update Clinic Subscriptions")]
     [EndpointDescription("Update an existing institutional clinic subscription.")]
     [ProducesResponseType(typeof(ClinicSubscriptionResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
