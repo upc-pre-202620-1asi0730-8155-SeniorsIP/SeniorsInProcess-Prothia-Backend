@@ -23,6 +23,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 ### Deprecated
 - No deprecated APIs or features are currently planned.
 
+## [0.2.0] - 2026-11-11
+
+### Added
+- No new features were recorded for this release.
+
+### Changed
+- Standardized endpoint summaries and OpenAPI tags to use plural resource names.
+- Renamed the clinical report creation operation to “Generate Clinical Report” and represented report indicator input with dedicated value objects.
+- Renamed monitoring alert resolution to “Solve Alert” and aligned workshop alert terminology and resolution actions.
+
+### Fixed
+- No bug fixes were recorded for this release.
+
+### Security
+- No security-related changes were recorded for this release.
+
+### Deprecated
+- No APIs or features were deprecated in this release.
+
 ## [0.1.9] - 2026-11-11
 
 ### Added
