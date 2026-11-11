@@ -15,35 +15,35 @@ public class MechanicalAlertCommandService(
     IUnitOfWork unitOfWork)
     : IMechanicalAlertCommandService
 {
-    public async Task<Result<MechanicalAlert>> Handle(
+    public async Task<Result<MechanicalAlerts>> Handle(
         CreateMechanicalAlertCommand command, CancellationToken cancellationToken = default)
     {
         var prosthesis = await prosthesisRepository.FindByIdAsync(command.ProsthesisId, cancellationToken);
         if (prosthesis is null)
-            return Result<MechanicalAlert>.Failure(WorkshopErrors.ProsthesisNotFound,
+            return Result<MechanicalAlerts>.Failure(WorkshopErrors.ProsthesisNotFound,
                 WorkshopError.ProsthesisNotFound);
 
-        var alert = new MechanicalAlert(command);
+        var alert = new MechanicalAlerts(command);
         await mechanicalAlertRepository.AddAsync(alert, cancellationToken);
         await unitOfWork.CompleteAsync(cancellationToken);
-        return Result<MechanicalAlert>.Success(alert);
+        return Result<MechanicalAlerts>.Success(alert);
     }
 
-    public async Task<Result<MechanicalAlert>> Handle(
-        ResolveMechanicalAlertCommand command, CancellationToken cancellationToken = default)
+    public async Task<Result<MechanicalAlerts>> Handle(
+        SolveMechanicalAlertCommand command, CancellationToken cancellationToken = default)
     {
         var alert = await mechanicalAlertRepository.FindByIdAsync(command.MechanicalAlertId, cancellationToken);
         if (alert is null)
-            return Result<MechanicalAlert>.Failure(WorkshopErrors.MechanicalAlertNotFound,
+            return Result<MechanicalAlerts>.Failure(WorkshopErrors.MechanicalAlertNotFound,
                 WorkshopError.MechanicalAlertNotFound);
 
         if (alert.IsResolved)
-            return Result<MechanicalAlert>.Failure(WorkshopErrors.MechanicalAlertAlreadyResolved,
+            return Result<MechanicalAlerts>.Failure(WorkshopErrors.MechanicalAlertAlreadyResolved,
                 WorkshopError.MechanicalAlertAlreadyResolved);
 
         alert.Resolve();
         mechanicalAlertRepository.Update(alert);
         await unitOfWork.CompleteAsync(cancellationToken);
-        return Result<MechanicalAlert>.Success(alert);
+        return Result<MechanicalAlerts>.Success(alert);
     }
 }

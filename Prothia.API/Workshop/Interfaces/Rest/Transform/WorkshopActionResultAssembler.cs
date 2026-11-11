@@ -59,10 +59,10 @@ public static class WorkshopActionResultAssembler
 
     public static IActionResult ToActionResultFromMechanicalAlertResult(
         ControllerBase controller,
-        Result<MechanicalAlert> result,
+        Result<MechanicalAlerts> result,
         IStringLocalizer<ErrorMessages> errorLocalizer,
         ProblemDetailsFactory problemDetailsFactory,
-        Func<MechanicalAlert, IActionResult> successAction)
+        Func<MechanicalAlerts, IActionResult> successAction)
     {
         if (result.IsSuccess) return successAction(result.Value!);
 
@@ -72,10 +72,10 @@ public static class WorkshopActionResultAssembler
 
     public static IActionResult ToActionResultFromGetMechanicalAlertByIdResult(
         ControllerBase controller,
-        MechanicalAlert? alert,
+        MechanicalAlerts? alert,
         IStringLocalizer<ErrorMessages> errorLocalizer,
         ProblemDetailsFactory problemDetailsFactory,
-        Func<MechanicalAlert, IActionResult> successAction)
+        Func<MechanicalAlerts, IActionResult> successAction)
     {
         if (alert is null)
             return problemDetailsFactory.CreateProblemDetails(

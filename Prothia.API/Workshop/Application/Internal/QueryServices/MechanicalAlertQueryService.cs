@@ -8,13 +8,13 @@ namespace Prothia.API.Workshop.Application.Internal.QueryServices;
 public class MechanicalAlertQueryService(IMechanicalAlertRepository mechanicalAlertRepository)
     : IMechanicalAlertQueryService
 {
-    public async Task<IEnumerable<MechanicalAlert>> Handle(GetAllMechanicalAlertsQuery query,
+    public async Task<IEnumerable<MechanicalAlerts>> Handle(GetAllMechanicalAlertsQuery query,
         CancellationToken cancellationToken = default)
     {
         return await mechanicalAlertRepository.FindAllAsync(query.ProsthesisId, query.Status, cancellationToken);
     }
 
-    public async Task<MechanicalAlert?> Handle(GetMechanicalAlertByIdQuery query,
+    public async Task<MechanicalAlerts?> Handle(GetMechanicalAlertByIdQuery query,
         CancellationToken cancellationToken = default)
     {
         return await mechanicalAlertRepository.FindByIdAsNoTrackingAsync(query.Id, cancellationToken);
