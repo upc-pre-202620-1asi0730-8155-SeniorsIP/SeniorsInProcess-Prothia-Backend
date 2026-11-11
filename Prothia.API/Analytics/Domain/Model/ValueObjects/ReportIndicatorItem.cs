@@ -1,6 +1,4 @@
-﻿using Prothia.API.Analytics.Domain.Model.ValueObjects;
-
-namespace Prothia.API.Analytics.Domain.Model.Commands;
+﻿namespace Prothia.API.Analytics.Domain.Model.ValueObjects;
 
 public record ReportIndicatorItem(
     string Name,

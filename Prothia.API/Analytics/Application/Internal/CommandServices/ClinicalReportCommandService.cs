@@ -17,7 +17,7 @@ public class ClinicalReportCommandService(
     : IClinicalReportCommandService
 {
     public async Task<Result<ClinicalReport>> Handle(
-        CreateClinicalReportCommand command, CancellationToken cancellationToken = default)
+        GenerateClinicalReportCommand command, CancellationToken cancellationToken = default)
     {
         var patientName =
             await externalPatientService.FetchPatientFullNameByIdAsync(command.PatientId, cancellationToken);

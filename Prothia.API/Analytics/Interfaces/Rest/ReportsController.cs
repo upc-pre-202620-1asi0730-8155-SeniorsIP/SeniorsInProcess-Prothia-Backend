@@ -33,10 +33,10 @@ public class ReportsController(
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
-    public async Task<IActionResult> CreateReport([FromBody] CreateClinicalReportResource resource,
+    public async Task<IActionResult> CreateReport([FromBody] GenerateClinicalReportResource resource,
         CancellationToken cancellationToken)
     {
-        var command = CreateClinicalReportCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var command = GenerateClinicalReportCommandFromResourceAssembler.ToCommandFromResource(resource);
         var result = await clinicalReportCommandService.Handle(command, cancellationToken);
 
         return AnalyticsActionResultAssembler.ToActionResultFromClinicalReportResult(

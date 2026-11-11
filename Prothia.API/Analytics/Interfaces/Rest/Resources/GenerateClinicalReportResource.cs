@@ -2,7 +2,7 @@
 
 namespace Prothia.API.Analytics.Interfaces.Rest.Resources;
 
-public record CreateClinicalReportResource(
+public record GenerateClinicalReportResource(
     [Required(ErrorMessage = "RequiredReportCode")]
     string ReportCode,
     [Required(ErrorMessage = "RequiredIssueDate")]
