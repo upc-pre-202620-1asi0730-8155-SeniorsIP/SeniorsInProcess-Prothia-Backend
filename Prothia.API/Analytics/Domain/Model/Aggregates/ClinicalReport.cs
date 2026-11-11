@@ -59,7 +59,7 @@ public partial class ClinicalReport : AggregateRoot
         Indicators = new List<ReportIndicator>();
     }
 
-    public ClinicalReport(CreateClinicalReportCommand command, string? resolvedPatientName = null)
+    public ClinicalReport(GenerateClinicalReportCommand command, string? resolvedPatientName = null)
     {
         ArgumentNullException.ThrowIfNull(command);
 

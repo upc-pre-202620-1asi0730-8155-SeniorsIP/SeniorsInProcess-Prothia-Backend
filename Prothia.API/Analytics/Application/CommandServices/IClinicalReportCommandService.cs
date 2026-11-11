@@ -6,6 +6,6 @@ namespace Prothia.API.Analytics.Application.CommandServices;
 
 public interface IClinicalReportCommandService
 {
-    Task<Result<ClinicalReport>> Handle(CreateClinicalReportCommand command,
+    Task<Result<ClinicalReport>> Handle(GenerateClinicalReportCommand command,
         CancellationToken cancellationToken = default);
 }

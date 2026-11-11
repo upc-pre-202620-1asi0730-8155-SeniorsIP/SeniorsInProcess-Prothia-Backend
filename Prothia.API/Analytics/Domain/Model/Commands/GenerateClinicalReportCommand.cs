@@ -2,7 +2,7 @@
 
 namespace Prothia.API.Analytics.Domain.Model.Commands;
 
-public record CreateClinicalReportCommand(
+public record GenerateClinicalReportCommand(
     ReportCode ReportCode,
     string IssueDate,
     string ClinicName,
