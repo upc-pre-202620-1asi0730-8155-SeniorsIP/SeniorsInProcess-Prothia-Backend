@@ -31,6 +31,8 @@ public class MessagesController(
     ///     Creates a clinical message in the interdisciplinary thread.
     /// </summary>
     [HttpPost]
+    [EndpointSummary("Create Messages")]
+    [EndpointDescription("Creates a clinical message in the interdisciplinary thread.")]
     [ProducesResponseType(typeof(ClinicalMessageResource), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -68,6 +70,8 @@ public class MessagesController(
     ///     Gets all clinical messages.
     /// </summary>
     [HttpGet]
+    [EndpointSummary("Get Messages")]
+    [EndpointDescription("Gets all clinical messages.")]
     [ProducesResponseType(typeof(IEnumerable<ClinicalMessageResource>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetMessages(CancellationToken cancellationToken = default)
     {
@@ -79,6 +83,8 @@ public class MessagesController(
     ///     Gets a clinical message by id.
     /// </summary>
     [HttpGet("{id:int}")]
+    [EndpointSummary("Get Messages by Id")]
+    [EndpointDescription("Gets a clinical message by its identifier.")]
     [ProducesResponseType(typeof(ClinicalMessageResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetMessageById(int id, CancellationToken cancellationToken = default)

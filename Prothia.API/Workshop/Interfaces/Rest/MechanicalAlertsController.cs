@@ -17,7 +17,7 @@ namespace Prothia.API.Workshop.Interfaces.Rest;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-[Tags("Available Mechanical Alert Endpoints.")]
+[Tags("Available Mechanical Alerts Endpoints.")]
 public class MechanicalAlertsController(
     IMechanicalAlertCommandService mechanicalAlertCommandService,
     IMechanicalAlertQueryService mechanicalAlertQueryService,
@@ -29,7 +29,7 @@ public class MechanicalAlertsController(
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
 
     [HttpPost]
-    [EndpointSummary("Create Mechanical Alert")]
+    [EndpointSummary("Create Mechanical Alerts")]
     [EndpointDescription("Raise a mechanical alert for a prosthesis in the workshop.")]
     [ProducesResponseType(typeof(MechanicalAlertResource), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -70,7 +70,7 @@ public class MechanicalAlertsController(
     }
 
     [HttpGet("{id:int}")]
-    [EndpointSummary("Get Mechanical Alert by Id")]
+    [EndpointSummary("Get Mechanical Alerts by Id")]
     [EndpointDescription("Get a mechanical alert by its unique identifier.")]
     [ProducesResponseType(typeof(MechanicalAlertResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -88,7 +88,7 @@ public class MechanicalAlertsController(
     }
 
     [HttpPut("{id:int}/resolve")]
-    [EndpointSummary("Resolve Mechanical Alert")]
+    [EndpointSummary("Resolve Mechanical Alerts")]
     [EndpointDescription("Resolve a pending mechanical alert.")]
     [ProducesResponseType(typeof(MechanicalAlertResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

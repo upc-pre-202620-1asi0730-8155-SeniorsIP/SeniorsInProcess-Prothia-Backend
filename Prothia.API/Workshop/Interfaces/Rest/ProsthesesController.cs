@@ -14,7 +14,7 @@ namespace Prothia.API.Workshop.Interfaces.Rest;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-[Tags("Available Prosthesis Endpoints.")]
+[Tags("Available Prostheses Endpoints.")]
 public class ProsthesesController(
     IProsthesisCommandService prosthesisCommandService,
     IProsthesisQueryService prosthesisQueryService,
@@ -26,7 +26,7 @@ public class ProsthesesController(
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
 
     [HttpPost]
-    [EndpointSummary("Create Prosthesis")]
+    [EndpointSummary("Create Prostheses")]
     [EndpointDescription("Register a prosthesis in the workshop inventory.")]
     [ProducesResponseType(typeof(ProsthesisResource), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -59,7 +59,7 @@ public class ProsthesesController(
     }
 
     [HttpGet("{id:int}")]
-    [EndpointSummary("Get Prosthesis by Id")]
+    [EndpointSummary("Get Prostheses by Id")]
     [EndpointDescription("Get a prosthesis by its unique identifier.")]
     [ProducesResponseType(typeof(ProsthesisResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -77,7 +77,7 @@ public class ProsthesesController(
     }
 
     [HttpPut("{id:int}/associate")]
-    [EndpointSummary("Associate Prosthesis")]
+    [EndpointSummary("Associate Prostheses")]
     [EndpointDescription("Associate a prosthesis in inventory with a patient and clinic.")]
     [ProducesResponseType(typeof(ProsthesisResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]

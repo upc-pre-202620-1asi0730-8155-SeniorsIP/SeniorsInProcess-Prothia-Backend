@@ -15,7 +15,7 @@ namespace Prothia.API.Patients.Interfaces.Rest;
 [ApiController]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
-[Tags("Available Patient Endpoints.")]
+[Tags("Available Patients Endpoints.")]
 public class PatientsController(
     IPatientCommandService patientCommandService,
     IPatientQueryService patientQueryService,
@@ -27,7 +27,7 @@ public class PatientsController(
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
  
     [HttpPost]
-    [EndpointSummary("Create Patient")]
+    [EndpointSummary("Create Patients")]
     [EndpointDescription("Register a new amputee patient in the PROTHIA clinical platform.")]
     [ProducesResponseType(typeof(PatientResource), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -75,7 +75,7 @@ public class PatientsController(
     }
  
     [HttpGet("{id:int}")]
-    [EndpointSummary("Get Patient by Id")]
+    [EndpointSummary("Get Patients by Id")]
     [EndpointDescription("Get a patient by its unique identifier.")]
     [ProducesResponseType(typeof(PatientResource), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
