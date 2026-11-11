@@ -7,5 +7,5 @@ namespace Prothia.API.Monitoring.Application.CommandServices;
 public interface IAlertCommandService
 {
     Task<Result<Alert>> Handle(CreateAlertCommand command, CancellationToken cancellationToken = default);
-    Task<Result<Alert>> Handle(ResolveAlertCommand command, CancellationToken cancellationToken = default);
+    Task<Result<Alert>> Handle(SolveAlertCommand command, CancellationToken cancellationToken = default);
 }

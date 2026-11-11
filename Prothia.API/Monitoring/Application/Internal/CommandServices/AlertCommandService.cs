@@ -29,7 +29,7 @@ public class AlertCommandService(
         return Result<Alert>.Success(alert);
     }
 
-    public async Task<Result<Alert>> Handle(ResolveAlertCommand command,
+    public async Task<Result<Alert>> Handle(SolveAlertCommand command,
         CancellationToken cancellationToken = default)
     {
         var alert = await alertRepository.FindByIdAsync(command.AlertId, cancellationToken);
