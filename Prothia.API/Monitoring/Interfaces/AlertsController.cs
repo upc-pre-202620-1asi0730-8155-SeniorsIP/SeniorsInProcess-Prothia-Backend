@@ -92,7 +92,7 @@ public class AlertsController(
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> ResolveAlert(int id, CancellationToken cancellationToken = default)
     {
-        var result = await alertCommandService.Handle(new ResolveAlertCommand(id), cancellationToken);
+        var result = await alertCommandService.Handle(new SolveAlertCommand(id), cancellationToken);
 
         return MonitoringActionResultAssembler.ToActionResultFromAlertResult(
             this,
