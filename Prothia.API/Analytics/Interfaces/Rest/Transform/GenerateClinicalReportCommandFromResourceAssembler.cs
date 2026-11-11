@@ -5,9 +5,9 @@ using Prothia.API.Shared.Infrastructure.Interfaces.AspNetCore.Configuration.Exte
 
 namespace Prothia.API.Analytics.Interfaces.Rest.Transform;
 
-public static class CreateClinicalReportCommandFromResourceAssembler
+public static class GenerateClinicalReportCommandFromResourceAssembler
 {
-    public static CreateClinicalReportCommand ToCommandFromResource(CreateClinicalReportResource resource) =>
+    public static GenerateClinicalReportCommand ToCommandFromResource(GenerateClinicalReportResource resource) =>
         new(
             new ReportCode(resource.ReportCode),
             resource.IssueDate,

@@ -21,7 +21,7 @@ public static class AnalyticsLocalizedOpenApiAssembler
 
     private static readonly IReadOnlyDictionary<Type, string> Schemas = new Dictionary<Type, string>
     {
-        [typeof(CreateClinicalReportResource)] = "CreateClinicalReportSchema",
+        [typeof(GenerateClinicalReportResource)] = "CreateClinicalReportSchema",
         [typeof(ClinicalReportResource)] = "ClinicalReportSchema",
         [typeof(ReportIndicatorResource)] = "ReportIndicatorSchema"
     };
@@ -32,7 +32,7 @@ public static class AnalyticsLocalizedOpenApiAssembler
     {
         var properties = new Dictionary<(Type, string), string>();
 
-        foreach (var type in new[] { typeof(ClinicalReportResource), typeof(CreateClinicalReportResource) })
+        foreach (var type in new[] { typeof(ClinicalReportResource), typeof(GenerateClinicalReportResource) })
         {
             properties[(type, "reportCode")] = "ClinicalReportCode";
             properties[(type, "issueDate")] = "ClinicalReportIssueDate";
