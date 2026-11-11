@@ -5,8 +5,8 @@ namespace Prothia.API.Workshop.Application.QueryServices;
 
 public interface IMechanicalAlertQueryService
 {
-    Task<IEnumerable<MechanicalAlert>> Handle(GetAllMechanicalAlertsQuery query,
+    Task<IEnumerable<MechanicalAlerts>> Handle(GetAllMechanicalAlertsQuery query,
         CancellationToken cancellationToken = default);
 
-    Task<MechanicalAlert?> Handle(GetMechanicalAlertByIdQuery query, CancellationToken cancellationToken = default);
+    Task<MechanicalAlerts?> Handle(GetMechanicalAlertByIdQuery query, CancellationToken cancellationToken = default);
 }

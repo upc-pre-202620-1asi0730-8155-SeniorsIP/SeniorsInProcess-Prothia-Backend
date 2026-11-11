@@ -4,8 +4,8 @@ using Prothia.API.Workshop.Domain.Model.ValueObjects;
 
 namespace Prothia.API.Workshop.Domain.Repositories;
 
-public interface IMechanicalAlertRepository : IBaseRepository<MechanicalAlert>
+public interface IMechanicalAlertRepository : IBaseRepository<MechanicalAlerts>
 {
-    Task<IEnumerable<MechanicalAlert>> FindAllAsync(int? prosthesisId, MechanicalAlertStatus? status,
+    Task<IEnumerable<MechanicalAlerts>> FindAllAsync(int? prosthesisId, MechanicalAlertStatus? status,
         CancellationToken cancellationToken = default);
 }

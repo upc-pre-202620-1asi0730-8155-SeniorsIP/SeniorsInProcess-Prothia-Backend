@@ -2,7 +2,7 @@
 
 namespace Prothia.API.Workshop.Domain.Model.Aggregates;
 
-public partial class MechanicalAlert : IAuditableEntity
+public partial class MechanicalAlerts : IAuditableEntity
 {
     public DateTimeOffset? CreatedAt { get; set; }
     public DateTimeOffset? UpdatedAt { get; set; }
