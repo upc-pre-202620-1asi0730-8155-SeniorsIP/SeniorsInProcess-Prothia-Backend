@@ -95,7 +95,7 @@ public class MechanicalAlertsController(
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> ResolveMechanicalAlert(int id, CancellationToken cancellationToken = default)
     {
-        var result = await mechanicalAlertCommandService.Handle(new ResolveMechanicalAlertCommand(id),
+        var result = await mechanicalAlertCommandService.Handle(new SolveMechanicalAlertCommand(id),
             cancellationToken);
 
         return WorkshopActionResultAssembler.ToActionResultFromMechanicalAlertResult(

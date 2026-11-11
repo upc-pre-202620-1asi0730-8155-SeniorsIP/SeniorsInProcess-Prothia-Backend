@@ -30,7 +30,7 @@ public class MechanicalAlertCommandService(
     }
 
     public async Task<Result<MechanicalAlerts>> Handle(
-        ResolveMechanicalAlertCommand command, CancellationToken cancellationToken = default)
+        SolveMechanicalAlertCommand command, CancellationToken cancellationToken = default)
     {
         var alert = await mechanicalAlertRepository.FindByIdAsync(command.MechanicalAlertId, cancellationToken);
         if (alert is null)

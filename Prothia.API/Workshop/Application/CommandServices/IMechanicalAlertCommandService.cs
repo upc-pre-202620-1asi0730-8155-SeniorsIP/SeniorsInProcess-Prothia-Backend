@@ -9,6 +9,6 @@ public interface IMechanicalAlertCommandService
     Task<Result<MechanicalAlerts>> Handle(CreateMechanicalAlertCommand command,
         CancellationToken cancellationToken = default);
 
-    Task<Result<MechanicalAlerts>> Handle(ResolveMechanicalAlertCommand command,
+    Task<Result<MechanicalAlerts>> Handle(SolveMechanicalAlertCommand command,
         CancellationToken cancellationToken = default);
 }
