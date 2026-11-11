@@ -1,0 +1,450 @@
+@startuml Prothia.API Class Diagram - Tactical Domain-Driven Design Model
+
+title 
+    Prothia Platform API
+    Domain-Driven Design Tactical Class Diagram
+    Bounded Contexts: Shared, Patients, Prescriptions, Monitoring, Workshop, Communication, Analytics, Billing, IAM
+end title
+
+skinparam classAttributeIconSize 0
+skinparam monochrome false
+skinparam packageStyle rectangle
+
+package "Shared Bounded Context" as Shared {
+    interface IAggregateRoot {
+        +DomainEvents: IReadOnlyCollection<IEvent>
+        +ClearDomainEvents(): void
+    }
+
+    abstract class AggregateRoot implements IAggregateRoot {
+        -domainEvents: List<IEvent>
+        +DomainEvents: IReadOnlyCollection<IEvent>
+        #AddDomainEvent(IEvent domainEvent): void
+        +ClearDomainEvents(): void
+    }
+
+    class Error <<record>> {
+        +Code: string
+        +Description: string
+        +Type: ErrorType
+        +{static} None: Error
+        +{static} NotFound(code, description): Error
+        +{static} Conflict(code, description): Error
+        +{static} Validation(code, description): Error
+    }
+
+    enum ErrorType {
+        Failure
+        Validation
+        NotFound
+        Conflict
+        Unauthorized
+        Forbidden
+    }
+
+    class "Result<T>" as Result {
+        +IsSuccess: bool
+        +IsFailure: bool
+        +Value: T
+        +Error: Error
+        +{static} Success(T value): Result<T>
+        +{static} Failure(Error error): Result<T>
+        +Match<TResult>(onSuccess, onFailure): TResult
+    }
+
+    interface "IBaseRepository<TEntity>" as IBaseRepository {
+        +AddAsync(entity): Task
+        +FindByIdAsync(id): Task<TEntity?>
+        +FindByIdAsNoTrackingAsync(id): Task<TEntity?>
+        +Update(entity): void
+        +Remove(entity): void
+        +ListAsync(): Task<IEnumerable<TEntity>>
+        +ListAsNoTrackingAsync(): Task<IEnumerable<TEntity>>
+    }
+
+    interface IUnitOfWork {
+        +CompleteAsync(): Task
+    }
+}
+
+package "Patients Bounded Context" as PatientsContext {
+    class Patient <<AggregateRoot>> extends Shared.AggregateRoot {
+        +Id: int
+        +FullName: string
+        +Dni: Dni
+        +Age: int
+        +Amputation: EAmputation
+        +KLevel: EKLevel
+        +ProsthesisCode: string
+        +Adherence: int
+        +Symmetry: int
+        +Status: EStatus
+        +Update(fullName, dni, age, amputation, kLevel, prosthesisCode): void
+    }
+
+    class Dni <<ValueObject>> {
+        +Value: string
+    }
+
+    enum EAmputation {
+        TranstibialRight
+        TranstibialLeft
+        TranstibialBilateral
+        TransfemoralRight
+        TransfemoralLeft
+        TransfemoralBilateral
+    }
+
+    enum EKLevel {
+        K1
+        K2
+        K3
+        K4
+    }
+
+    enum EStatus {
+        Stable
+        Alert
+        Critical
+    }
+
+    interface IPatientRepository extends Shared.IBaseRepository {
+        +FindByDniAsync(dni): Task<Patient?>
+        +ExistsByDniAsync(dni): Task<bool>
+    }
+
+    interface IPatientCommandService {
+        +Handle(CreatePatientCommand): Task<Result<Patient>>
+        +Handle(UpdatePatientCommand): Task<Result<Patient>>
+        +Handle(DeletePatientCommand): Task<Result<bool>>
+    }
+
+    interface IPatientQueryService {
+        +Handle(GetAllPatientsQuery): Task<IEnumerable<Patient>>
+        +Handle(GetPatientByIdQuery): Task<Patient?>
+        +Handle(GetPatientByDniQuery): Task<Patient?>
+    }
+
+    class PatientsController {
+        +CreatePatient(CreatePatientResource): Task<IActionResult>
+        +GetAllPatients(): Task<IActionResult>
+        +GetPatientById(id): Task<IActionResult>
+        +UpdatePatient(id, UpdatePatientResource): Task<IActionResult>
+        +DeletePatient(id): Task<IActionResult>
+    }
+
+    Patient *-- Dni
+    Patient *-- EAmputation
+    Patient *-- EKLevel
+    Patient *-- EStatus
+    PatientsController ..> IPatientCommandService
+    PatientsController ..> IPatientQueryService
+}
+
+package "Prescriptions Bounded Context" as PrescriptionsContext {
+    class Prescription <<AggregateRoot>> extends Shared.AggregateRoot {
+        +Id: int
+        +PatientId: int
+        +PhaseNumber: int
+        +PhaseName: string
+        +DurationWeeks: int
+        +FrequencyPerWeek: int
+        +Exercises: List<PrescribedExercise>
+        +AddExercise(exerciseId, name, sets, reps, restSeconds): void
+    }
+
+    class PrescribedExercise <<Entity>> {
+        +Id: int
+        +PrescriptionId: int
+        +ExerciseId: int
+        +Name: string
+        +Sets: int
+        +Reps: int
+        +RestSeconds: int
+    }
+
+    class Exercise <<AggregateRoot>> extends Shared.AggregateRoot {
+        +Id: int
+        +Name: string
+        +Focus: string
+    }
+
+    interface IPrescriptionRepository extends Shared.IBaseRepository {
+        +FindByPatientIdAsync(patientId): Task<Prescription?>
+    }
+
+    interface IExerciseRepository extends Shared.IBaseRepository
+
+    interface IPrescriptionCommandService {
+        +Handle(CreatePrescriptionCommand): Task<Result<Prescription>>
+    }
+
+    interface IPrescriptionQueryService {
+        +Handle(GetAllPrescriptionsQuery): Task<IEnumerable<Prescription>>
+        +Handle(GetPrescriptionByIdQuery): Task<Prescription?>
+        +Handle(GetPrescriptionByPatientIdQuery): Task<Prescription?>
+        +Handle(GetAllExercisesQuery): Task<IEnumerable<Exercise>>
+    }
+
+    class PrescriptionsController
+    class ExercisesController
+
+    Prescription *-- PrescribedExercise
+    PrescriptionsController ..> IPrescriptionCommandService
+    PrescriptionsController ..> IPrescriptionQueryService
+    ExercisesController ..> IPrescriptionQueryService
+}
+
+package "Monitoring Bounded Context" as MonitoringContext {
+    class Alert <<AggregateRoot>> extends Shared.AggregateRoot {
+        +Id: int
+        +PatientId: int
+        +PatientName: string
+        +DeviationType: string
+        +RecordedValue: string
+        +Threshold: string
+        +Severity: AlertSeverity
+        +Status: AlertStatus
+        +OccurredAt: DateTime
+        +ResolvedAt: DateTime?
+        +Resolve(): void
+    }
+
+    enum AlertSeverity {
+        Warning
+        Critical
+    }
+
+    enum AlertStatus {
+        Pending
+        Resolved
+    }
+
+    class ThresholdProfile <<AggregateRoot>> extends Shared.AggregateRoot {
+        +Id: int
+        +PatientId: int
+        +PelvicTilt: double
+        +Asymmetry: double
+        +Cadence: double
+        +ImpactPeak: double
+        +Update(pelvicTilt, asymmetry, cadence, impactPeak): void
+    }
+
+    class GaitSession <<AggregateRoot>> extends Shared.AggregateRoot {
+        +Id: int
+        +PatientId: int
+        +RecordedAt: DateTime
+        +DurationMinutes: int
+        +Steps: int
+        +Cadence: int
+        +SymmetryPercent: double
+        +AlertsCount: int
+        +ImpactPeakNewtons: int
+    }
+
+    interface IAlertRepository extends Shared.IBaseRepository
+    interface IThresholdProfileRepository extends Shared.IBaseRepository {
+        +FindByPatientIdAsync(patientId): Task<ThresholdProfile?>
+    }
+    interface IGaitSessionRepository extends Shared.IBaseRepository {
+        +ListByPatientIdAsync(patientId): Task<IEnumerable<GaitSession>>
+    }
+
+    class AlertsController
+    class ThresholdProfilesController
+    class GaitSessionsController
+}
+
+package "Workshop Bounded Context" as WorkshopContext {
+    class Prosthesis <<AggregateRoot>> extends Shared.AggregateRoot {
+        +Id: int
+        +SerialNumber: string
+        +Type: string
+        +PatientName: string
+        +ClinicName: string
+        +AccumulatedCycles: int
+        +CycleLimit: int
+        +LastService: string
+        +Status: ProthesisStatus
+        +BatteryLevel: int
+        +SensorStatus: SensorStatus
+        +KLevel: WorkshopKLevel
+        +SocketType: string
+        +KneeType: string
+        +FootType: string
+    }
+
+    class MaintenanceSchedule <<AggregateRoot>> extends Shared.AggregateRoot {
+        +Id: int
+        +SerialNumber: string
+        +PatientName: string
+        +ScheduledDate: string
+        +Type: string
+        +WorkshopName: string
+        +Technician: string
+        +Status: MaintenanceStatus
+    }
+
+    class MechanicalAlert <<AggregateRoot>> extends Shared.AggregateRoot {
+        +Id: int
+        +SerialNumber: string
+        +PatientName: string
+        +Component: string
+        +TriggerReason: string
+        +Severity: MechanicalAlertSeverity
+        +Status: MechanicalAlertStatus
+        +OccurredAt: DateTime
+        +ResolvedAt: DateTime?
+        +Resolve(): void
+    }
+
+    interface IProsthesisRepository extends Shared.IBaseRepository
+    interface IMaintenanceScheduleRepository extends Shared.IBaseRepository
+    interface IMechanicalAlertRepository extends Shared.IBaseRepository
+
+    class ProsthesesController
+    class MaintenanceSchedulesController
+    class MechanicalAlertsController
+}
+
+package "Communication Bounded Context" as CommunicationContext {
+    class ClinicalMessage <<AggregateRoot>> extends Shared.AggregateRoot {
+        +Id: int
+        +Sender: string
+        +SenderName: string
+        +SenderRole: string
+        +Text: string
+        +Timestamp: string
+        +IsSystem: bool
+        +Status: string
+    }
+
+    class ClinicalTransmission <<AggregateRoot>> extends Shared.AggregateRoot {
+        +Id: int
+        +PatientId: int
+        +PatientName: string
+        +PatientDni: string
+        +WorkshopName: string
+        +SharedModules: List<string>
+        +TechnicalNotes: string
+        +Status: string
+        +StatusLabel: string
+        +Summary: string
+        +CreatedAtDate: string
+    }
+
+    interface IClinicalMessageRepository extends Shared.IBaseRepository
+    interface IClinicalTransmissionRepository extends Shared.IBaseRepository
+
+    class ClinicalMessagesController
+    class ClinicalTransmissionsController
+}
+
+package "Analytics Bounded Context" as AnalyticsContext {
+    class ClinicalReport <<AggregateRoot>> extends Shared.AggregateRoot {
+        +Id: int
+        +ReportCode: string
+        +IssueDate: string
+        +ClinicName: string
+        +ClinicUnit: string
+        +PatientId: int
+        +PatientName: string
+        +Dni: string
+        +Age: int
+        +Diagnosis: string
+        +ProsthesisCode: string
+        +EvaluationPeriod: string
+        +Summary: string
+        +Indicators: List<ReportIndicator>
+        +MedicalRecommendation: string
+        +TherapistName: string
+        +TherapistRole: string
+        +TherapistRegistry: string
+    }
+
+    class ReportIndicator <<Entity>> {
+        +Id: int
+        +ClinicalReportId: int
+        +Name: string
+        +Value: string
+        +NormalRange: string
+        +Evaluation: string
+        +Status: string
+    }
+
+    interface IClinicalReportRepository extends Shared.IBaseRepository
+    class ReportsController
+
+    ClinicalReport *-- ReportIndicator
+}
+
+package "Billing Bounded Context" as BillingContext {
+    class ClinicSubscription <<AggregateRoot>> extends Shared.AggregateRoot {
+        +Id: int
+        +PlanName: string
+        +Status: string
+        +PlanType: string
+        +AnnualFee: decimal
+        +MonthlyEquivalent: decimal
+        +StartDate: string
+        +RenewalDate: string
+        +UsedQuota: int
+        +TotalQuota: int
+        +PaymentMethod: PaymentMethod
+    }
+
+    class ElectronicInvoice <<AggregateRoot>> extends Shared.AggregateRoot {
+        +Id: int
+        +InvoiceNumber: string
+        +IssueDate: string
+        +Concept: string
+        +Amount: string
+        +Currency: string
+        +Status: string
+        +StatusLabel: string
+        +DownloadUrl: string
+    }
+
+    class PaymentMethod <<ValueObject>> {
+        +CardBrand: string
+        +LastFourDigits: string
+        +CardholderName: string
+        +ExpiryDate: string
+    }
+
+    interface IClinicSubscriptionRepository extends Shared.IBaseRepository
+    interface IElectronicInvoiceRepository extends Shared.IBaseRepository
+
+    class ClinicSubscriptionsController
+    class InvoicesController
+
+    ClinicSubscription *-- PaymentMethod
+}
+
+package "IAM Bounded Context" as IamContext {
+    class User <<AggregateRoot>> extends Shared.AggregateRoot {
+        +Id: int
+        +Username: string
+        +PasswordHash: string
+        +ValidatePassword(password, hashingService): bool
+    }
+
+    interface IUserRepository extends Shared.IBaseRepository {
+        +FindByUsernameAsync(username): Task<User?>
+        +ExistsByUsernameAsync(username): Task<bool>
+    }
+
+    interface ITokenService {
+        +GenerateToken(user): string
+    }
+
+    interface IHashingService {
+        +HashPassword(password): string
+        +VerifyPassword(password, hash): bool
+    }
+
+    class AuthenticationController
+    class UsersController
+}
+
+@enduml
