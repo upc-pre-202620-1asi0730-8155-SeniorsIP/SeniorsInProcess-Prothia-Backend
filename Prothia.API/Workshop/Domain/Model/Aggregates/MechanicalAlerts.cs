@@ -4,7 +4,7 @@ using Prothia.API.Workshop.Domain.Model.ValueObjects;
 
 namespace Prothia.API.Workshop.Domain.Model.Aggregates;
 
-public partial class MechanicalAlert : AggregateRoot
+public partial class MechanicalAlerts : AggregateRoot
 {
     public const int PatientNameMaxLength = 150;
     public const int ComponentMaxLength = 150;
@@ -26,7 +26,7 @@ public partial class MechanicalAlert : AggregateRoot
 
     public bool IsResolved => Status == MechanicalAlertStatus.Resolved;
 
-    protected MechanicalAlert()
+    protected MechanicalAlerts()
     {
         SerialNumber = null!;
         PatientName = string.Empty;
@@ -35,7 +35,7 @@ public partial class MechanicalAlert : AggregateRoot
         OccurredAt = string.Empty;
     }
 
-    public MechanicalAlert(CreateMechanicalAlertCommand command)
+    public MechanicalAlerts(CreateMechanicalAlertCommand command)
     {
         ArgumentNullException.ThrowIfNull(command);
         ArgumentNullException.ThrowIfNull(command.SerialNumber);

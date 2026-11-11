@@ -8,12 +8,12 @@ using Prothia.API.Workshop.Domain.Repositories;
 namespace Prothia.API.Workshop.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 
 public class MechanicalAlertRepository(AppDbContext context)
-    : BaseRepository<MechanicalAlert>(context), IMechanicalAlertRepository
+    : BaseRepository<MechanicalAlerts>(context), IMechanicalAlertRepository
 {
-    public async Task<IEnumerable<MechanicalAlert>> FindAllAsync(int? prosthesisId, MechanicalAlertStatus? status,
+    public async Task<IEnumerable<MechanicalAlerts>> FindAllAsync(int? prosthesisId, MechanicalAlertStatus? status,
         CancellationToken cancellationToken = default)
     {
-        var query = Context.Set<MechanicalAlert>().AsNoTracking();
+        var query = Context.Set<MechanicalAlerts>().AsNoTracking();
         if (prosthesisId is not null)
         {
             var prosthesisIdValue = prosthesisId.Value;

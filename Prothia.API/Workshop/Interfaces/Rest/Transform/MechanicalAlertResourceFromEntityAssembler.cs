@@ -5,7 +5,7 @@ namespace Prothia.API.Workshop.Interfaces.Rest.Transform;
 
 public static class MechanicalAlertResourceFromEntityAssembler
 {
-    public static MechanicalAlertResource ToResourceFromEntity(MechanicalAlert entity) =>
+    public static MechanicalAlertResource ToResourceFromEntity(MechanicalAlerts entity) =>
         new(entity.Id.Value,
             entity.ProsthesisId,
             entity.SerialNumber.Value,

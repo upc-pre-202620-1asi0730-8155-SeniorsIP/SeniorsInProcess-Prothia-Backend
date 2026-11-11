@@ -6,9 +6,9 @@ namespace Prothia.API.Workshop.Application.CommandServices;
 
 public interface IMechanicalAlertCommandService
 {
-    Task<Result<MechanicalAlert>> Handle(CreateMechanicalAlertCommand command,
+    Task<Result<MechanicalAlerts>> Handle(CreateMechanicalAlertCommand command,
         CancellationToken cancellationToken = default);
 
-    Task<Result<MechanicalAlert>> Handle(ResolveMechanicalAlertCommand command,
+    Task<Result<MechanicalAlerts>> Handle(ResolveMechanicalAlertCommand command,
         CancellationToken cancellationToken = default);
 }

@@ -36,27 +36,27 @@ public static class ModelBuilderExtensions
         builder.Entity<Prosthesis>().Property(p => p.FootType).HasMaxLength(Prosthesis.ComponentTypeMaxLength).IsRequired();
 
         // MechanicalAlerts
-        builder.Entity<MechanicalAlert>().HasKey(a => a.Id);
-        builder.Entity<MechanicalAlert>().Property(a => a.Id)
+        builder.Entity<MechanicalAlerts>().HasKey(a => a.Id);
+        builder.Entity<MechanicalAlerts>().Property(a => a.Id)
             .HasConversion(new StronglyTypedIdConverter<MechanicalAlertId, int>(id => id.Value, value => new MechanicalAlertId(value)))
             .IsRequired()
             .ValueGeneratedOnAdd();
-        builder.Entity<MechanicalAlert>().Property(a => a.ProsthesisId).IsRequired();
-        builder.Entity<MechanicalAlert>()
+        builder.Entity<MechanicalAlerts>().Property(a => a.ProsthesisId).IsRequired();
+        builder.Entity<MechanicalAlerts>()
             .Property(a => a.SerialNumber)
             .HasConversion(valueObject => valueObject.Value, value => new SerialNumber(value))
             .HasMaxLength(SerialNumber.MaxLength)
             .IsRequired();
-        builder.Entity<MechanicalAlert>().Property(a => a.Cycles).IsRequired();
-        builder.Entity<MechanicalAlert>().Property(a => a.CycleLimit).IsRequired();
-        builder.Entity<MechanicalAlert>().Property(a => a.PatientName).HasMaxLength(MechanicalAlert.PatientNameMaxLength).IsRequired();
-        builder.Entity<MechanicalAlert>().Property(a => a.KLevel).HasConversion<string>().HasMaxLength(10).IsRequired();
-        builder.Entity<MechanicalAlert>().Property(a => a.Component).HasMaxLength(MechanicalAlert.ComponentMaxLength).IsRequired();
-        builder.Entity<MechanicalAlert>().Property(a => a.Description).HasMaxLength(MechanicalAlert.DescriptionMaxLength).IsRequired();
-        builder.Entity<MechanicalAlert>().Property(a => a.Severity).HasConversion<string>().HasMaxLength(20).IsRequired();
-        builder.Entity<MechanicalAlert>().Property(a => a.Status).HasConversion<string>().HasMaxLength(20).IsRequired();
-        builder.Entity<MechanicalAlert>().Property(a => a.OccurredAt).HasMaxLength(MechanicalAlert.OccurredAtMaxLength).IsRequired();
-        builder.Entity<MechanicalAlert>().HasIndex(a => new { a.ProsthesisId, a.Status });
+        builder.Entity<MechanicalAlerts>().Property(a => a.Cycles).IsRequired();
+        builder.Entity<MechanicalAlerts>().Property(a => a.CycleLimit).IsRequired();
+        builder.Entity<MechanicalAlerts>().Property(a => a.PatientName).HasMaxLength(MechanicalAlerts.PatientNameMaxLength).IsRequired();
+        builder.Entity<MechanicalAlerts>().Property(a => a.KLevel).HasConversion<string>().HasMaxLength(10).IsRequired();
+        builder.Entity<MechanicalAlerts>().Property(a => a.Component).HasMaxLength(MechanicalAlerts.ComponentMaxLength).IsRequired();
+        builder.Entity<MechanicalAlerts>().Property(a => a.Description).HasMaxLength(MechanicalAlerts.DescriptionMaxLength).IsRequired();
+        builder.Entity<MechanicalAlerts>().Property(a => a.Severity).HasConversion<string>().HasMaxLength(20).IsRequired();
+        builder.Entity<MechanicalAlerts>().Property(a => a.Status).HasConversion<string>().HasMaxLength(20).IsRequired();
+        builder.Entity<MechanicalAlerts>().Property(a => a.OccurredAt).HasMaxLength(MechanicalAlerts.OccurredAtMaxLength).IsRequired();
+        builder.Entity<MechanicalAlerts>().HasIndex(a => new { a.ProsthesisId, a.Status });
 
         // MaintenanceSchedules
         builder.Entity<MaintenanceSchedule>().HasKey(m => m.Id);
