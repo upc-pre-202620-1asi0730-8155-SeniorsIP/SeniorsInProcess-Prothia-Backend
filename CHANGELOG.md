@@ -23,6 +23,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) 
 ### Deprecated
 - No deprecated APIs or features are currently planned.
 
+## [1.0.0] - 2026-11-12
+
+### Added
+- No new features were recorded for this release.
+
+### Changed
+- Configured the API to process forwarded host and protocol headers from reverse proxies.
+- Updated OpenAPI server URLs used by Scalar to use HTTPS for non-local deployments.
+
+### Fixed
+- Corrected OpenAPI server URLs when the application runs behind a reverse proxy, preventing generated documentation from pointing to an insecure HTTP address.
+
+### Security
+- No security-specific changes were recorded for this release.
+
+### Deprecated
+- No APIs or features were deprecated in this release.
+
 ## [0.2.0] - 2026-11-11
 
 ### Added
