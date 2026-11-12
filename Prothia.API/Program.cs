@@ -1,5 +1,6 @@
 using Cortex.Mediator.Commands;
 using Cortex.Mediator.DependencyInjection;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Scalar.AspNetCore;
@@ -97,6 +98,14 @@ builder.Services.AddControllers(options =>
     })
     .AddDataAnnotationsLocalization();
 
+// Configure Forwarded Headers for reverse proxies (Render, Docker, etc.)
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.KnownIPNetworks.Clear();
+    options.KnownProxies.Clear();
+});
+
 // Add ProblemDetails and ExceptionHandler services
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
@@ -151,6 +160,20 @@ builder.Services.AddOpenApi(options =>
 {
     options.AddDocumentTransformer<BearerSecuritySchemeTransformer>();
     options.AddOperationTransformer<IamBearerSecurityOperationTransformer>();
+    options.AddDocumentTransformer((document, context, cancellationToken) =>
+    {
+        if (document.Servers != null)
+        {
+            foreach (var server in document.Servers)
+            {
+                if (server.Url != null && server.Url.StartsWith("http://", StringComparison.OrdinalIgnoreCase) && !server.Url.Contains("localhost", StringComparison.OrdinalIgnoreCase))
+                {
+                    server.Url = "https://" + server.Url["http://".Length..];
+                }
+            }
+        }
+        return Task.CompletedTask;
+    });
 });
 
 // Mediator Behaviors & Cortex.Mediator
@@ -260,6 +283,9 @@ using (var scope = app.Services.CreateScope())
         logger.LogWarning(ex, "Could not initialize database on startup. Ensure MySQL is running and connection string is configured.");
     }
 }
+
+// Forwarded Headers (MUST be early in pipeline)
+app.UseForwardedHeaders();
 
 // Exception Handler
 app.UseExceptionHandler();
