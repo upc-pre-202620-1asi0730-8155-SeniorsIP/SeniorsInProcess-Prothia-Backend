@@ -1,6 +1,5 @@
-﻿namespace Prothia.API.Iam.Domain.Model.Aggregates;
+using Prothia.API.Iam.Domain.Model.ValueObjects;
 
-public partial class UserAudit
-{
-    
-}
+namespace Prothia.API.Iam.Domain.Model.Aggregates;
+
+public sealed record UserAudit(UserId UserId, string Action, DateTimeOffset OccurredAt);

@@ -1,3 +1,5 @@
-﻿namespace Prothia.API.Iam.Domain.Model.Events;
+using Prothia.API.Shared.Domain.Model.Events;
 
-public record UserRegisteredEvent;
+namespace Prothia.API.Iam.Domain.Model.Events;
+
+public sealed record UserRegisteredEvent(string Username) : IEvent;
