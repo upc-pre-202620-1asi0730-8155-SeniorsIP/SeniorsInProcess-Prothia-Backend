@@ -1,3 +1,3 @@
-﻿namespace Prothia.API.Iam.Interfaces.Rest.Resources;
+namespace Prothia.API.Iam.Interfaces.Rest.Resources;
 
-public record UserResource;
+public sealed record UserResource(int Id, string Username, string Role);
