@@ -1,3 +1,3 @@
-﻿namespace Prothia.API.Iam.Domain.Model.Queries;
+namespace Prothia.API.Iam.Domain.Model.Queries;
 
-public record GetUserByIdQuery;
+public sealed record GetUserByIdQuery(int Id);
