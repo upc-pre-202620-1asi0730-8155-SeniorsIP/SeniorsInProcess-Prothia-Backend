@@ -226,21 +226,41 @@ The system architecture is structured around **Clean Architecture**, **Domain-Dr
    }
    ```
 
-3. **Restore and Build:**
+3. **Configure JWT signing:**
+   Set a strong secret in the environment. Do not commit the secret to the repository:
+   ```bash
+   export Jwt__Secret="$(openssl rand -base64 48)"
+   ```
+   The key must contain at least 32 UTF-8 bytes. `Jwt:Issuer`, `Jwt:Audience`, and token lifetime are configured in `Prothia.API/appsettings.json`.
+
+4. **Restore and Build:**
    ```bash
    dotnet restore
    dotnet build
    ```
 
-4. **Run the Application:**
+5. **Run the Application:**
    ```bash
    dotnet run --project Prothia.API
    ```
    *The database `prothia-db` will be created, migrated, and seeded with baseline clinical records automatically on first startup.*
 
-5. **Explore Interactive Scalar API Reference:**
+6. **Explore Interactive Scalar API Reference:**
    * Interactive UI: [http://localhost:5178/scalar/v1](http://localhost:5178/scalar/v1)
    * OpenAPI Specification: [http://localhost:5178/openapi/v1.json](http://localhost:5178/openapi/v1.json)
+
+### Using IAM
+
+Register with `POST /api/v1/authentication/sign-up`:
+```json
+{
+  "username": "clinician01",
+  "password": "Use-A-Unique-Password-123!"
+}
+```
+Usernames must be 3–50 letters, digits, dots, underscores, or hyphens. Passwords must be at least 12 characters and no more than 72 UTF-8 bytes. Newly self-registered accounts receive the `Fisioterapeuta` role; administrator privileges cannot be assigned through public registration.
+
+Sign in at `POST /api/v1/authentication/sign-in` with the same fields. The response includes `accessToken` and `expiresAt`; send the token on protected API requests as `Authorization: Bearer <accessToken>`. Sign-up/sign-in, `/api/v1/options`, and development API documentation are anonymous. The rest of the API requires a valid token.
 
 ---
 

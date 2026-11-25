@@ -11,6 +11,8 @@
     <ItemGroup>
         <!-- Asp.Net Core related packages -->
         <PackageReference Include="Cortex.Mediator" Version="3.1.2" />
+        <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.13" />
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.13"/>
         <PackageReference Include="Scalar.AspNetCore" Version="2.18.2"/>
         <!-- Entity Framework Core related packages -->
