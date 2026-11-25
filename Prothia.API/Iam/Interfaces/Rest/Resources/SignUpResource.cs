@@ -1,3 +1,15 @@
-﻿namespace Prothia.API.Iam.Interfaces.Rest.Resources;
+using System.ComponentModel.DataAnnotations;
 
-public record SignUpResource;
+namespace Prothia.API.Iam.Interfaces.Rest.Resources;
+
+public sealed class SignUpResource
+{
+    [Required]
+    [RegularExpression("^[a-zA-Z0-9._-]{3,50}$")]
+    public string Username { get; init; } = string.Empty;
+
+    [Required]
+    [MinLength(12)]
+    [MaxLength(72)]
+    public string Password { get; init; } = string.Empty;
+}

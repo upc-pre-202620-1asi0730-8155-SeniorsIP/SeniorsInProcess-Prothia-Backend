@@ -1,3 +1,12 @@
-﻿namespace Prothia.API.Iam.Interfaces.Rest.Resources;
+using System.ComponentModel.DataAnnotations;
 
-public record SignInResource;
+namespace Prothia.API.Iam.Interfaces.Rest.Resources;
+
+public sealed class SignInResource
+{
+    [Required]
+    public string Username { get; init; } = string.Empty;
+
+    [Required]
+    public string Password { get; init; } = string.Empty;
+}

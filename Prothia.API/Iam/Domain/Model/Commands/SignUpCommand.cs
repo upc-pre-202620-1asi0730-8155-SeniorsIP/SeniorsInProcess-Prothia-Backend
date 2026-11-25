@@ -1,3 +1,3 @@
-﻿namespace Prothia.API.Iam.Domain.Model.Commands;
+namespace Prothia.API.Iam.Domain.Model.Commands;
 
-public record SignUpCommand;
+public sealed record SignUpCommand(string Username, string Password);
