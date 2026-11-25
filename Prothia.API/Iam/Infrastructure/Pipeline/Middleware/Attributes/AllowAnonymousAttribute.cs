@@ -1,5 +1,6 @@
-﻿namespace Prothia.API.Iam.Infrastructure.Pipeline.Middleware.Attributes;
+namespace Prothia.API.Iam.Infrastructure.Pipeline.Middleware.Attributes;
 
-public class AllowAnonymousAttribute : Attribute
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited = true)]
+public sealed class AllowAnonymousAttribute : Microsoft.AspNetCore.Authorization.AllowAnonymousAttribute
 {
 }

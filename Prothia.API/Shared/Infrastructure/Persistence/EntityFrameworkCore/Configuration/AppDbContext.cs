@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Prothia.API.Analytics.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 using Prothia.API.Billing.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 using Prothia.API.Communication.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
+using Prothia.API.Iam.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 using Prothia.API.Monitoring.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 using Prothia.API.Patients.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 using Prothia.API.Prescriptions.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
@@ -25,6 +26,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
 
         // Each bounded context owns the mapping of its aggregates.
         builder.ApplyPatientsConfiguration();
+        builder.ApplyIamConfiguration();
         builder.ApplyAnalyticsConfiguration();
         builder.ApplyBillingConfiguration();
         builder.ApplyCommunicationConfiguration();

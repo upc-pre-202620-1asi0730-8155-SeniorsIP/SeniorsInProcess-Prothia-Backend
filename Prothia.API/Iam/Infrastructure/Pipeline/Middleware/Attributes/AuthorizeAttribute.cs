@@ -1,5 +1,6 @@
-﻿namespace Prothia.API.Iam.Infrastructure.Pipeline.Middleware.Attributes;
+namespace Prothia.API.Iam.Infrastructure.Pipeline.Middleware.Attributes;
 
-public class AuthorizeAttribute : Attribute
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, AllowMultiple = true, Inherited = true)]
+public sealed class AuthorizeAttribute : Microsoft.AspNetCore.Authorization.AuthorizeAttribute
 {
 }

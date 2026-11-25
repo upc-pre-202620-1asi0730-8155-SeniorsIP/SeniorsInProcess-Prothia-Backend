@@ -1,12 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.OpenApi;
 using Microsoft.OpenApi;
 
 namespace Prothia.API.Shared.Interfaces.Asp.OpenApi;
 
-/// <summary>
-///     Applies Bearer security requirements in OpenAPI to endpoints decorated with <see cref="AuthorizeAttribute" />.
-/// </summary>
 public sealed class IamBearerSecurityOperationTransformer : IOpenApiOperationTransformer
 {
     public Task TransformAsync(
@@ -15,12 +12,8 @@ public sealed class IamBearerSecurityOperationTransformer : IOpenApiOperationTra
         CancellationToken cancellationToken)
     {
         var metadata = context.Description.ActionDescriptor.EndpointMetadata;
-
-        if (metadata.OfType<AllowAnonymousAttribute>().Any() ||
-            !metadata.OfType<AuthorizeAttribute>().Any())
-        {
+        if (metadata.OfType<AllowAnonymousAttribute>().Any())
             return Task.CompletedTask;
-        }
 
         operation.Security ??= [];
         operation.Security.Add(new OpenApiSecurityRequirement

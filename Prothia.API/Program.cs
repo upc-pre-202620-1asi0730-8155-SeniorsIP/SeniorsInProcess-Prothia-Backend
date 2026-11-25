@@ -1,7 +1,12 @@
+using System.Security.Claims;
+using System.Text;
 using Cortex.Mediator.Commands;
 using Cortex.Mediator.DependencyInjection;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Localization;
 using Scalar.AspNetCore;
 
@@ -87,6 +92,20 @@ using Prothia.API.Workshop.Domain.Repositories;
 using Prothia.API.Workshop.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 using Prothia.API.Workshop.Resources;
 
+// IAM
+using Prothia.API.Iam.Application.Acl;
+using Prothia.API.Iam.Application.CommandServices;
+using Prothia.API.Iam.Application.Internal.CommandServices;
+using Prothia.API.Iam.Application.Internal.OutboundServices;
+using Prothia.API.Iam.Application.Internal.QueryServices;
+using Prothia.API.Iam.Application.QueryServices;
+using Prothia.API.Iam.Domain.Repositories;
+using Prothia.API.Iam.Infrastructure.Hashing.BCrypt.Services;
+using Prothia.API.Iam.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using Prothia.API.Iam.Infrastructure.Tokens.Jwt.Configuration;
+using Prothia.API.Iam.Infrastructure.Tokens.Jwt.Services;
+using Prothia.API.Iam.Interfaces.Acl;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add routing and lowercase conventions
@@ -109,6 +128,42 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 // Add ProblemDetails and ExceptionHandler services
 builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+var tokenSettings = builder.Configuration.GetSection(TokenSettings.SectionName).Get<TokenSettings>()
+                    ?? new TokenSettings();
+if (Encoding.UTF8.GetByteCount(tokenSettings.Secret) < 32)
+    throw new InvalidOperationException(
+        "Configure Jwt:Secret with at least 32 UTF-8 bytes using user-secrets or the Jwt__Secret environment variable.");
+if (string.IsNullOrWhiteSpace(tokenSettings.Issuer) ||
+    string.IsNullOrWhiteSpace(tokenSettings.Audience) ||
+    tokenSettings.LifetimeMinutes <= 0)
+    throw new InvalidOperationException("Configure a valid Jwt issuer, audience, and positive lifetime.");
+
+builder.Services.Configure<TokenSettings>(
+    builder.Configuration.GetSection(TokenSettings.SectionName));
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenSettings.Secret)),
+            ValidateIssuer = true,
+            ValidIssuer = tokenSettings.Issuer,
+            ValidateAudience = true,
+            ValidAudience = tokenSettings.Audience,
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.FromSeconds(30),
+            NameClaimType = ClaimTypes.Name,
+            RoleClaimType = ClaimTypes.Role
+        };
+    });
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
 
 // Add CORS Policy
 builder.Services.AddCors(options =>
@@ -185,6 +240,14 @@ builder.Services.AddCortexMediator([typeof(Program)]);
 // Dependency Injection - Shared
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<DispatchDomainEventsInterceptor>();
+
+// Dependency Injection - IAM
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserCommandService, UserCommandService>();
+builder.Services.AddScoped<IUserQueryService, UserQueryService>();
+builder.Services.AddScoped<IHashingService, HashingService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IIamContextFacade, IamContextFacade>();
 
 // Dependency Injection - Patients
 builder.Services.AddScoped<IPatientRepository, PatientRepository>();
@@ -302,15 +365,16 @@ app.UseRequestLocalization(localizationOptions);
 // OpenAPI & Scalar Documentation in Development
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.MapScalarApiReference();
-    app.MapGet("/", () => Results.Redirect("/scalar/v1"));
+    app.MapOpenApi().AllowAnonymous();
+    app.MapScalarApiReference().AllowAnonymous();
+    app.MapGet("/", () => Results.Redirect("/scalar/v1")).AllowAnonymous();
 }
 
 app.UseCors("AllowAllPolicy");
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 // Navigation Options endpoint for Frontend sidebar
@@ -323,7 +387,7 @@ app.MapGet("/api/v1/options", () => Results.Ok(new object[]
     new { id = 5, label = "option.workshops", to = "/workshops", icon = "pi-arrow-right-arrow-left", exact = false, badge = 0, order = 5 },
     new { id = 6, label = "option.reports", to = "/reports", icon = "pi-file", exact = false, badge = 0, order = 6 },
     new { id = 7, label = "option.subscription", to = "/subscription", icon = "pi-credit-card", exact = false, badge = 0, order = 7 }
-}));
+})).AllowAnonymous();
 
 app.MapControllers();
 
