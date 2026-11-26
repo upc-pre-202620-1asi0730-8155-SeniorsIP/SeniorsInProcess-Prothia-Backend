@@ -7,6 +7,7 @@ using Prothia.API.Iam.Application.Internal.OutboundServices;
 using Prothia.API.Iam.Application.Model;
 using Prothia.API.Iam.Domain.Model.Aggregates;
 using Prothia.API.Iam.Infrastructure.Tokens.Jwt.Configuration;
+using Prothia.API.Iam.Infrastructure.Pipeline.Claims;
 
 namespace Prothia.API.Iam.Infrastructure.Tokens.Jwt.Services;
 
@@ -26,7 +27,11 @@ public sealed class TokenService(IOptions<TokenSettings> options) : ITokenServic
             new Claim(ClaimTypes.NameIdentifier, userId),
             new Claim(ClaimTypes.Name, user.Username),
             new Claim(ClaimTypes.Role, user.Role)
-        };
+        }.ToList();
+        if (user.PatientId is int patientId)
+            claims.Add(new Claim(
+                IamClaimsPrincipalExtensions.PatientIdClaimType,
+                patientId.ToString(System.Globalization.CultureInfo.InvariantCulture)));
         var credentials = new SigningCredentials(
             new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Secret)),
             SecurityAlgorithms.HmacSha256);

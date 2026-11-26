@@ -6,5 +6,6 @@ public enum IamError
     UsernameAlreadyTaken,
     InvalidCredentials,
     InvalidRegistrationData,
-    DatabaseError
+    DatabaseError,
+    PatientAccountAlreadyExists
 }

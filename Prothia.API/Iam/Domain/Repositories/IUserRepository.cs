@@ -7,4 +7,5 @@ public interface IUserRepository : IBaseRepository<User>
 {
     Task<User?> FindByUsernameAsync(string username, CancellationToken cancellationToken = default);
     Task<bool> ExistsByUsernameAsync(string username, CancellationToken cancellationToken = default);
+    Task<bool> ExistsByPatientIdAsync(int patientId, CancellationToken cancellationToken = default);
 }

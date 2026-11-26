@@ -18,4 +18,7 @@ public static class IamErrors
 
     public static readonly Error DatabaseError =
         Error.Failure("Iam.DatabaseError", "An error occurred while saving the user.");
+
+    public static readonly Error PatientAccountAlreadyExists =
+        Error.Conflict("Iam.PatientAccountAlreadyExists", "This patient already has an account.");
 }
