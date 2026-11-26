@@ -1,15 +1,16 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using Prothia.API.Iam.Application.QueryServices;
+using Prothia.API.Iam.Domain.Model;
 using Prothia.API.Iam.Domain.Model.Queries;
+using Prothia.API.Iam.Infrastructure.Pipeline.Middleware.Attributes;
 using Prothia.API.Iam.Interfaces.Rest.Resources;
 using Prothia.API.Iam.Interfaces.Rest.Transform;
-using Prothia.API.Iam.Infrastructure.Pipeline.Middleware.Attributes;
 
 namespace Prothia.API.Iam.Interfaces.Rest;
 
 [ApiController]
-[Authorize]
+[Authorize(ERole.Admin)]
 [Route("api/v1/[controller]")]
 [Produces(MediaTypeNames.Application.Json)]
 [Tags("Users")]
