@@ -18,6 +18,9 @@ public sealed class UserRepository(AppDbContext context)
     public Task<bool> ExistsByUsernameAsync(string username, CancellationToken cancellationToken = default) =>
         Context.Set<User>().AnyAsync(user => user.Username == username, cancellationToken);
 
+    public Task<bool> ExistsByPatientIdAsync(int patientId, CancellationToken cancellationToken = default) =>
+        Context.Set<User>().AnyAsync(user => user.PatientId == patientId, cancellationToken);
+
     public override Task<User?> FindByIdAsNoTrackingAsync(int id, CancellationToken cancellationToken = default) =>
         Context.Set<User>()
             .AsNoTracking()

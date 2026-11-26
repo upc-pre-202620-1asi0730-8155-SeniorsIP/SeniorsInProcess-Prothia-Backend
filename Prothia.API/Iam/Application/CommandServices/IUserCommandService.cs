@@ -9,4 +9,9 @@ public interface IUserCommandService
 {
     Task<Result<User>> Handle(SignUpCommand command, CancellationToken cancellationToken = default);
     Task<Result<AuthenticatedUser>> Handle(SignInCommand command, CancellationToken cancellationToken = default);
+    Task<Result<User>> CreatePatientAccountAsync(
+        int patientId,
+        string username,
+        string password,
+        CancellationToken cancellationToken = default);
 }

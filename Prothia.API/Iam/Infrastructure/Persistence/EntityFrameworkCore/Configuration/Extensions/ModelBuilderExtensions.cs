@@ -19,9 +19,11 @@ public static class ModelBuilderExtensions
             entity.Property(user => user.Username).HasMaxLength(User.UsernameMaxLength).IsRequired();
             entity.Property(user => user.PasswordHash).HasMaxLength(User.PasswordHashMaxLength).IsRequired();
             entity.Property(user => user.Role).HasMaxLength(User.RoleMaxLength).IsRequired();
+            entity.Property(user => user.PatientId);
             entity.Property(user => user.CreatedAt);
             entity.Property(user => user.UpdatedAt);
             entity.HasIndex(user => user.Username).IsUnique();
+            entity.HasIndex(user => user.PatientId).IsUnique();
         });
     }
 
