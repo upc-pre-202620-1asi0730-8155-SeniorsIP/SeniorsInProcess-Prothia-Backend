@@ -255,12 +255,19 @@ Register with `POST /api/v1/authentication/sign-up`:
 ```json
 {
   "username": "clinician01",
-  "password": "Use-A-Unique-Password-123!"
+  "password": "Use-A-Unique-Password-123!",
+  "role": "Physiotherapist"
 }
 ```
-Usernames must be 3–50 letters, digits, dots, underscores, or hyphens. Passwords must be at least 12 characters and no more than 72 UTF-8 bytes. Newly self-registered accounts receive the `Fisioterapeuta` role; administrator privileges cannot be assigned through public registration.
+Use `"Technician"` for a workshop account. Public registration accepts only `Physiotherapist` and `Technician`; `Patient` and `Admin` are rejected. Usernames must be 3–50 letters, digits, dots, underscores, or hyphens. Passwords must be at least 12 characters and no more than 72 UTF-8 bytes. Admin accounts must be provisioned outside the public API.
 
-Sign in at `POST /api/v1/authentication/sign-in` with the same fields. The response includes `accessToken` and `expiresAt`; send the token on protected API requests as `Authorization: Bearer <accessToken>`. Sign-up/sign-in, `/api/v1/options`, and development API documentation are anonymous. The rest of the API requires a valid token.
+Sign in at `POST /api/v1/authentication/sign-in` with `username` and `password`. The response includes `accessToken` and `expiresAt`; send the token on protected API requests as `Authorization: Bearer <accessToken>`. Sign-up/sign-in, `/api/v1/options`, and development API documentation are anonymous. The rest of the API requires a valid token.
+
+An authenticated physiotherapist can provision an account for an existing patient with `POST /api/v1/patients/{id}/account` and `{"password":"Use-A-Unique-Password-123!"}`. The patient's DNI is used as the login username; each patient can have only one account. Patient tokens can read only their own patient profile and prescriptions filtered by their linked patient ID. The `Patient` role cannot be assigned through public sign-up.
+
+Role checks are in place for the existing API actions: physiotherapists manage clinical and billing endpoints, technicians manage workshop endpoints, and admins manage user listings. Clinic/workshop tenant ownership filtering is not implemented yet; records in those contexts are still shared across accounts with the same role. Do not treat role checks as tenant isolation.
+
+The new patient owner field is nullable to preserve existing database records. Patients that existed before this migration have no clinic owner and therefore do not appear in physiotherapist-scoped patient queries; assign their ownership through a controlled data migration before using this version with existing patient data. Newly created patients are scoped to the physiotherapist who created them.
 
 ---
 
