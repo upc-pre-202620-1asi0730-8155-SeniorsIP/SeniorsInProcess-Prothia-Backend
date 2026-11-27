@@ -1,3 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
+  <data name="UserCreatedSuccessfully" xml:space="preserve">
+    <value>User account created successfully.</value>
+  </data>
+  <data name="UserSignedInSuccessfully" xml:space="preserve">
+    <value>User authenticated successfully.</value>
+  </data>
+  <data name="RequiredUsername" xml:space="preserve">
+    <value>Username is required.</value>
+  </data>
+  <data name="RequiredPassword" xml:space="preserve">
+    <value>Password is required.</value>
+  </data>
+  <data name="RequiredFullName" xml:space="preserve">
+    <value>Full name is required.</value>
+  </data>
+  <data name="RequiredEmail" xml:space="preserve">
+    <value>Email is required.</value>
+  </data>
+  <data name="RequiredRole" xml:space="preserve">
+    <value>Role is required.</value>
+  </data>
+  <data name="InvalidEmail" xml:space="preserve">
+    <value>Email format is invalid.</value>
+  </data>
 </root>

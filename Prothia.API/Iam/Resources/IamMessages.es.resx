@@ -1,3 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
+  <data name="UserCreatedSuccessfully" xml:space="preserve">
+    <value>Cuenta de usuario creada exitosamente.</value>
+  </data>
+  <data name="UserSignedInSuccessfully" xml:space="preserve">
+    <value>Usuario autenticado exitosamente.</value>
+  </data>
+  <data name="RequiredUsername" xml:space="preserve">
+    <value>El nombre de usuario es obligatorio.</value>
+  </data>
+  <data name="RequiredPassword" xml:space="preserve">
+    <value>La contraseña es obligatoria.</value>
+  </data>
+  <data name="RequiredFullName" xml:space="preserve">
+    <value>El nombre completo es obligatorio.</value>
+  </data>
+  <data name="RequiredEmail" xml:space="preserve">
+    <value>El correo electrónico es obligatorio.</value>
+  </data>
+  <data name="RequiredRole" xml:space="preserve">
+    <value>El rol es obligatorio.</value>
+  </data>
+  <data name="InvalidEmail" xml:space="preserve">
+    <value>El formato del correo electrónico es inválido.</value>
+  </data>
 </root>
