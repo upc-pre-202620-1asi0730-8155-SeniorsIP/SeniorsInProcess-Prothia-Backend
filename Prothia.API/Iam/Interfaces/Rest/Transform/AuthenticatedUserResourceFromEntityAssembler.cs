@@ -1,16 +1,17 @@
-using Prothia.API.Iam.Application.Model;
+using Prothia.API.Iam.Domain.Model.Aggregates;
 using Prothia.API.Iam.Interfaces.Rest.Resources;
 
 namespace Prothia.API.Iam.Interfaces.Rest.Transform;
 
 public static class AuthenticatedUserResourceFromEntityAssembler
 {
-    public static AuthenticatedUserResource ToResourceFromEntity(AuthenticatedUser authenticatedUser) =>
+    public static AuthenticatedUserResource ToResourceFromEntity(User entity, string token) =>
         new(
-            authenticatedUser.UserId,
-            authenticatedUser.Username,
-            authenticatedUser.Role,
-            authenticatedUser.Token,
-            "Bearer",
-            authenticatedUser.ExpiresAt);
+            entity.Id.Value,
+            entity.Username,
+            entity.FullName,
+            entity.Email,
+            entity.Role.ToString(),
+            entity.PatientId,
+            token);
 }

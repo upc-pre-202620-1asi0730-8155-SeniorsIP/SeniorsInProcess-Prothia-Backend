@@ -1,65 +1,63 @@
-using System.Net.Mime;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Prothia.API.Iam.Application.CommandServices;
-using Prothia.API.Iam.Domain.Model.Commands;
 using Prothia.API.Iam.Interfaces.Rest.Resources;
 using Prothia.API.Iam.Interfaces.Rest.Transform;
-using Prothia.API.Iam.Infrastructure.Pipeline.Middleware.Attributes;
 using Prothia.API.Shared.Interfaces.Rest.ProblemDetails;
 
 namespace Prothia.API.Iam.Interfaces.Rest;
 
 [ApiController]
-[AllowAnonymous]
 [Route("api/v1/[controller]")]
-[Produces(MediaTypeNames.Application.Json)]
-[Tags("Authentication")]
-public sealed class AuthenticationController(
+[Tags("Available Authentication Endpoints.")]
+public class AuthenticationController(
     IUserCommandService userCommandService,
     ProblemDetailsFactory problemDetailsFactory) : ControllerBase
 {
     [HttpPost("sign-up")]
-    [EndpointSummary("Register a user account")]
+    [AllowAnonymous]
+    [EndpointSummary("Register a new ClinicalProfessional account")]
+    [EndpointDescription("Public self-registration endpoint for creating a new ClinicalProfessional account with an isolated clinic workspace. Patient and Technician accounts must be provisioned by a clinician via POST /api/v1/users. Public endpoint (AllowAnonymous).")]
     [ProducesResponseType(typeof(UserResource), StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status409Conflict)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
     public async Task<IActionResult> SignUp(
         [FromBody] SignUpResource resource,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
-        var result = await userCommandService.Handle(
-            SignUpCommandFromResourceAssembler.ToCommandFromResource(resource),
-            cancellationToken);
+        var command = SignUpCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var result = await userCommandService.Handle(command, cancellationToken);
 
-        return IamActionResultAssembler.ToActionResult(
+        return IamActionResultAssembler.ToActionResultFromUserMutationResult(
             this,
             result,
             problemDetailsFactory,
-            user => CreatedAtAction(
+            createdUser => CreatedAtAction(
                 nameof(UsersController.GetUserById),
                 "Users",
-                new { id = user.Id.Value },
-                UserResourceFromEntityAssembler.ToResourceFromEntity(user)));
+                new { id = createdUser.Id.Value },
+                UserResourceFromEntityAssembler.ToResourceFromEntity(createdUser)));
     }
 
     [HttpPost("sign-in")]
-    [EndpointSummary("Sign in and issue a bearer token")]
+    [AllowAnonymous]
+    [EndpointSummary("Authenticate user and issue JWT token")]
+    [EndpointDescription("Validates username and password credentials for an active user account and returns the user profile along with a signed JWT Bearer token. Public endpoint (AllowAnonymous).")]
     [ProducesResponseType(typeof(AuthenticatedUserResource), StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> SignIn(
         [FromBody] SignInResource resource,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken = default)
     {
-        var result = await userCommandService.Handle(
-            SignInCommandFromResourceAssembler.ToCommandFromResource(resource),
-            cancellationToken);
+        var command = SignInCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var result = await userCommandService.Handle(command, cancellationToken);
 
-        return IamActionResultAssembler.ToActionResult(
+        return IamActionResultAssembler.ToActionResultFromSignInResult(
             this,
             result,
             problemDetailsFactory,
-            authenticatedUser => Ok(
-                AuthenticatedUserResourceFromEntityAssembler.ToResourceFromEntity(authenticatedUser)));
+            auth => Ok(AuthenticatedUserResourceFromEntityAssembler.ToResourceFromEntity(auth.user, auth.token)));
     }
 }

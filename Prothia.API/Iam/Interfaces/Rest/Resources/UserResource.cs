@@ -1,3 +1,12 @@
-namespace Prothia.API.Iam.Interfaces.Rest.Resources;
+﻿namespace Prothia.API.Iam.Interfaces.Rest.Resources;
 
-public sealed record UserResource(int Id, string Username, string Role);
+public record UserResource(
+    int Id,
+    string Username,
+    string FullName,
+    string Email,
+    string Role,
+    int? PatientId,
+    bool IsActive,
+    DateTimeOffset? CreatedAt,
+    int? CreatedByUserId = null);

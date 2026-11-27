@@ -1,9 +1,10 @@
-namespace Prothia.API.Iam.Interfaces.Rest.Resources;
+﻿namespace Prothia.API.Iam.Interfaces.Rest.Resources;
 
-public sealed record AuthenticatedUserResource(
+public record AuthenticatedUserResource(
     int Id,
     string Username,
+    string FullName,
+    string Email,
     string Role,
-    string AccessToken,
-    string TokenType,
-    DateTimeOffset ExpiresAt);
+    int? PatientId,
+    string Token);
