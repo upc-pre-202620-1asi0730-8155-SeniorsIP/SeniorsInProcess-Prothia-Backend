@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Prothia.API.Iam.Domain.Model.Aggregates;
 using Prothia.API.Iam.Domain.Model.ValueObjects;
 using Prothia.API.Shared.Infrastructure.Persistence.EntityFrameworkCore.Configuration.ValueConverters;
@@ -9,22 +9,53 @@ public static class ModelBuilderExtensions
 {
     public static void ApplyIamConfiguration(this ModelBuilder builder)
     {
-        builder.Entity<User>(entity =>
-        {
-            entity.HasKey(user => user.Id);
-            entity.Property(user => user.Id)
-                .HasConversion(new StronglyTypedIdConverter<UserId, int>(id => id.Value, value => new UserId(value)))
-                .ValueGeneratedOnAdd()
-                .IsRequired();
-            entity.Property(user => user.Username).HasMaxLength(User.UsernameMaxLength).IsRequired();
-            entity.Property(user => user.PasswordHash).HasMaxLength(User.PasswordHashMaxLength).IsRequired();
-            entity.Property(user => user.Role).HasMaxLength(User.RoleMaxLength).IsRequired();
-            entity.Property(user => user.PatientId);
-            entity.Property(user => user.CreatedAt);
-            entity.Property(user => user.UpdatedAt);
-            entity.HasIndex(user => user.Username).IsUnique();
-            entity.HasIndex(user => user.PatientId).IsUnique();
-        });
-    }
+        var user = builder.Entity<User>();
 
+        user.HasKey(u => u.Id);
+        user.Property(u => u.Id)
+            .HasConversion(new StronglyTypedIdConverter<UserId, int>(id => id.Value, value => new UserId(value)))
+            .IsRequired()
+            .ValueGeneratedOnAdd();
+
+        user.Property(u => u.Username)
+            .HasMaxLength(64)
+            .IsRequired();
+
+        user.Property(u => u.NormalizedUsername)
+            .HasMaxLength(64)
+            .IsRequired();
+        user.HasIndex(u => u.NormalizedUsername).IsUnique();
+
+        user.Property(u => u.FullName)
+            .HasMaxLength(120)
+            .IsRequired();
+
+        user.Property(u => u.Email)
+            .HasMaxLength(160)
+            .IsRequired();
+        user.HasIndex(u => u.Email).IsUnique();
+
+        user.Property(u => u.PasswordHash)
+            .HasMaxLength(255)
+            .IsRequired();
+
+        user.Property(u => u.Role)
+            .HasConversion<string>()
+            .HasMaxLength(30)
+            .IsRequired();
+
+        user.Property(u => u.PatientId)
+            .IsRequired(false);
+        user.HasIndex(u => u.PatientId);
+
+        user.Property(u => u.CreatedByUserId)
+            .IsRequired(false);
+        user.HasIndex(u => u.CreatedByUserId);
+
+        user.Property(u => u.IsActive)
+            .IsRequired()
+            .HasDefaultValue(true);
+
+        user.Ignore(u => u.DomainEvents);
+    }
 }

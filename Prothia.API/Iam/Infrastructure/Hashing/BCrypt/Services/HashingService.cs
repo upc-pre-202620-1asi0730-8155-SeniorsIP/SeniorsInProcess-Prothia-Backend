@@ -1,14 +1,27 @@
-using Prothia.API.Iam.Application.Internal.OutboundServices;
+﻿using Prothia.API.Iam.Application.Internal.OutboundServices;
 
 namespace Prothia.API.Iam.Infrastructure.Hashing.BCrypt.Services;
 
-public sealed class HashingService : IHashingService
+public class HashingService : IHashingService
 {
-    private const int WorkFactor = 12;
+    public string HashPassword(string password)
+    {
+        ArgumentException.ThrowIfNullOrWhiteSpace(password);
+        return global::BCrypt.Net.BCrypt.HashPassword(password);
+    }
 
-    public string HashPassword(string password) =>
-        global::BCrypt.Net.BCrypt.HashPassword(password, WorkFactor);
+    public bool VerifyPassword(string password, string passwordHash)
+    {
+        if (string.IsNullOrEmpty(password) || string.IsNullOrWhiteSpace(passwordHash))
+            return false;
 
-    public bool VerifyPassword(string password, string passwordHash) =>
-        global::BCrypt.Net.BCrypt.Verify(password, passwordHash);
+        try
+        {
+            return global::BCrypt.Net.BCrypt.Verify(password, passwordHash);
+        }
+        catch
+        {
+            return false;
+        }
+    }
 }

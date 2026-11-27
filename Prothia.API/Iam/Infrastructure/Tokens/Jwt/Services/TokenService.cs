@@ -1,48 +1,97 @@
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+﻿using System.Security.Claims;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using Prothia.API.Iam.Application.Internal.OutboundServices;
-using Prothia.API.Iam.Application.Model;
 using Prothia.API.Iam.Domain.Model.Aggregates;
+using Prothia.API.Iam.Domain.Model.ValueObjects;
 using Prothia.API.Iam.Infrastructure.Tokens.Jwt.Configuration;
-using Prothia.API.Iam.Infrastructure.Pipeline.Claims;
 
 namespace Prothia.API.Iam.Infrastructure.Tokens.Jwt.Services;
 
-public sealed class TokenService(IOptions<TokenSettings> options) : ITokenService
+public class TokenService(
+    IOptions<TokenSettings> tokenSettings,
+    ILogger<TokenService> logger) : ITokenService
 {
-    private readonly TokenSettings _settings = options.Value;
+    private readonly TokenSettings _tokenSettings = tokenSettings.Value;
 
-    public IssuedToken GenerateToken(User user)
+    public string GenerateToken(User user)
     {
-        var now = DateTimeOffset.UtcNow;
-        var expiresAt = now.AddMinutes(_settings.LifetimeMinutes);
-        var userId = user.Id.Value.ToString(System.Globalization.CultureInfo.InvariantCulture);
-        var claims = new[]
-        {
-            new Claim(JwtRegisteredClaimNames.Sub, userId),
-            new Claim(JwtRegisteredClaimNames.UniqueName, user.Username),
-            new Claim(ClaimTypes.NameIdentifier, userId),
-            new Claim(ClaimTypes.Name, user.Username),
-            new Claim(ClaimTypes.Role, user.Role)
-        }.ToList();
-        if (user.PatientId is int patientId)
-            claims.Add(new Claim(
-                IamClaimsPrincipalExtensions.PatientIdClaimType,
-                patientId.ToString(System.Globalization.CultureInfo.InvariantCulture)));
-        var credentials = new SigningCredentials(
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_settings.Secret)),
-            SecurityAlgorithms.HmacSha256);
-        var token = new JwtSecurityToken(
-            _settings.Issuer,
-            _settings.Audience,
-            claims,
-            now.UtcDateTime,
-            expiresAt.UtcDateTime,
-            credentials);
+        ArgumentNullException.ThrowIfNull(user);
 
-        return new IssuedToken(new JwtSecurityTokenHandler().WriteToken(token), expiresAt);
+        var keyBytes = _tokenSettings.GetValidatedSecretBytes();
+        var signingKey = new SymmetricSecurityKey(keyBytes);
+
+        var claims = new List<Claim>
+        {
+            new(JwtRegisteredClaimNames.Sub, user.Id.Value.ToString()),
+            new(ClaimTypes.Name, user.Username),
+            new(ClaimTypes.Role, user.Role.ToString()),
+            new("fullName", user.FullName)
+        };
+
+        if (user.PatientId.HasValue)
+            claims.Add(new Claim("patientId", user.PatientId.Value.ToString()));
+
+        if (user.CreatedByUserId.HasValue)
+            claims.Add(new Claim("createdByUserId", user.CreatedByUserId.Value.ToString()));
+
+        var now = DateTime.UtcNow;
+        var descriptor = new SecurityTokenDescriptor
+        {
+            Issuer = _tokenSettings.Issuer,
+            Audience = _tokenSettings.Audience,
+            Subject = new ClaimsIdentity(claims),
+            IssuedAt = now,
+            NotBefore = now,
+            Expires = now.AddMinutes(_tokenSettings.ExpirationMinutes),
+            SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256)
+        };
+
+        var handler = new JsonWebTokenHandler();
+        return handler.CreateToken(descriptor);
+    }
+
+    public async Task<UserId?> ValidateTokenAsync(string token)
+    {
+        if (string.IsNullOrWhiteSpace(token))
+            return null;
+
+        try
+        {
+            var keyBytes = _tokenSettings.GetValidatedSecretBytes();
+            var handler = new JsonWebTokenHandler();
+
+            var result = await handler.ValidateTokenAsync(token, new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
+                ValidateIssuer = true,
+                ValidIssuer = _tokenSettings.Issuer,
+                ValidateAudience = true,
+                ValidAudience = _tokenSettings.Audience,
+                ValidateLifetime = true,
+                ClockSkew = TimeSpan.Zero
+            });
+
+            if (!result.IsValid || result.ClaimsIdentity is null)
+            {
+                logger.LogWarning("JWT validation failed: {Reason}", result.Exception?.Message ?? "Invalid token.");
+                return null;
+            }
+
+            var subClaim = result.ClaimsIdentity.FindFirst(ClaimTypes.NameIdentifier)?.Value
+                           ?? result.ClaimsIdentity.FindFirst(JwtRegisteredClaimNames.Sub)?.Value;
+
+            return int.TryParse(subClaim, out var userId) && userId > 0
+                ? new UserId(userId)
+                : null;
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning(ex, "Exception occurred while validating JWT.");
+            return null;
+        }
     }
 }
